@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="/static/index.js"></script>
+    <title>Inclusive STL</title>
+</head>
+<body>
+    <div class="font-sans">
+        <div class="shadow-md">
+            <header class="max-w-screen-lg mx-auto p-4">
+                <h1 class="text-center text-2xl font-semibold">
+                    Inclusive STL
+                </h1>
+            </header>
+        </div>
+
+        <main class="max-w-screen-lg mx-auto px-4">
+            <p class="mt-4 text-center my-8 text-lg">
+                Inclusive STL is an project to convert text to braille and export it as a STL file
+            </p>
+
+            <div class="mx-auto w-10/12 my-4">
+                <label class="block">To start, put your text here:</label>
+                <textarea
+                    class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
+                    name="text"
+                    id="input_text"
+                ></textarea>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4">
+                <label class="block">Here is your text in braille:</label>
+                <textarea
+                    class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
+                    name="braille"
+                    id="input_braille"
+                ></textarea>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4 flex justify-center">
+                <button
+                    class="text-lg py-2 px-4 bg-blue-500 text-white font-bold rounded hover:bg-blue-700"
+                    id="stl_button"
+                >
+                    Convert to STL file
+                </button>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4">
+                <p class="text-center text-lg mt-8 mb-4 font-semibold">Advanced Options</p>
+
+                <div class="md:grid grid-cols-2 gap-4">
+                    <div class="py-2">
+                        <p class="text-center">Sphere Radius: (mm)</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_size"
+                        >
+                    </div>
+
+                    <div class="py-2">
+                        <p class="text-center">Spacing: (mm)</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_spacing"
+                        >
+                    </div>
+
+                    <div class="py-2">
+                        <p class="text-center">Surface Depth: (mm)</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_surface_depth"
+                        >
+                    </div>
+
+                    <div class="py-2">
+                        <p class="text-center">Kerning: (mm)</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_kerning"
+                        >
+                    </div>
+
+                    <div class="md:my-auto py-2">
+                        <p class="text-center">Unique Surface:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_unique_surface"
+                        >
+                    </div>
+
+                    <div class="md:my-auto py-2">
+                        <p class="text-center">Unique Width:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_unique_width"
+                        >
+                    </div>
+
+                    <div class="py-2">
+                        <p class="text-center">Text Alignment:</label>
+                        <select
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            id="input_text_alignment"
+                        >
+                            <option value="center">Center</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <p class="text-center">Sphere Subdivisions:</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_subdivisions"
+                        >
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="bg-violet-900 text-white">
+            <footer class="max-w-screen-lg mx-auto p-4">
+                <p class="text-center text-lg font-semibold hover:underline">
+                    Developed by
+                    <a
+                        class="text-green-500"
+                        href="https://github.com/lucasrguerra"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Lucas Guerra
+                    </a>
+                </p>
+            </header>
+        </div>
+    </div>
+</body>
+</html>
