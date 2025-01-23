@@ -1,8 +1,8 @@
-var size = 2;
-var spacing = 5;
-var kerning = 2.5;
+var radius = 0.7;
+var spacing = 2.2;
+var kerning = 2.8;
 var subdivisions = 2;
-var surface_depth = 2;
+var surface_depth = 1;
 var unique_surface = false;
 var unique_width = false;
 var text_alignment = "left";
@@ -56,7 +56,7 @@ async function downloadSTL(event) {
     try {
         await axios.post("/api/to-stl", {
             braille: braille,
-            size: size,
+            radius: radius,
             spacing: spacing,
             kerning: kerning,
             subdivisions: subdivisions,
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const input_text = document.querySelector("#input_text");
     const input_braille = document.querySelector("#input_braille");
     const stl_button = document.querySelector("#stl_button");
-    const input_size = document.querySelector("#input_size");
+    const input_radius = document.querySelector("#input_radius");
     const input_spacing = document.querySelector("#input_spacing");
     const input_kerning = document.querySelector("#input_kerning");
     const input_subdivisions = document.querySelector("#input_subdivisions");
@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
     input_braille.addEventListener("input", decodeBrailleToText);
     stl_button.addEventListener("click", downloadSTL);
 
-    input_size.value = size;
-    input_size.addEventListener("input", function(event) {
-        size = parseFloat(event.target.value);
+    input_radius.value = radius;
+    input_radius.addEventListener("input", function(event) {
+        radius = parseFloat(event.target.value);
     });
 
     input_spacing.value = spacing;

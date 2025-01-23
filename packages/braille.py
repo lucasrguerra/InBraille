@@ -34,26 +34,29 @@ def encode(text):
                 is_number = True
 
             for letter in word:
-                if not is_number and letter.isdigit():
-                    text_in_braille += "⠼"
-                    is_number = True
-                
-                if letter.isalpha() and is_number:
-                    text_in_braille += "⠨"
-                    is_number = False
+                try:
+                    if not is_number and letter.isdigit():
+                        text_in_braille += "⠼"
+                        is_number = True
+                    
+                    if letter.isalpha() and is_number:
+                        text_in_braille += "⠨"
+                        is_number = False
 
-                if text_in_braille != "" and not text_in_braille.endswith(" "):
+                    if text_in_braille != "" and not text_in_braille.endswith(" "):
+                        if letter == "(" or letter == ")":
+                            text_in_braille += " "
+
+                    index_of_letter = ascii_characters.index(letter.lower())
+                    if index_of_letter > -1:
+                        if letter != letter.lower() and not text_in_braille.endswith("⠨"):
+                            text_in_braille += "⠨"
+                        text_in_braille += braille_characters[index_of_letter]
+                    
                     if letter == "(" or letter == ")":
                         text_in_braille += " "
-
-                index_of_letter = ascii_characters.index(letter.lower())
-                if index_of_letter > -1:
-                    if letter != letter.lower() and not text_in_braille.endswith("⠨"):
-                        text_in_braille += "⠨"
-                    text_in_braille += braille_characters[index_of_letter]
-                
-                if letter == "(" or letter == ")":
-                    text_in_braille += " "
+                except:
+                    pass
             text_in_braille += " "
 
         text_in_braille = text_in_braille.rstrip() + "\n"
@@ -117,77 +120,80 @@ def decode(text):
 
     return result.replace("•", "")
 
-def characterTo3d(character, size, spacing, subdivisions):
+def characterTo3d(character, radius, spacing, subdivisions):
     braille_characters_3d = {
-        "⠁": stl.createBrailleCharacter(size, spacing=spacing, subdivisions=subdivisions),                                  # ⠁
-        "⠃": stl.createBrailleCharacter(size,0,size, spacing=spacing, subdivisions=subdivisions),                           # ⠃
-        "⠉": stl.createBrailleCharacter(size,size, spacing=spacing, subdivisions=subdivisions),                             # ⠉
-        "⠙": stl.createBrailleCharacter(size,size,0,size, spacing=spacing, subdivisions=subdivisions),                      # ⠙
-        "⠑": stl.createBrailleCharacter(size,0,0,size, spacing=spacing, subdivisions=subdivisions),                         # ⠑
-        "⠋": stl.createBrailleCharacter(size,size,size, spacing=spacing, subdivisions=subdivisions),                        # ⠋
-        "⠛": stl.createBrailleCharacter(size,size,size,size, spacing=spacing, subdivisions=subdivisions),                   # ⠛
-        "⠓": stl.createBrailleCharacter(size,0,size,size, spacing=spacing, subdivisions=subdivisions),                      # ⠓
-        "⠊": stl.createBrailleCharacter(0,size,size, spacing=spacing, subdivisions=subdivisions),                           # ⠊
-        "⠚": stl.createBrailleCharacter(0,size,size,size, spacing=spacing, subdivisions=subdivisions),                      # ⠚
-        "⠅": stl.createBrailleCharacter(size,0,0,0,size, spacing=spacing, subdivisions=subdivisions),                       # ⠅
-        "⠇": stl.createBrailleCharacter(size,0,size,0,size, spacing=spacing, subdivisions=subdivisions),                    # ⠇
-        "⠍": stl.createBrailleCharacter(size,size,0,0,size, spacing=spacing, subdivisions=subdivisions),                    # ⠍
-        "⠝": stl.createBrailleCharacter(size,size,0,size,size, spacing=spacing, subdivisions=subdivisions),                 # ⠝
-        "⠕": stl.createBrailleCharacter(size,0,0,size,size, spacing=spacing, subdivisions=subdivisions),                    # ⠕
-        "⠏": stl.createBrailleCharacter(size,size,size,0,size, spacing=spacing, subdivisions=subdivisions),                 # ⠏
-        "⠟": stl.createBrailleCharacter(size,size,size,size,size, spacing=spacing, subdivisions=subdivisions),              # ⠟
-        "⠗": stl.createBrailleCharacter(size,0,size,size,size,0, spacing=spacing, subdivisions=subdivisions),               # ⠗
-        "⠎": stl.createBrailleCharacter(0,size,size,0,size, spacing=spacing, subdivisions=subdivisions),                    # ⠎
-        "⠞": stl.createBrailleCharacter(0,size,size,size,size, spacing=spacing, subdivisions=subdivisions),                 # ⠞
-        "⠥": stl.createBrailleCharacter(size,0,0,0,size,size, spacing=spacing, subdivisions=subdivisions),                  # ⠥
-        "⠧": stl.createBrailleCharacter(size,0,size,0,size,size, spacing=spacing, subdivisions=subdivisions),               # ⠧
-        "⠺": stl.createBrailleCharacter(0,size,size,size,0,size, spacing=spacing, subdivisions=subdivisions),               # ⠺
-        "⠭": stl.createBrailleCharacter(size,size,0,0,size,size, spacing=spacing, subdivisions=subdivisions),               # ⠭
-        "⠽": stl.createBrailleCharacter(size,size,0,size,size,size, spacing=spacing, subdivisions=subdivisions),            # ⠽
-        "⠵": stl.createBrailleCharacter(size,0,0,size,size,size, spacing=spacing, subdivisions=subdivisions),               # ⠵
-        "⠂": stl.createBrailleCharacter(0,0,size, spacing=spacing, subdivisions=subdivisions),                              # ⠂
-        "⠆": stl.createBrailleCharacter(0,0,size,0,size, spacing=spacing, subdivisions=subdivisions),                       # ⠆
-        "⠒": stl.createBrailleCharacter(0,0,size,size, spacing=spacing, subdivisions=subdivisions),                         # ⠒
-        "⠄": stl.createBrailleCharacter(0,0,0,0,size, spacing=spacing, subdivisions=subdivisions),                          # ⠄
-        "⠖": stl.createBrailleCharacter(0,0,size,size,size, spacing=spacing, subdivisions=subdivisions),                    # ⠖
-        "⠢": stl.createBrailleCharacter(0,0,size,0,0,size, spacing=spacing, subdivisions=subdivisions),                     # ⠢
-        "⠶": stl.createBrailleCharacter(0,0,size,size,size,size, spacing=spacing, subdivisions=subdivisions),               # ⠶
-        "⠱": stl.createBrailleCharacter(size,0,0,size,0,size, spacing=spacing, subdivisions=subdivisions),                  # ⠱
-        "⠠": stl.createBrailleCharacter(0,0,0,0,0,size, spacing=spacing, subdivisions=subdivisions),                        # ⠠
-        "⠯": stl.createBrailleCharacter(size,size,size,0,size,size, spacing=spacing, subdivisions=subdivisions),            # ⠯
-        "⠷": stl.createBrailleCharacter(size,0,size,size,size,size, spacing=spacing, subdivisions=subdivisions),            # ⠷
-        "⠫": stl.createBrailleCharacter(size,size,size,0,0,size, spacing=spacing, subdivisions=subdivisions),               # ⠫
-        "⠜": stl.createBrailleCharacter(0,size,0,size,size, spacing=spacing, subdivisions=subdivisions),                    # ⠜
-        "⠡": stl.createBrailleCharacter(size,0,0,0,0,size, spacing=spacing, subdivisions=subdivisions),                     # ⠡
-        "⠿": stl.createBrailleCharacter(size,size,size,size,size,size, spacing=spacing, subdivisions=subdivisions),         # ⠿
-        "⠣": stl.createBrailleCharacter(size,0,size,0,0,size, spacing=spacing, subdivisions=subdivisions),                  # ⠣
-        "⠌": stl.createBrailleCharacter(0,size,0,0,size, spacing=spacing, subdivisions=subdivisions),                       # ⠌
-        "⠬": stl.createBrailleCharacter(0,size,0,0,size,size, spacing=spacing, subdivisions=subdivisions),                  # ⠬
-        "⠹": stl.createBrailleCharacter(size,size,0,size,0,size, spacing=spacing, subdivisions=subdivisions),               # ⠹
-        "⠪": stl.createBrailleCharacter(0,size,size,0,0,size, spacing=spacing, subdivisions=subdivisions),                  # ⠪
-        "⠾": stl.createBrailleCharacter(0,size,size,size,size,size, spacing=spacing, subdivisions=subdivisions),            # ⠾
-        "⠼": stl.createBrailleCharacter(0,size,0,size,size,size, spacing=spacing, subdivisions=subdivisions),               # ⠼
-        "⠨": stl.createBrailleCharacter(0,size,0,0,0,size, spacing=spacing, subdivisions=subdivisions),                     # ⠨
-        "⣄": stl.createBrailleCharacter(0,0,0,size,size,size, spacing=spacing, subdivisions=subdivisions),                  # ⣄
+        "⠁": stl.createBrailleCharacter(radius, spacing=spacing, subdivisions=subdivisions),                                  # ⠁
+        "⠃": stl.createBrailleCharacter(radius,0,radius, spacing=spacing, subdivisions=subdivisions),                           # ⠃
+        "⠉": stl.createBrailleCharacter(radius,radius, spacing=spacing, subdivisions=subdivisions),                             # ⠉
+        "⠙": stl.createBrailleCharacter(radius,radius,0,radius, spacing=spacing, subdivisions=subdivisions),                      # ⠙
+        "⠑": stl.createBrailleCharacter(radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),                         # ⠑
+        "⠋": stl.createBrailleCharacter(radius,radius,radius, spacing=spacing, subdivisions=subdivisions),                        # ⠋
+        "⠛": stl.createBrailleCharacter(radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),                   # ⠛
+        "⠓": stl.createBrailleCharacter(radius,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                      # ⠓
+        "⠊": stl.createBrailleCharacter(0,radius,radius, spacing=spacing, subdivisions=subdivisions),                           # ⠊
+        "⠚": stl.createBrailleCharacter(0,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),                      # ⠚
+        "⠅": stl.createBrailleCharacter(radius,0,0,0,radius, spacing=spacing, subdivisions=subdivisions),                       # ⠅
+        "⠇": stl.createBrailleCharacter(radius,0,radius,0,radius, spacing=spacing, subdivisions=subdivisions),                    # ⠇
+        "⠍": stl.createBrailleCharacter(radius,radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),                    # ⠍
+        "⠝": stl.createBrailleCharacter(radius,radius,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                 # ⠝
+        "⠕": stl.createBrailleCharacter(radius,0,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                    # ⠕
+        "⠏": stl.createBrailleCharacter(radius,radius,radius,0,radius, spacing=spacing, subdivisions=subdivisions),                 # ⠏
+        "⠟": stl.createBrailleCharacter(radius,radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),              # ⠟
+        "⠗": stl.createBrailleCharacter(radius,0,radius,radius,radius,0, spacing=spacing, subdivisions=subdivisions),               # ⠗
+        "⠎": stl.createBrailleCharacter(0,radius,radius,0,radius, spacing=spacing, subdivisions=subdivisions),                    # ⠎
+        "⠞": stl.createBrailleCharacter(0,radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),                 # ⠞
+        "⠥": stl.createBrailleCharacter(radius,0,0,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                  # ⠥
+        "⠧": stl.createBrailleCharacter(radius,0,radius,0,radius,radius, spacing=spacing, subdivisions=subdivisions),               # ⠧
+        "⠺": stl.createBrailleCharacter(0,radius,radius,radius,0,radius, spacing=spacing, subdivisions=subdivisions),               # ⠺
+        "⠭": stl.createBrailleCharacter(radius,radius,0,0,radius,radius, spacing=spacing, subdivisions=subdivisions),               # ⠭
+        "⠽": stl.createBrailleCharacter(radius,radius,0,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),            # ⠽
+        "⠵": stl.createBrailleCharacter(radius,0,0,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),               # ⠵
+        "⠂": stl.createBrailleCharacter(0,0,radius, spacing=spacing, subdivisions=subdivisions),                              # ⠂
+        "⠆": stl.createBrailleCharacter(0,0,radius,0,radius, spacing=spacing, subdivisions=subdivisions),                       # ⠆
+        "⠒": stl.createBrailleCharacter(0,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                         # ⠒
+        "⠄": stl.createBrailleCharacter(0,0,0,0,radius, spacing=spacing, subdivisions=subdivisions),                          # ⠄
+        "⠖": stl.createBrailleCharacter(0,0,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),                    # ⠖
+        "⠢": stl.createBrailleCharacter(0,0,radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),                     # ⠢
+        "⠶": stl.createBrailleCharacter(0,0,radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),               # ⠶
+        "⠱": stl.createBrailleCharacter(radius,0,0,radius,0,radius, spacing=spacing, subdivisions=subdivisions),                  # ⠱
+        "⠠": stl.createBrailleCharacter(0,0,0,0,0,radius, spacing=spacing, subdivisions=subdivisions),                        # ⠠
+        "⠯": stl.createBrailleCharacter(radius,radius,radius,0,radius,radius, spacing=spacing, subdivisions=subdivisions),            # ⠯
+        "⠷": stl.createBrailleCharacter(radius,0,radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),            # ⠷
+        "⠫": stl.createBrailleCharacter(radius,radius,radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),               # ⠫
+        "⠜": stl.createBrailleCharacter(0,radius,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                    # ⠜
+        "⠡": stl.createBrailleCharacter(radius,0,0,0,0,radius, spacing=spacing, subdivisions=subdivisions),                     # ⠡
+        "⠿": stl.createBrailleCharacter(radius,radius,radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),         # ⠿
+        "⠣": stl.createBrailleCharacter(radius,0,radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),                  # ⠣
+        "⠌": stl.createBrailleCharacter(0,radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),                       # ⠌
+        "⠬": stl.createBrailleCharacter(0,radius,0,0,radius,radius, spacing=spacing, subdivisions=subdivisions),                  # ⠬
+        "⠹": stl.createBrailleCharacter(radius,radius,0,radius,0,radius, spacing=spacing, subdivisions=subdivisions),               # ⠹
+        "⠪": stl.createBrailleCharacter(0,radius,radius,0,0,radius, spacing=spacing, subdivisions=subdivisions),                  # ⠪
+        "⠾": stl.createBrailleCharacter(0,radius,radius,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),            # ⠾
+        "⠼": stl.createBrailleCharacter(0,radius,0,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),               # ⠼
+        "⠨": stl.createBrailleCharacter(0,radius,0,0,0,radius, spacing=spacing, subdivisions=subdivisions),                     # ⠨
+        "⣄": stl.createBrailleCharacter(0,0,0,radius,radius,radius, spacing=spacing, subdivisions=subdivisions),                  # ⣄
     }
 
     return braille_characters_3d[character]
 
 def toSTL(
         text,
-        size=2,
-        spacing=5,
-        kerning=2.5,
+        radius=0.7,
+        spacing=2.2,
+        kerning=2.8,
         subdivisions=2,
-        surface_depth=2,
+        surface_depth=1,
         unique_surface=False,
         unique_width=False,
-        text_alignment="left"
+        text_alignment="left",
+        rounded=False
     ):
     scene = trimesh.Scene()
 
     phrases = text.split("\n")
     biggest_phrase = max(phrases, key=len)
+    surface_width = 0
+    surface_height = 0
 
     for index_a, phrase in enumerate(phrases):
         surface_reference = (len(phrase) * (spacing * kerning)) + spacing
@@ -219,8 +225,8 @@ def toSTL(
 
             if character != " ":
                 try:
-                    character_3d = characterTo3d(character, size, spacing, subdivisions)
-                    scene.add_geometry(character_3d.apply_translation([position_x, position_y, (surface_depth / 2)]))
+                    character_3d = characterTo3d(character, radius, spacing, subdivisions)
+                    scene.add_geometry(character_3d.apply_translation([position_x, position_y, ((surface_depth / radius) - (surface_depth * 0.94))]))
                 except:
                     pass
 

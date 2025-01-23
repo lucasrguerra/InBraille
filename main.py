@@ -37,9 +37,9 @@ def braille_decode(request: requests.Braille):
 @app.post("/api/to-stl")
 def to_stl(request: requests.ToSTLRequest):
     try:
-        size = request.size if request.size else 2
-        spacing = request.spacing if request.spacing else 5
-        kerning = request.kerning if request.kerning else 2.5
+        radius = request.radius if request.radius else 0.7
+        spacing = request.spacing if request.spacing else 2.2
+        kerning = request.kerning if request.kerning else 2.8
         subdivisions = request.subdivisions if request.subdivisions else 2
         surface_depth = request.surface_depth if request.surface_depth else 1
         unique_surface = request.unique_surface if request.unique_surface else False
@@ -48,7 +48,7 @@ def to_stl(request: requests.ToSTLRequest):
 
         stl_file = braille.toSTL(
             request.braille,
-            size,
+            radius,
             spacing,
             kerning,
             subdivisions,

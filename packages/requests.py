@@ -8,7 +8,7 @@ class Braille(BaseModel):
 
 class ToSTLRequest(BaseModel):
     braille: str
-    size: float | None = None
+    radius: float | None = None
     spacing: float | None = None
     kerning: float | None = None
     subdivisions: int | None = None

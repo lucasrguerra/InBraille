@@ -51,20 +51,24 @@
             </div>
 
             <div class="mx-auto w-10/12 my-4">
-                <p class="text-center text-lg mt-8 mb-4 font-semibold">Advanced Options</p>
+                <h3 class="text-center text-lg mt-8 font-semibold">Advanced Options</h3>
 
-                <div class="md:grid grid-cols-2 gap-4">
+                <p class="text-center text-md mb-4 text-red-500 font-semibold">
+                    Please note: These options are not in millimeters, test them before printing.
+                </p>
+
+                <div class="md:grid grid-cols-2 lg:grid-cols-3 gap-4 items-center">
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Sphere Radius: (mm)</label>
+                        <p class="text-center">Sphere Radius:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
-                            id="input_size"
+                            id="input_radius"
                         >
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Spacing: (mm)</label>
+                        <p class="text-center">Spacing:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
@@ -73,20 +77,11 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Surface Depth: (mm)</label>
+                        <p class="text-center">Surface Depth:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
                             id="input_surface_depth"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Kerning: (mm)</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_kerning"
                         >
                     </div>
 
@@ -105,6 +100,15 @@
                             class="block mx-auto h-5 w-5 text-blue-600"
                             type="checkbox"
                             id="input_unique_width"
+                        >
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Kerning (Based on Spacing):</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_kerning"
                         >
                     </div>
 

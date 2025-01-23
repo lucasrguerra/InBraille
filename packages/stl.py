@@ -1,11 +1,11 @@
 import trimesh
 
-def createSphere(radius=1, subdivisions=3):
-    sphere = trimesh.creation.icosphere(subdivisions=subdivisions, radius=radius)
+def createSphere(radius=1, subdivisions=2):
+    sphere = trimesh.creation.icosphere(radius=radius, subdivisions=subdivisions)
     return sphere
 
-def createSurface(width, height, depth):
-    surface = trimesh.creation.box([width, height, depth])
+def createSurface(width=1, height=1, depth=1):
+    surface = trimesh.creation.box(extents=(width, height, depth))
     return surface
 
 def createBrailleCharacter(
