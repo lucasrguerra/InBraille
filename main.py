@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from packages import braille, requests
 import fastapi.responses as responses
-import uvicorn
 
 app = FastAPI()
 
