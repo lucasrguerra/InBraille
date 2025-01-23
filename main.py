@@ -13,10 +13,10 @@ def home():
     except:
         return responses.Response(content="Internal Server Error", status_code=404)
 
-@app.get("/static/{file_path}")
+@app.get("/public/{file_path}")
 def static(file_path: str):
     try:
-        return responses.FileResponse(f"static/{file_path}")
+        return responses.FileResponse(f"public/{file_path}")
     except:
         return responses.Response(content="File not found", status_code=404)
     
