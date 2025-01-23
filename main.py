@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from packages import braille, requests
 import fastapi.responses as responses
+import unicorn
 
 app = FastAPI()
 
@@ -64,3 +65,6 @@ def to_stl(request: requests.ToSTLRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+if __name__ == "__main__":
+    unicorn.run(app, host="0.0.0.0", port=8080)
