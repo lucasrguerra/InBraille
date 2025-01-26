@@ -1,11 +1,13 @@
+var alphabet = "North American";
 var radius = 0.7;
 var spacing = 2.2;
 var kerning = 2.8;
 var subdivisions = 2;
-var surface_depth = 1;
-var unique_surface = false;
+var thickness = 1;
+var unique_plate = false;
 var unique_width = false;
 var text_alignment = "left";
+var rounded = false;
 
 async function encodeTextToBraille(event) {
     const text = event.target.value;
@@ -15,7 +17,10 @@ async function encodeTextToBraille(event) {
     }
 
     try {
-        await axios.post("/api/encode", { text: text }).then((response) => {
+        await axios.post("/api/encode", {
+            text: text,
+            alphabet: alphabet
+        }).then((response) => {
             input_braille.value = response.data.encoded;
         });
     } catch (error) {
@@ -32,7 +37,10 @@ async function decodeBrailleToText(event) {
     }
 
     try {
-        await axios.post("/api/decode", { braille: braille }).then((response) => {
+        await axios.post("/api/decode", {
+            braille: braille,
+            alphabet: alphabet
+        }).then((response) => {
             input_text.value = response.data.decoded;
         });
     } catch (error) {
@@ -60,10 +68,11 @@ async function downloadSTL(event) {
             spacing: spacing,
             kerning: kerning,
             subdivisions: subdivisions,
-            surface_depth: surface_depth,
-            unique_surface: unique_surface,
+            thickness: thickness,
+            unique_plate: unique_plate,
             unique_width: unique_width,
-            text_alignment: text_alignment
+            text_alignment: text_alignment,
+            rounded: rounded
         },{ responseType: 'blob' }).then((response) => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -82,8 +91,8 @@ async function downloadSTL(event) {
     event.target.textContent = "Convert to STL file";
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
+    const select_alphabet = document.querySelector("#select_alphabet");
     const input_text = document.querySelector("#input_text");
     const input_braille = document.querySelector("#input_braille");
     const stl_button = document.querySelector("#stl_button");
@@ -91,14 +100,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const input_spacing = document.querySelector("#input_spacing");
     const input_kerning = document.querySelector("#input_kerning");
     const input_subdivisions = document.querySelector("#input_subdivisions");
-    const input_surface_depth = document.querySelector("#input_surface_depth");
-    const input_unique_surface = document.querySelector("#input_unique_surface");
+    const input_thickness = document.querySelector("#input_thickness");
+    const input_unique_plate = document.querySelector("#input_unique_plate");
     const input_unique_width = document.querySelector("#input_unique_width");
-    const input_text_alignment = document.querySelector("#input_text_alignment");
+    const select_text_alignment = document.querySelector("#select_text_alignment");
+    const input_rounded = document.querySelector("#input_rounded");
+    const warning = document.querySelector("#warning");
 
     input_text.addEventListener("input", encodeTextToBraille);
     input_braille.addEventListener("input", decodeBrailleToText);
     stl_button.addEventListener("click", downloadSTL);
+
+    select_alphabet.value = alphabet;
+    select_alphabet.addEventListener("input", function(event) {
+        alphabet = event.target.value;
+        input_text.dispatchEvent(new Event("input"));
+
+        try {
+            if (alphabet === "Brazilian") {
+                warning.classList.replace("hidden", "block");
+            } else {
+                warning.classList.replace("block", "hidden");
+            }
+        } catch (error) {}
+    });
 
     input_radius.value = radius;
     input_radius.addEventListener("input", function(event) {
@@ -118,25 +143,52 @@ document.addEventListener('DOMContentLoaded', function() {
     input_subdivisions.value = subdivisions;
     input_subdivisions.addEventListener("input", function(event) {
         subdivisions = parseInt(event.target.value);
+
+        if (subdivisions < 1) {
+            subdivisions = 1;
+        } else if (subdivisions > 4) {
+            subdivisions = 4;
+        }
     });
 
-    input_surface_depth.value = surface_depth;
-    input_surface_depth.addEventListener("input", function(event) {
-        surface_depth = parseFloat(event.target.value);
+    input_thickness.value = thickness;
+    input_thickness.addEventListener("input", function(event) {
+        thickness = parseFloat(event.target.value);
     });
 
-    input_unique_surface.checked = unique_surface;
-    input_unique_surface.addEventListener("input", function(event) {
-        unique_surface = event.target.checked;
+    input_unique_plate.checked = unique_plate;
+    input_unique_plate.addEventListener("input", function(event) {
+        unique_plate = event.target.checked;
+
+        if (unique_plate && !unique_width) {
+            input_rounded.checked = false;
+            input_rounded.disabled = true;
+            rounded = false;
+        } else {
+            input_rounded.disabled = false;
+        }
     });
 
     input_unique_width.checked = unique_width;
     input_unique_width.addEventListener("input", function(event) {
         unique_width = event.target.checked;
+
+        if (unique_plate && !unique_width) {
+            input_rounded.checked = false;
+            input_rounded.disabled = true;
+            rounded = false;
+        } else {
+            input_rounded.disabled = false;
+        }
     });
 
-    input_text_alignment.value = text_alignment;
-    input_text_alignment.addEventListener("input", function(event) {
+    select_text_alignment.value = text_alignment;
+    select_text_alignment.addEventListener("input", function(event) {
         text_alignment = event.target.value;
+    });
+
+    input_rounded.checked = rounded;
+    input_rounded.addEventListener("input", function(event) {
+        rounded = event.target.checked;
     });
 });

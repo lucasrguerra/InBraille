@@ -23,8 +23,24 @@
                 Inclusive STL is an project to convert text to braille and export it as a STL file
             </p>
 
+            <div class="mx-auto w-10/12 my-4 text-center">
+                <label class="block">To start, select the alphabet:</label>
+                <select
+                    class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                    id="select_alphabet"
+                >
+                    <option value="North American">North American</option>
+                    <option value="Brazilian">Brazilian</option>
+                </select>
+
+                <p class="text-center text-md mb-4 text-red-500 font-semibold hidden" id="warning">
+                    Please note: In Brazilian alphabet, the braille to text conversion has problems with some characters.
+                    For example, the letter "&" has the same braille as the letter "&ccedil;", for this reason, the conversion will be made to the letter "&ccedil;". 
+                </p>
+            </div>
+
             <div class="mx-auto w-10/12 my-4">
-                <label class="block">To start, put your text here:</label>
+                <label class="block">Put your text here:</label>
                 <textarea
                     class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
                     name="text"
@@ -58,8 +74,36 @@
                 </p>
 
                 <div class="md:grid grid-cols-2 lg:grid-cols-3 gap-4 items-center">
+
+                    <div class="md:my-auto py-2 md:py-1">
+                        <p class="text-center">Unique Plate:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_unique_plate"
+                        >
+                    </div>
+
+                    <div class="md:my-auto py-2 md:py-1">
+                        <p class="text-center">Unique Width:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_unique_width"
+                        >
+                    </div>
+
+                    <div class="md:my-auto py-2 md:py-1">
+                        <p class="text-center">Rounded:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_rounded"
+                        >
+                    </div>
+
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Sphere Radius:</label>
+                        <p class="text-center">Dots Radius:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
@@ -77,29 +121,11 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Surface Depth:</label>
+                        <p class="text-center">Plate Thickness:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
-                            id="input_surface_depth"
-                        >
-                    </div>
-
-                    <div class="md:my-auto py-2 md:py-1">
-                        <p class="text-center">Unique Surface:</label>
-                        <input
-                            class="block mx-auto h-5 w-5 text-blue-600"
-                            type="checkbox"
-                            id="input_unique_surface"
-                        >
-                    </div>
-
-                    <div class="md:my-auto py-2 md:py-1">
-                        <p class="text-center">Unique Width:</label>
-                        <input
-                            class="block mx-auto h-5 w-5 text-blue-600"
-                            type="checkbox"
-                            id="input_unique_width"
+                            id="input_thickness"
                         >
                     </div>
 
@@ -116,7 +142,7 @@
                         <p class="text-center">Text Alignment:</label>
                         <select
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            id="input_text_alignment"
+                            id="select_text_alignment"
                         >
                             <option value="center">Center</option>
                             <option value="left">Left</option>
@@ -125,13 +151,56 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Sphere Subdivisions:</label>
+                        <p class="text-center">Dots Subdivisions:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
                             id="input_subdivisions"
                         >
                     </div>
+
+                </div>
+
+                <div class="mx-auto m-4">
+                    <h4 class="text-center text-lg mt-8 font-semibold">Legend of Advanced Options:</h4>
+
+                    <ul class="mt-4 mb-8 md:grid grid-cols-2 gap-4 items-center">
+                        <li>
+                            <strong>Unique Plate:</strong>
+                            <p>If checked, the phrase will be in a single plate.</p>
+                        </li>
+                        <li>
+                            <strong>Unique Width:</strong>
+                            <p>If checked, the width of all plates will be the same.</p>
+                        </li>
+                        <li>
+                            <strong>Rounded:</strong>
+                            <p>If checked, the edges will be rounded.</p>
+                        </li>
+                        <li>
+                            <strong>Dots Radius:</strong>
+                            <p>The radius of the braille dots.</p>
+                        </li>
+                        <li>
+                            <strong>Spacing:</strong>
+                            <p>The spacing between the braille symbols.</p>
+                        </li>
+                        <li>
+                            <strong>Plate Thickness:</strong>
+                            <p>The thickness of the plates.</p>
+                        </li>
+                        <li>
+                            <strong>Kerning (Based on Spacing):</strong>
+                            <p>The kerning of the text.</p>
+                        </li>
+                        <li>
+                            <strong>Text Alignment:</strong>
+                            <p>The alignment of the text.</p>
+                        </li>
+                        <li>
+                            <strong>Dots Subdivisions:</strong>
+                            <p>The subdivisions of the braille dots. By server limitations, the maximum value is 4 and the minimum is 1.</p>
+                        </li>
                 </div>
             </div>
         </main>
