@@ -158,30 +158,68 @@ def toSTL(
         
         if rounded:
             border_cylinder = stl.createCylinder((radius * 1.14), thickness)
-            border_plate = stl.createPlate((plate_width + (spacing / 1.38)), (plate_height - (spacing / 1.3)), thickness)
+            border_size = spacing / 1.38
+            border_plate = stl.createPlate(border_size, (plate_height - (spacing / 1.3)), thickness)
 
             if not unique_plate:
-                scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y + (kerning / 2)), 0]))
-                scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y + (kerning / 2)), 0]))
-                scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y - (kerning * 1.035) * 2), 0]))
-                scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y - (kerning * 1.035) * 2), 0]))
-                scene.add_geometry((border_plate.__copy__()).apply_translation([(plate_width / 2), (-spacing + position_y), 0]))
+                if text_alignment == "left":
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y + (kerning / 2)), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y + (kerning / 2)), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y - (kerning * 1.035) * 2), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width , (position_y - (kerning * 1.035) * 2), 0]))
+                    scene.add_geometry((border_plate.__copy__()).apply_translation([0, (-spacing + position_y), 0]))
+                    scene.add_geometry((border_plate.__copy__()).apply_translation([plate_width, (-spacing + position_y), 0]))
+
+                elif text_alignment == "center":
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([-(plate_width / 2), (position_y + (kerning / 2)), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([(plate_width / 2), (position_y + (kerning / 2)), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([-(plate_width / 2), (position_y - (kerning * 1.035) * 2), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([(plate_width / 2), (position_y - (kerning * 1.035) * 2), 0]))
+                    scene.add_geometry((border_plate.__copy__()).apply_translation([-(plate_width / 2), (-spacing + position_y), 0]))
+                    scene.add_geometry((border_plate.__copy__()).apply_translation([(plate_width / 2), (-spacing + position_y), 0]))
+
+                elif text_alignment == "right":
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([-plate_width, (position_y + (kerning / 2)), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y + (kerning / 2)), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([-plate_width, (position_y - (kerning * 1.035) * 2), 0]))
+                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([0 , (position_y - (kerning * 1.035) * 2), 0]))
+                    scene.add_geometry((border_plate.__copy__()).apply_translation([-plate_width, (-spacing + position_y), 0]))
+                    scene.add_geometry((border_plate.__copy__()).apply_translation([0, (-spacing + position_y), 0]))
+
                 continue
 
             if unique_plate and unique_width:
                 if index_a == 0:
-                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y + (kerning / 2)), 0]))
-                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y + (kerning / 2)), 0]))
-                
+                    if text_alignment == "left":
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y + (kerning / 2)), 0]))
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y + (kerning / 2)), 0]))
+                    elif text_alignment == "center":
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([(plate_width / 2), (position_y + (kerning / 2)), 0]))
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([-(plate_width / 2), (position_y + (kerning / 2)), 0]))
+                    elif text_alignment == "right":
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y + (kerning / 2)), 0]))
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([-plate_width, (position_y + (kerning / 2)), 0]))
+                    
                 if index_a == (number_of_phrases - 1):
-                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y - (kerning * 1.035) * 2), 0]))
-                    scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y - (kerning * 1.035) * 2), 0]))
-
-                    border_plate = stl.createPlate((plate_width + (spacing / 1.38)), ((plate_height * number_of_phrases) - (spacing / 1.3)), thickness)
+                    border_plate = stl.createPlate((spacing / 1.38), ((plate_height * number_of_phrases) - (spacing / 1.3)), thickness)
                     border_position_y = (position_y + (spacing * ((2 * number_of_phrases) - 3)))
 
-                    scene.add_geometry((border_plate.__copy__()).apply_translation([(plate_width / 2), border_position_y, 0]))
-                
+                    if text_alignment == "left":
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y - (kerning * 1.035) * 2), 0]))
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([plate_width, (position_y - (kerning * 1.035) * 2), 0]))
+                        scene.add_geometry((border_plate.__copy__()).apply_translation([0, border_position_y, 0]))
+                        scene.add_geometry((border_plate.__copy__()).apply_translation([plate_width, border_position_y, 0]))
+                    elif text_alignment == "center":
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([(plate_width / 2), (position_y - (kerning * 1.035) * 2), 0]))
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([-(plate_width / 2), (position_y - (kerning * 1.035) * 2), 0]))
+                        scene.add_geometry((border_plate.__copy__()).apply_translation([(plate_width / 2), border_position_y, 0]))
+                        scene.add_geometry((border_plate.__copy__()).apply_translation([-(plate_width / 2), border_position_y, 0]))
+                    elif text_alignment == "right":
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([0, (position_y - (kerning * 1.035) * 2), 0]))
+                        scene.add_geometry((border_cylinder.__copy__()).apply_translation([-plate_width, (position_y - (kerning * 1.035) * 2), 0]))
+                        scene.add_geometry((border_plate.__copy__()).apply_translation([0, border_position_y, 0]))
+                        scene.add_geometry((border_plate.__copy__()).apply_translation([-plate_width, border_position_y, 0]))
+
                 continue
 
     return stl.sceneToSTL(scene)
