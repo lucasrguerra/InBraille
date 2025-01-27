@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="/public/index.js"></script>
+    <title>STL Inclusivo</title>
+    <meta name="description" content="STL Inclusivo &eacute; um projeto para converter texto em braille e export&aacute;-lo como um arquivo STL">
+    <meta name="keywords" content="braille, stl, impress&atilde;o 3d, inclus&atilde;o, accessibilidade">
+    <meta name="author" content="Lucas Rayan Guerra">
+    <meta property="og:title" content="Inclusive STL" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://inclusivestl.up.railway.app/" />
+    <meta property="og:image" content="https://inclusivestl.up.railway.app/public/android-chrome-192x192.png" />
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
+    <link rel="manifest" href="/public/site.webmanifest">
+</head>
+<body>
+    <div class="font-sans">
+        <div class="shadow-md">
+            <header class="max-w-screen-lg mx-auto p-4 grid md:flex md:justify-between px-8">
+                <h1 class="text-center text-3xl font-semibold my-auto mx-auto md:mx-0">
+                    STL Inclusivo
+                </h1>
+                
+                <button class="mx-auto md:mx-0 mt-4 md:mt-0">
+                    <a
+                        class="text-center text-white text-lg font-semibold bg-blue-500 py-2 px-4 rounded hover:bg-blue-700 flex justify-between"
+                        href="/en"
+                    >   
+                        <svg
+                            class="my-auto mr-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            fill="#FFFFFF"
+                            version="1.1"
+                            id="Capa_1"
+                            width="20px"
+                            height="20px"
+                            viewBox="0 0 466.337 466.337"
+                            xml:space="preserve"
+                        >
+                            <g>
+                                <path d="M233.168,0C104.604,0,0,104.604,0,233.168c0,128.565,104.604,233.169,233.168,233.169   c128.565,0,233.169-104.604,233.169-233.169C466.337,104.604,361.733,0,233.168,0z M223.984,441.874   c-22.321,0-46.405-41.384-59.045-107.815h118.067C270.371,400.49,246.316,441.874,223.984,441.874z M161.114,310.144   c-2.738-19.991-4.437-41.781-4.881-65.018H291.74c-0.443,23.237-2.148,45.027-4.869,65.018H161.114z M24.521,245.126h107.704   c0.443,21.883,2.09,43.859,4.887,65.018H38.768C30.693,289.826,25.818,267.966,24.521,245.126z M223.984,24.464   c21.982,0,45.687,40.14,58.484,104.877h-116.97C178.286,64.604,201.996,24.464,223.984,24.464z M286.463,153.245   c2.978,20.785,4.811,43.596,5.277,67.966H156.222c0.467-24.37,2.295-47.169,5.272-67.966H286.463z M132.226,221.211H24.521   c1.354-23.926,6.568-46.836,15.332-67.966h97.656C134.462,175.32,132.681,198.312,132.226,221.211z M315.749,245.126h126.065   c-1.296,22.84-6.188,44.7-14.246,65.018H310.855C313.646,288.985,315.305,267.009,315.749,245.126z M315.749,221.211   c-0.468-22.898-2.254-45.891-5.29-67.966h116.023c8.77,21.13,13.978,44.04,15.332,67.966H315.749z M414.596,129.33H306.617   c-7.894-42.067-20.727-78.844-38.195-102.222C330.952,37.799,384.06,76.205,414.596,129.33z M176.073,32.036   c-15.7,23.459-27.348,58.1-34.699,97.305H51.741C78.657,82.505,123.064,47.1,176.073,32.036z M49.96,334.058h90.895   c7.311,40.403,19.133,76.205,35.219,100.26C121.944,418.904,76.672,382.378,49.96,334.058z M268.41,439.222   c17.865-23.938,30.874-61.889,38.697-105.164h109.274C386.15,388.743,332.12,428.339,268.41,439.222z"/>
+                            </g>
+                        </svg>
+                        English
+                    </a>
+                </button>
+            </header>
+        </div>
+
+        <main class="max-w-screen-lg mx-auto px-4">
+            <p class="mt-4 text-center my-8 text-lg">
+                STL Inclusivo &eacute; um projeto para converter texto em braille e export&aacute;-lo como um arquivo STL
+            </p>
+
+            <div class="mx-auto w-10/12 my-4 text-center">
+                <label class="block">Para come&ccedil;ar, selecione o alfabeto braille:</label>
+                <select
+                    class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                    id="select_alphabet"
+                    default="Brazilian"
+                >
+                <option value="Brazilian">Brasileiro</option>
+                    <option value="North American">Norte Americano</option>
+                </select>
+
+                <p class="text-center text-md mb-4 text-red-500 font-semibold block" id="warning">
+                    Aten&ccedil;&atilde;o: No alfabeto brasileiro, a convers&atilde;o de braille para texto tem problemas com alguns caracteres.
+                    Por exemplo, a letra "&" tem o mesmo braille que a letra "&ccedil;", por esse motivo, a convers&atilde;o ser&aacute; feita para a letra "&ccedil;".
+                </p>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4">
+                <label class="block">Coloque seu texto aqui:</label>
+                <textarea
+                    class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
+                    name="text"
+                    id="input_text"
+                ></textarea>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4">
+                <label class="block">Aqui est&aacute; o texto em braille:</label>
+                <textarea
+                    class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
+                    name="braille"
+                    id="input_braille"
+                ></textarea>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4 flex justify-center">
+                <button
+                    class="text-lg py-2 px-4 bg-blue-500 text-white font-bold rounded hover:bg-blue-700"
+                    id="stl_button"
+                >
+                    Converter para arquivo STL
+                </button>
+            </div>
+
+            <div class="mx-auto w-10/12 my-4">
+                <h3 class="text-center text-lg mt-8 font-semibold">Op&ccedil;&otilde;es Avan&ccedil;adas</h3>
+
+                <p class="text-center text-md mb-4 text-red-500 font-semibold">
+                    Aten&ccedil;&atilde;o: Essas op&ccedil;&otilde;es n&atilde;o est&atilde;o em mil&iacute;metros, teste-as antes de imprimir.
+                </p>
+
+                <div class="md:grid grid-cols-2 lg:grid-cols-3 gap-4 items-center">
+
+                    <div class="md:my-auto py-2 md:py-1">
+                        <p class="text-center">Placa &Uacute;nica:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_unique_plate"
+                        >
+                    </div>
+
+                    <div class="md:my-auto py-2 md:py-1">
+                        <p class="text-center">Tamanho &Uacute;nico:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_unique_width"
+                        >
+                    </div>
+
+                    <div class="md:my-auto py-2 md:py-1">
+                        <p class="text-center">Arredondado:</label>
+                        <input
+                            class="block mx-auto h-5 w-5 text-blue-600"
+                            type="checkbox"
+                            id="input_rounded"
+                        >
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Raio dos Pontos:</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_radius"
+                        >
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Espa&ccedil;amento:</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_spacing"
+                        >
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Espessura da Placa:</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_thickness"
+                        >
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Espa&ccedil;amento entre caracteres:</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_kerning"
+                        >
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Alinhamento do Texto:</label>
+                        <select
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            id="select_text_alignment"
+                        >
+                            <option value="center">Centro</option>
+                            <option value="left">Esquerda</option>
+                            <option value="right">Direita</option>
+                        </select>
+                    </div>
+
+                    <div class="py-2 md:py-1">
+                        <p class="text-center">Subdivis&otilde;es dos Pontos:</label>
+                        <input
+                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
+                            type="number"
+                            id="input_subdivisions"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="mx-auto m-4">
+                    <h4 class="text-center text-lg mt-8 font-semibold">Legenda das Op&ccedil;&otilde;es Avan&ccedil;adas:</h4>
+
+                    <ul class="mt-4 mb-8 md:grid grid-cols-2 gap-4 items-center">
+                        <li>
+                            <strong>Placa &Uacute;nica:</strong>
+                            <p>Se marcado, o texto estar&aacute; em uma &uacute;nica placa.</p>
+                        </li>
+                        <li>
+                            <strong>Tamanho &Uacute;nico:</strong>
+                            <p>Se marcado, a largura de todas as placas ser&aacute; a mesma.</p>
+                        </li>
+                        <li>
+                            <strong>Arredondado:</strong>
+                            <p>Se marcado, as bordas ser&atilde;o arredondadas.</p>
+                        </li>
+                        <li>
+                            <strong>Raio dos Pontos:</strong>
+                            <p>O raio dos pontos em braille.</p>
+                        </li>
+                        <li>
+                            <strong>Espa&ccedil;amento:</strong>
+                            <p>O espa&ccedil;amento entre os s&iacute;mbolos braille.</p>
+                        </li>
+                        <li>
+                            <strong>Espessura da Placa:</strong>
+                            <p>The thickness of the plates.</p>
+                        </li>
+                        <li>
+                            <strong>Espa&ccedil;amento entre caracteres:</strong>
+                            <p>Espa&ccedil;amento entre caracteres, tomando como base o valor do campo espa&ccedil;amento.</p>
+                        </li>
+                        <li>
+                            <strong>Alinhamento do Texto:</strong>
+                            <p>O alinhamento do texto.</p>
+                        </li>
+                        <li>
+                            <strong>Subdivis&otilde;es dos Pontos:</strong>
+                            <p>As subdivis&otilde;es dos pontos braille. Por limita&ccedil;&otilde;es do servidor, o valor m&aacute;ximo &eacute; 4 e o m&iacute;nimo &eacute; 1.</p>
+                        </li>
+                </div>
+            </div>
+        </main>
+
+        <div class="bg-violet-900 text-white">
+            <footer class="max-w-screen-lg mx-auto p-4">
+                <p class="text-center text-lg font-semibold">
+                    Desenvolvido por
+                    <a
+                        class="text-green-500 hover:underline"
+                        href="https://linkedin.com/in/lucasrguerra/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Lucas Guerra
+                    </a>
+                </p>
+            </header>
+        </div>
+    </div>
+</body>
+</html>

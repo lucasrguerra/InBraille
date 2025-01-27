@@ -1,4 +1,4 @@
-var alphabet = "North American";
+var alphabet = "";
 var radius = 0.7;
 var spacing = 2.2;
 var kerning = 2.8;
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input_braille.addEventListener("input", decodeBrailleToText);
     stl_button.addEventListener("click", downloadSTL);
 
-    select_alphabet.value = alphabet;
+    alphabet = select_alphabet.value;
     select_alphabet.addEventListener("input", function(event) {
         alphabet = event.target.value;
         input_text.dispatchEvent(new Event("input"));

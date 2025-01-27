@@ -10,9 +10,17 @@ app = FastAPI()
 
 
 @app.get("/")
-def home():
+def homePtBr():
     try:
-        html_content = open("templates/index.html", "r").read()
+        html_content = open("templates/index_pt_br.html", "r").read()
+        return responses.HTMLResponse(content=html_content)
+    except:
+        return responses.Response(content="Internal Server Error", status_code=404)
+    
+@app.get("/en")
+def homeEn():
+    try:
+        html_content = open("templates/index_en.html", "r").read()
         return responses.HTMLResponse(content=html_content)
     except:
         return responses.Response(content="Internal Server Error", status_code=404)
