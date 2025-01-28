@@ -98,4 +98,4 @@ def to_stl(request: requests.ToSTLRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="localhost", port=3000)
