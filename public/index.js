@@ -2,7 +2,7 @@ var alphabet = "";
 var resolution = 20;
 var plate_thickness = 2;
 var unique_plate = true;
-var unique_width = false;
+var unique_width = true;
 var text_alignment = "center";
 var rounded = false;
 
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input_unique_plate.checked = unique_plate;
     input_unique_plate.addEventListener("input", function(event) {
         unique_plate = event.target.checked;
-        select_text_alignment.disabled = !unique_plate;
+        select_text_alignment.disabled = (!unique_plate && !unique_width);
 
         if (unique_plate && !unique_width) {
             input_rounded.checked = false;
@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input_unique_width.checked = unique_width;
     input_unique_width.addEventListener("input", function(event) {
         unique_width = event.target.checked;
+        select_text_alignment.disabled = (!unique_plate && !unique_width);
 
         if (unique_plate && !unique_width) {
             input_rounded.checked = false;

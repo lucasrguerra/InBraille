@@ -123,12 +123,12 @@ def toSTL(
 
     phrases = braille.split("\n")
     number_of_phrases = len(phrases)
-    border_space = Rules.cells_v_spacing / 2
+    border_space = (Rules.cells_v_spacing - Rules.cells_height) / 2
     biggest_phrase = max([len(phrase) for phrase in phrases])
     biggest_plate_width = (Rules.cells_h_spacing * (biggest_phrase - 1)) + Rules.cells_width + border_space
     if not rounded:
         biggest_plate_width += border_space
-    plate_height = Rules.cells_v_spacing + Rules.cells_height
+    plate_height = Rules.cells_v_spacing
     plate_position_z = plate_thickness / 2
     character_position_z = (plate_thickness - (Rules.dots_radius - Rules.dots_apparent_thickness))
     sum_plat_positions_y = 0
@@ -162,7 +162,7 @@ def toSTL(
             
             character_3d = characterTo3d(character, Rules.dots_radius, Rules.dots_spacing, resolution)
             character_position_x = (index_b * Rules.cells_h_spacing) + border_space
-            if not unique_width and unique_plate:
+            if unique_plate or unique_width:
                 if text_alignment == "center":
                     character_position_x += ((biggest_phrase - len(phrase)) * Rules.cells_h_spacing) / 2
                 elif text_alignment == "right":
@@ -197,7 +197,7 @@ def toSTL(
                     border_plate = stl.createPlate(border_size, ((plate_height * number_of_phrases) - (border_size * 2)), plate_thickness)
                     border_plate_position_y = (sum_plat_positions_y / number_of_phrases)
                     scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate), -((border_size / 2) + Rules.dots_radius), -border_plate_position_y, plate_position_z))
-                    scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate), (plate_width + 0.35), -border_plate_position_y, plate_position_z))
+                    scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate), ((plate_width + 0.275) - border_size), -border_plate_position_y, plate_position_z))
             
             if not unique_plate:
                 border_cylinder = stl.createCylinder(border_size, plate_thickness, resolution)
@@ -210,8 +210,7 @@ def toSTL(
                 scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder), 0, -border_reference_bottom_y, plate_position_z))
                 scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder), plate_width, -border_reference_bottom_y, plate_position_z))
                 scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plater), -((border_size / 2) + Rules.dots_radius), -plate_position_y, plate_position_z))
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plater), (plate_width + 0.35), -plate_position_y, plate_position_z))
+                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plater), ((plate_width + 0.275) - border_size), -plate_position_y, plate_position_z))
 
     scene.Update()
-    print("aaaa")
     return stl.sceneToSTL(stl.makeTranslation(scene.GetOutput(), 0, 0, 0, 90))

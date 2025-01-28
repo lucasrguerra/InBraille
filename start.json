@@ -1,0 +1,13 @@
+{
+    "apps": [
+        {
+            "name": "STL Inclusivo",
+            "script": "./main.py",
+            "interpreter": "./venv/bin/python",
+            "cwd": "/home/ubuntu/stl_inclusivo",
+            "env": {
+                "PYTHONUNBUFFERED": "1"
+            }
+        }
+    ]
+}
