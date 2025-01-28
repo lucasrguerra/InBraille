@@ -1,12 +1,9 @@
 var alphabet = "";
-var radius = 0.7;
-var spacing = 2.2;
-var kerning = 2.8;
-var subdivisions = 2;
-var thickness = 1;
-var unique_plate = false;
+var resolution = 20;
+var plate_thickness = 2;
+var unique_plate = true;
 var unique_width = false;
-var text_alignment = "left";
+var text_alignment = "center";
 var rounded = false;
 
 async function encodeTextToBraille(event) {
@@ -25,7 +22,7 @@ async function encodeTextToBraille(event) {
         });
     } catch (error) {
         console.error(error);
-        alert("An error occurred while encoding the text to braille.");
+        alert("Tente Novamente\nTry Again");
     }
 }
 
@@ -45,30 +42,27 @@ async function decodeBrailleToText(event) {
         });
     } catch (error) {
         console.error(error);
-        alert("An error occurred while decoding the braille to text.");
+        alert("Tente Novamente\nTry Again");
     }
 }
 
 async function downloadSTL(event) {
     event.preventDefault();
-
-    event.target.disabled = true;
-    event.target.textContent = "Downloading...";
-
+    
     const braille = input_braille.value;
     if (braille === "") {
-        alert("Please enter some braille text to download the STL file.");
+        alert("Tente Novamente\nTry Again");
         return;
     }
-
+    
+    const button_text = event.target.textContent;
+    event.target.disabled = true;
+    event.target.textContent = "Downloading...";
     try {
         await axios.post("/api/to-stl", {
             braille: braille,
-            radius: radius,
-            spacing: spacing,
-            kerning: kerning,
-            subdivisions: subdivisions,
-            thickness: thickness,
+            resolution: resolution,
+            plate_thickness: plate_thickness,
             unique_plate: unique_plate,
             unique_width: unique_width,
             text_alignment: text_alignment,
@@ -84,11 +78,11 @@ async function downloadSTL(event) {
         });
     } catch (error) {
         console.error(error);
-        alert("An error occurred while downloading the STL file.");
+        alert("Tente Novamente\nTry Again");
     }
 
     event.target.disabled = false;
-    event.target.textContent = "Convert to STL file";
+    event.target.textContent = button_text;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -96,11 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const input_text = document.querySelector("#input_text");
     const input_braille = document.querySelector("#input_braille");
     const stl_button = document.querySelector("#stl_button");
-    const input_radius = document.querySelector("#input_radius");
-    const input_spacing = document.querySelector("#input_spacing");
-    const input_kerning = document.querySelector("#input_kerning");
-    const input_subdivisions = document.querySelector("#input_subdivisions");
-    const input_thickness = document.querySelector("#input_thickness");
+    const input_resolution = document.querySelector("#input_resolution");
+    const input_plate_thickness = document.querySelector("#input_plate_thickness");
     const input_unique_plate = document.querySelector("#input_unique_plate");
     const input_unique_width = document.querySelector("#input_unique_width");
     const select_text_alignment = document.querySelector("#select_text_alignment");
@@ -125,40 +116,32 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {}
     });
 
-    input_radius.value = radius;
-    input_radius.addEventListener("input", function(event) {
-        radius = parseFloat(event.target.value);
-    });
+    input_resolution.value = resolution;
+    input_resolution.addEventListener("input", function(event) {
+        resolution = parseInt(event.target.value);
 
-    input_spacing.value = spacing;
-    input_spacing.addEventListener("input", function(event) {
-        spacing = parseFloat(event.target.value);
-    });
-
-    input_kerning.value = kerning;
-    input_kerning.addEventListener("input", function(event) {
-        kerning = parseFloat(event.target.value);
-    });
-
-    input_subdivisions.value = subdivisions;
-    input_subdivisions.addEventListener("input", function(event) {
-        subdivisions = parseInt(event.target.value);
-
-        if (subdivisions < 1) {
-            subdivisions = 1;
-        } else if (subdivisions > 4) {
-            subdivisions = 4;
+        if (resolution < 2) {
+            resolution = 2;
+        } else if (resolution > 150) {
+            resolution = 150;
         }
     });
 
-    input_thickness.value = thickness;
-    input_thickness.addEventListener("input", function(event) {
-        thickness = parseFloat(event.target.value);
+    input_plate_thickness.value = plate_thickness;
+    input_plate_thickness.addEventListener("input", function(event) {
+        plate_thickness = parseFloat(event.target.value);
+
+        if (plate_thickness < 2) {
+            plate_thickness = 2;
+        } else if (plate_thickness > 100) {
+            plate_thickness = 100;
+        }
     });
 
     input_unique_plate.checked = unique_plate;
     input_unique_plate.addEventListener("input", function(event) {
         unique_plate = event.target.checked;
+        select_text_alignment.disabled = !unique_plate;
 
         if (unique_plate && !unique_width) {
             input_rounded.checked = false;
@@ -183,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     select_text_alignment.value = text_alignment;
+    select_text_alignment.disabled = !unique_plate;
     select_text_alignment.addEventListener("input", function(event) {
         text_alignment = event.target.value;
     });

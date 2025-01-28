@@ -107,7 +107,7 @@
                 <h3 class="text-center text-lg mt-8 font-semibold">Op&ccedil;&otilde;es Avan&ccedil;adas</h3>
 
                 <p class="text-center text-md mb-4 text-red-500 font-semibold">
-                    Aten&ccedil;&atilde;o: Essas op&ccedil;&otilde;es n&atilde;o est&atilde;o em mil&iacute;metros, teste-as antes de imprimir.
+                    Aten&ccedil;&atilde;o: Essas op&ccedil;&otilde;es est&atilde;o em mil&iacute;metros.
                 </p>
 
                 <div class="md:grid grid-cols-2 lg:grid-cols-3 gap-4 items-center">
@@ -140,38 +140,11 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Raio dos Pontos:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_radius"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Espa&ccedil;amento:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_spacing"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
                         <p class="text-center">Espessura da Placa:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
-                            id="input_thickness"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Espa&ccedil;amento entre caracteres:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_kerning"
+                            id="input_plate_thickness"
                         >
                     </div>
 
@@ -188,11 +161,11 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Subdivis&otilde;es dos Pontos:</label>
+                        <p class="text-center">Resolu&ccedil;&atilde;o dos Pontos:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
-                            id="input_subdivisions"
+                            id="input_resolution"
                         >
                     </div>
 
@@ -204,39 +177,42 @@
                     <ul class="mt-4 mb-8 md:grid grid-cols-2 gap-4 items-center">
                         <li>
                             <strong>Placa &Uacute;nica:</strong>
-                            <p>Se marcado, o texto estar&aacute; em uma &uacute;nica placa.</p>
+                            <p>
+                                Se marcado, o texto estar&aacute; em uma &uacute;nica placa.
+                            </p>
                         </li>
                         <li>
                             <strong>Tamanho &Uacute;nico:</strong>
-                            <p>Se marcado, a largura de todas as placas ser&aacute; a mesma.</p>
+                            <p>
+                                Se marcado, a largura de todas as placas ser&aacute; a mesma.
+                            </p>
                         </li>
                         <li>
                             <strong>Arredondado:</strong>
-                            <p>Se marcado, as bordas ser&atilde;o arredondadas.</p>
-                        </li>
-                        <li>
-                            <strong>Raio dos Pontos:</strong>
-                            <p>O raio dos pontos em braille.</p>
-                        </li>
-                        <li>
-                            <strong>Espa&ccedil;amento:</strong>
-                            <p>O espa&ccedil;amento entre os s&iacute;mbolos braille.</p>
+                            <p>
+                                Se marcado, as bordas ser&atilde;o arredondadas. Indispon&iacute; quando a op&ccedil;&atilde;o "Placa &Uacute;nica"
+                                estiver marcada e a op&ccedil;&atilde;o "Tamanho &Uacute;nico" estiver desmarcada.
+                            </p>
                         </li>
                         <li>
                             <strong>Espessura da Placa:</strong>
-                            <p>The thickness of the plates.</p>
-                        </li>
-                        <li>
-                            <strong>Espa&ccedil;amento entre caracteres:</strong>
-                            <p>Espa&ccedil;amento entre caracteres, tomando como base o valor do campo espa&ccedil;amento.</p>
+                            <p>
+                                A espessura da placa em mil&iacute;metros.
+                            </p>
                         </li>
                         <li>
                             <strong>Alinhamento do Texto:</strong>
-                            <p>O alinhamento do texto.</p>
+                            <p>
+                                O alinhamento do texto. Indispon&iacute; quando a op&ccedil;&atilde;o "Placa &Uacute;nica" ou a
+                                op&ccedil;&atilde;o "Tamanho &Uacute;nico" estiver desmarcada.
+                            </p>
                         </li>
                         <li>
-                            <strong>Subdivis&otilde;es dos Pontos:</strong>
-                            <p>As subdivis&otilde;es dos pontos braille. Por limita&ccedil;&otilde;es do servidor, o valor m&aacute;ximo &eacute; 4 e o m&iacute;nimo &eacute; 1.</p>
+                            <strong>Resolu&ccedil;&atilde;o dos Pontos:</strong>
+                            <p>
+                                A Resolu&ccedil;&atilde;o dos pontos braille. Por limita&ccedil;&otilde;es do servidor,
+                                o valor m&aacute;ximo &eacute; 150 e o m&iacute;nimo &eacute; 2.
+                            </p>
                         </li>
                 </div>
             </div>

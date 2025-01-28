@@ -107,7 +107,7 @@
                 <h3 class="text-center text-lg mt-8 font-semibold">Advanced Options</h3>
 
                 <p class="text-center text-md mb-4 text-red-500 font-semibold">
-                    Please note: These options are not in millimeters, test them before printing.
+                    Please note: These options are in millimeters.
                 </p>
 
                 <div class="md:grid grid-cols-2 lg:grid-cols-3 gap-4 items-center">
@@ -140,38 +140,11 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Dots Radius:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_radius"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Spacing:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_spacing"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
                         <p class="text-center">Plate Thickness:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
-                            id="input_thickness"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Kerning:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_kerning"
+                            id="input_plate_thickness"
                         >
                     </div>
 
@@ -188,11 +161,11 @@
                     </div>
 
                     <div class="py-2 md:py-1">
-                        <p class="text-center">Dots Subdivisions:</label>
+                        <p class="text-center">Dots Resolution:</label>
                         <input
                             class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
                             type="number"
-                            id="input_subdivisions"
+                            id="input_resolution"
                         >
                     </div>
 
@@ -204,39 +177,41 @@
                     <ul class="mt-4 mb-8 md:grid grid-cols-2 gap-4 items-center">
                         <li>
                             <strong>Unique Plate:</strong>
-                            <p>If checked, the phrase will be in a single plate.</p>
+                            <p>
+                                If checked, the phrase will be in a single plate.
+                            </p>
                         </li>
                         <li>
                             <strong>Unique Width:</strong>
-                            <p>If checked, the width of all plates will be the same.</p>
+                            <p>
+                                If checked, the width of all plates will be the same.
+                            </p>
                         </li>
                         <li>
                             <strong>Rounded:</strong>
-                            <p>If checked, the edges will be rounded.</p>
-                        </li>
-                        <li>
-                            <strong>Dots Radius:</strong>
-                            <p>The radius of the braille dots.</p>
-                        </li>
-                        <li>
-                            <strong>Spacing:</strong>
-                            <p>The spacing between the braille symbols.</p>
+                            <p>
+                                If checked, the edges will be rounded. Unavailable if the "Unique Plate" option is checked
+                                and the "Unique Width" option is not checked.
+                            </p>
                         </li>
                         <li>
                             <strong>Plate Thickness:</strong>
-                            <p>The thickness of the plates.</p>
-                        </li>
-                        <li>
-                            <strong>Kerning:</strong>
-                            <p>The kerning of the text, based on the spacing field.</p>
+                            <p>
+                                The thickness of the plate in millimeters.
+                            </p>
                         </li>
                         <li>
                             <strong>Text Alignment:</strong>
-                            <p>The alignment of the text.</p>
+                            <p>
+                                The alignment of the text. Unavailable if the "Unique Plate" option is not checked
+                                or the "Unique Width" option is not checked.
+                            </p>
                         </li>
                         <li>
-                            <strong>Dots Subdivisions:</strong>
-                            <p>The subdivisions of the braille dots. By server limitations, the maximum value is 4 and the minimum is 1.</p>
+                            <strong>Dots Resolution:</strong>
+                            <p>
+                                The resolution of the braille dots. By server limitations, the maximum value is 150 and the minimum is 2.
+                            </p>
                         </li>
                 </div>
             </div>

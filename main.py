@@ -61,23 +61,26 @@ def braille_decode(request: requests.Braille):
 @app.post("/api/to-stl")
 def to_stl(request: requests.ToSTLRequest):
     try:
-        radius = request.radius if request.radius else 0.7
-        spacing = request.spacing if request.spacing else 2.2
-        kerning = request.kerning if request.kerning else 2.8
-        subdivisions = request.subdivisions if request.subdivisions else 2
-        thickness = request.thickness if request.thickness else 1
         unique_plate = request.unique_plate if request.unique_plate else False
         unique_width = request.unique_width if request.unique_width else False
         text_alignment = request.text_alignment if request.text_alignment else "left"
         rounded = request.rounded if request.rounded else False
+        resolution = request.resolution if request.resolution else 20
+        if resolution < 2:
+            resolution = 2
+        elif resolution > 150:
+            resolution = 150
+
+        plate_thickness = request.plate_thickness if request.plate_thickness else 2
+        if plate_thickness < 2:
+            plate_thickness = 2
+        elif plate_thickness > 100:
+            plate_thickness = 100
 
         stl_file = braille.toSTL(
             request.braille,
-            radius,
-            spacing,
-            kerning,
-            subdivisions,
-            thickness,
+            resolution,
+            plate_thickness,
             unique_plate,
             unique_width,
             text_alignment,
