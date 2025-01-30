@@ -215,6 +215,8 @@ def toSTL(
         plate_width = biggest_phrase_width
         plate_position_x = plate_width / 2
         plate_position_y = -((plate_height / number_of_phrases) - ((Rules.cells_v_spacing - Rules.cells_height) / 2))
+        if number_of_phrases == 1:
+            plate_position_y = (Rules.cells_v_spacing - Rules.cells_height) / 2
 
         final_plate_width = plate_width + Rules.cells_v_spacing
         final_plate_height = plate_height + Rules.cells_v_spacing
