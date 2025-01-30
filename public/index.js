@@ -143,27 +143,20 @@ document.addEventListener('DOMContentLoaded', function() {
         unique_plate = event.target.checked;
         select_text_alignment.disabled = (!unique_plate && !unique_width);
 
-        if (unique_plate && !unique_width) {
-            input_rounded.checked = false;
-            input_rounded.disabled = true;
-            rounded = false;
+        if (unique_plate) {
+            unique_width = true;
+            input_unique_width.checked = true;
+            input_unique_width.disabled = true;
         } else {
-            input_rounded.disabled = false;
+            input_unique_width.disabled = false;
         }
     });
 
     input_unique_width.checked = unique_width;
+    input_unique_width.disabled = unique_plate;
     input_unique_width.addEventListener("input", function(event) {
         unique_width = event.target.checked;
         select_text_alignment.disabled = (!unique_plate && !unique_width);
-
-        if (unique_plate && !unique_width) {
-            input_rounded.checked = false;
-            input_rounded.disabled = true;
-            rounded = false;
-        } else {
-            input_rounded.disabled = false;
-        }
     });
 
     select_text_alignment.value = text_alignment;
