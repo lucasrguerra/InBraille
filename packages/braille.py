@@ -211,21 +211,18 @@ def toSTL(
         scene.AddInputData(stl.makeTranslation(phrase_scene.GetOutput(), 0, 0, phrase_position_z))
 
     if unique_plate:
-        plate_height = (number_of_phrases * Rules.cells_v_spacing)
+        border_y_reference = (Rules.cells_v_spacing + ((Rules.cells_v_spacing - Rules.cells_height) / 2))
+        plate_height = (number_of_phrases * Rules.cells_v_spacing) + Rules.cells_v_spacing
         plate_width = biggest_phrase_width
         plate_position_x = plate_width / 2
-        plate_position_y = -((plate_height / number_of_phrases) - ((Rules.cells_v_spacing - Rules.cells_height) / 2))
-        if number_of_phrases == 1:
-            plate_position_y = (Rules.cells_v_spacing - Rules.cells_height) / 2
+        plate_position_y = border_y_reference - (plate_height / 2)
 
         final_plate_width = plate_width + Rules.cells_v_spacing
-        final_plate_height = plate_height + Rules.cells_v_spacing
-        plate = stl.createPlate(final_plate_width, final_plate_height, plate_thickness)
+        plate = stl.createPlate(final_plate_width, plate_height, plate_thickness)
         scene.AddInputData(stl.makeTranslation(plate, plate_position_x, plate_position_y, reference_z))
 
         if rounded:
-            border_y_reference = (Rules.cells_v_spacing + ((Rules.cells_v_spacing - Rules.cells_height) / 2))
-            border_plate = stl.createPlate(border_size, (final_plate_height - (border_size * 2)), plate_thickness)
+            border_plate = stl.createPlate(border_size, (plate_height - (border_size * 2)), plate_thickness)
 
             scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                 border_cylinder_x_reference,
@@ -239,12 +236,12 @@ def toSTL(
             ))
             scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                 border_cylinder_x_reference,
-                (border_y_reference - final_plate_height + border_size),
+                (border_y_reference - plate_height + border_size),
                 reference_z
             ))
             scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                 (border_cylinder_x_reference + final_plate_width),
-                (border_y_reference - final_plate_height + border_size),
+                (border_y_reference - plate_height + border_size),
                 reference_z
             ))
             scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate),
