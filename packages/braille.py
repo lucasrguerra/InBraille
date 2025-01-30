@@ -125,7 +125,7 @@ def toSTL(
     number_of_phrases = len(phrases)
     biggest_phrase = max([len(phrase) for phrase in phrases])
     biggest_phrase_width = ((biggest_phrase - 1) * Rules.cells_h_spacing) + Rules.cells_width
-    letter_position_z = (plate_thickness - (Rules.dots_radius - Rules.dots_apparent_thickness))
+    letter_reference_z = (plate_thickness - (Rules.dots_radius - Rules.dots_apparent_thickness))
     reference_z = plate_thickness / 2
     plate_height = Rules.cells_v_spacing
     border_size = Rules.cells_width
@@ -134,6 +134,7 @@ def toSTL(
     border_plate_x_reference = -(0.7 + (border_size / 2))
 
     for phrase_index, phrase in enumerate(phrases):
+        phrase_scene = stl.createScene()
         this_phrase_width = ((len(phrase) - 1) * Rules.cells_h_spacing) + Rules.cells_width
 
         if not unique_plate:
@@ -143,45 +144,44 @@ def toSTL(
                 this_plate_width = biggest_phrase_width
             
             plate_position_x = this_plate_width / 2
-            plate_position_y = (phrase_index * Rules.cells_v_spacing) * 3
+            plate_position_y = ((plate_height - Rules.cells_height) / 2)
 
             final_plate_width = this_plate_width + Rules.cells_v_spacing
-            final_plate_position_y = -(plate_position_y - ((plate_height - Rules.cells_height) / 2))
             this_plate = stl.createPlate(final_plate_width, this_plate_height, plate_thickness)
-            scene.AddInputData(stl.makeTranslation(this_plate, plate_position_x, final_plate_position_y, reference_z))
+            phrase_scene.AddInputData(stl.makeTranslation(this_plate, plate_position_x, plate_position_y, reference_z))
 
             if rounded:
                 half_plate_height = this_plate_height / 2
                 border_plate = stl.createPlate(border_size, (this_plate_height - (border_size * 2)), plate_thickness)
 
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
+                phrase_scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                     border_cylinder_x_reference,
-                    (final_plate_position_y + half_plate_height - border_size),
+                    (plate_position_y + half_plate_height - border_size),
                     reference_z
                 ))
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
+                phrase_scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                     border_cylinder_x_reference + final_plate_width,
-                    (final_plate_position_y + half_plate_height - border_size),
+                    (plate_position_y + half_plate_height - border_size),
                     reference_z
                 ))
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
+                phrase_scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                     border_cylinder_x_reference,
-                    (final_plate_position_y - half_plate_height + border_size),
+                    (plate_position_y - half_plate_height + border_size),
                     reference_z
                 ))
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
+                phrase_scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_cylinder),
                     border_cylinder_x_reference + final_plate_width,
-                    (final_plate_position_y - half_plate_height + border_size),
+                    (plate_position_y - half_plate_height + border_size),
                     reference_z
                 ))
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate),
+                phrase_scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate),
                     (border_plate_x_reference - border_size),
-                    final_plate_position_y,
+                    plate_position_y,
                     reference_z
                 ))
-                scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate),
+                phrase_scene.AddInputData(stl.makeTranslation(copy.deepcopy(border_plate),
                     (border_plate_x_reference + final_plate_width),
-                    final_plate_position_y,
+                    plate_position_y,
                     reference_z
                 ))
 
@@ -189,20 +189,26 @@ def toSTL(
             if letter == "⠀":
                 continue
 
-            letter_position_y = ((phrase_index * Rules.cells_v_spacing) * 3)
-            if unique_plate:
-                letter_position_y /= 3
-            
+            letter_position_y = -(Rules.dots_radius)
             letter_position_x = (letter_index * Rules.cells_h_spacing) + Rules.dots_radius
+            letter_position_z = letter_reference_z
             if unique_plate or unique_width:
+                if unique_plate:
+                    letter_position_y -= (phrase_index * Rules.cells_v_spacing)
+
                 if text_alignment == "center":
                     letter_position_x += (biggest_phrase_width - this_phrase_width) / 2
                 elif text_alignment == "right":
                     letter_position_x += (biggest_phrase_width - this_phrase_width)
-                
+            
             letter_in_3d = characterTo3d(letter, Rules.dots_radius, Rules.dots_spacing, resolution)
-            final_letter_position_y = -(letter_position_y + Rules.dots_radius)
-            scene.AddInputData(stl.makeTranslation(letter_in_3d, letter_position_x, final_letter_position_y, letter_position_z))
+            phrase_scene.AddInputData(stl.makeTranslation(letter_in_3d, letter_position_x, letter_position_y, letter_position_z))
+
+        phrase_scene.Update()
+        phrase_position_z = phrase_index * (plate_thickness + Rules.cells_v_spacing)
+        if unique_plate:
+            phrase_position_z = 0
+        scene.AddInputData(stl.makeTranslation(phrase_scene.GetOutput(), 0, 0, phrase_position_z))
 
     if unique_plate:
         plate_height = (number_of_phrases * Rules.cells_v_spacing)
@@ -252,4 +258,4 @@ def toSTL(
 
 
     scene.Update()
-    return stl.sceneToSTL(stl.makeTranslation(scene.GetOutput(), 0, 0, 0, 0))
+    return stl.sceneToSTL(stl.makeTranslation(scene.GetOutput(), 0, 0, 0, 90))
