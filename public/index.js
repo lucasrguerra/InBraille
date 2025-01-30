@@ -4,7 +4,7 @@ var plate_thickness = 2;
 var unique_plate = true;
 var unique_width = true;
 var text_alignment = "center";
-var rounded = false;
+var rounded = true;
 
 async function encodeTextToBraille(event) {
     const text = event.target.value;
