@@ -130,7 +130,7 @@ def toSTL(
     plate_height = Rules.cells_v_spacing
     border_size = Rules.cells_width
     border_cylinder = stl.createCylinder(border_size, plate_thickness, resolution)
-    border_cylinder_x_reference = (0.3 - border_size)
+    border_cylinder_x_reference = (border_size - 0.7) - border_size
     border_plate_x_reference = -(0.7 + (border_size / 2))
 
     for phrase_index, phrase in enumerate(phrases):

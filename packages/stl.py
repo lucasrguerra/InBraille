@@ -50,7 +50,7 @@ def createCylinder(radius=1, width=1, resolution=20):
     cylinder.SetResolution(resolution)
     cylinder.SetCenter(0, 0, 0)
     cylinder.Update()
-    return makeTranslation(cylinder.GetOutput(), (-width / 2), 0, 0, rotate_x=90)
+    return makeTranslation(cylinder.GetOutput(), -radius, 0, 0, 90)
 
 
 
