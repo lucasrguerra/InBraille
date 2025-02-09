@@ -1,10 +1,10 @@
 {
     "apps": [
         {
-            "name": "STL Inclusivo",
+            "name": "InBraille",
             "script": "./main.py",
             "interpreter": "./venv/bin/python",
-            "cwd": "/home/ubuntu/stl_inclusivo",
+            "cwd": "/home/ubuntu/InBraille",
             "env": {
                 "PYTHONUNBUFFERED": "1"
             }
