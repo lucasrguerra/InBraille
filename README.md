@@ -30,3 +30,7 @@ The API has the following endpoints:
 - `/api/encode`: Translates a text to braille.
 - `/api/decode`: Translates a braille to text.
 - `/api/to-stl`: Exports the braille text to plate in STL format.
+
+## License and Credits
+
+This project is licensed under the MIT License. It was developed by [Lucas Rayan Guerra](https://github.com/lucasrguerra).
