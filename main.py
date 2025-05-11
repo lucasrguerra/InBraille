@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from packages import braille, requests
 import fastapi.responses as responses
 import uvicorn
-import os
 
 
 
@@ -33,14 +32,17 @@ def homeEn():
 
 @app.get("/public/{file_path}")
 def static(file_path: str):
-    if not os.path.exists(f"public/{file_path}"):
-        return responses.Response(content="File not found", status_code=404)
-
     try:
-        file = open(f"public/{file_path}", "r", encoding="utf-8").read()
-        return responses.HTMLResponse(content=file, media_type="text/html; charset=utf-8")
+        if file_path == "style.css":
+            style_content = open(f"public/{file_path}", "r", encoding="utf-8").read()
+            return responses.HTMLResponse(content=style_content, media_type="text/css; charset=utf-8")
+        elif file_path == "script.js":
+            script_content = open(f"public/{file_path}", "r", encoding="utf-8").read()
+            return responses.HTMLResponse(content=script_content, media_type="text/javascript; charset=utf-8")
+        else:
+            return responses.FileResponse(f"public/{file_path}")
     except:
-        return responses.Response(content="Internal Server Error", status_code=500)
+        return responses.Response(content="File not found", status_code=404)
 
 
 
