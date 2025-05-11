@@ -2,9 +2,11 @@ from fastapi import FastAPI, HTTPException
 from packages import braille, requests
 import fastapi.responses as responses
 import uvicorn
+import os
 
 
 
+PORT = 3000
 app = FastAPI()
 
 
@@ -12,16 +14,18 @@ app = FastAPI()
 @app.get("/")
 def homePtBr():
     try:
-        html_content = open("templates/index_pt_br.html", "r").read()
-        return responses.HTMLResponse(content=html_content)
+        html_content = open("templates/index_pt_br.html", "r", encoding="utf-8").read()
+        return responses.HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
     except:
         return responses.Response(content="Internal Server Error", status_code=404)
-    
+
+
+
 @app.get("/en")
 def homeEn():
     try:
-        html_content = open("templates/index_en.html", "r").read()
-        return responses.HTMLResponse(content=html_content)
+        html_content = open("templates/index_en.html", "r", encoding="utf-8").read()
+        return responses.HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
     except:
         return responses.Response(content="Internal Server Error", status_code=404)
 
@@ -29,11 +33,15 @@ def homeEn():
 
 @app.get("/public/{file_path}")
 def static(file_path: str):
-    try:
-        return responses.FileResponse(f"public/{file_path}")
-    except:
+    if not os.path.exists(f"public/{file_path}"):
         return responses.Response(content="File not found", status_code=404)
-    
+
+    try:
+        file = open(f"public/{file_path}", "r", encoding="utf-8").read()
+        return responses.HTMLResponse(content=file, media_type="text/html; charset=utf-8")
+    except:
+        return responses.Response(content="Internal Server Error", status_code=500)
+
 
 
 @app.post("/api/encode")
@@ -98,4 +106,4 @@ def to_stl(request: requests.ToSTLRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="0.0.0.0", port=PORT, log_level="info")

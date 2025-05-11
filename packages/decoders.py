@@ -52,10 +52,11 @@ def brazilian(braille):
                 if not is_number and word.startswith("⠨⠨"):
                     is_upper_case = True
                     treated_word = treated_word[2:]
-
+                
                 last_letter = None
                 for letter in treated_word:
                     if letter == "⠠" or letter == "⠨":
+                        last_letter = letter
                         continue
 
                     if letter == "⠂" and last_letter == "⠠":

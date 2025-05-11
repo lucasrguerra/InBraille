@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script src="/public/index.js"></script>
-    <title>InBraille</title>
-    <meta name="description" content="O InBraille &eacute; uma ferramenta, brasileira e pernambucana, inovadora que converte textos para Braille e os exporta tanto em formato ASCII quanto em placas STL para impress&atilde;o 3D">
-    <meta name="keywords" content="braille, stl, impress&atilde;o 3d, inclus&atilde;o, accessibilidade">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>InBraille - Conversor de Texto para Braille</title>
+    <meta name="description" content="Ferramenta brasileira que converte textos para Braille e exporta em formato ASCII e STL para impressão 3D">
+    <meta name="keywords" content="braille, stl, impressão 3d, inclusão, acessibilidade">
     <meta name="author" content="Lucas Rayan Guerra">
     <meta property="og:title" content="InBraille" />
     <meta property="og:type" content="website" />
@@ -20,246 +20,348 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
     <link rel="manifest" href="/public/site.webmanifest">
 </head>
-<body>
-    <div class="font-sans">
-        <div class="shadow-md">
-            <header class="max-w-screen-lg mx-auto p-4 grid md:flex md:justify-between px-8">
-                <h1 class="text-center text-3xl font-semibold my-auto mx-auto md:mx-0">
-                    InBraille
+<body class="bg-gray-50 font-sans">
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <h1 class="text-2xl font-bold text-gray-800">
+                    <span class="text-blue-500 text-2xl">⠎⠞⠇</span>InBraille
                 </h1>
-                
-                <button class="mx-auto md:mx-0 mt-4 md:mt-0">
-                    <a
-                        class="text-center text-white text-lg font-semibold bg-blue-500 py-2 px-4 rounded hover:bg-blue-700 flex justify-between"
-                        href="/en"
-                    >   
-                        <svg
-                            class="my-auto mr-2"
-                            xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                            fill="#FFFFFF"
-                            version="1.1"
-                            id="Capa_1"
-                            width="20px"
-                            height="20px"
-                            viewBox="0 0 466.337 466.337"
-                            xml:space="preserve"
-                        >
-                            <g>
-                                <path d="M233.168,0C104.604,0,0,104.604,0,233.168c0,128.565,104.604,233.169,233.168,233.169   c128.565,0,233.169-104.604,233.169-233.169C466.337,104.604,361.733,0,233.168,0z M223.984,441.874   c-22.321,0-46.405-41.384-59.045-107.815h118.067C270.371,400.49,246.316,441.874,223.984,441.874z M161.114,310.144   c-2.738-19.991-4.437-41.781-4.881-65.018H291.74c-0.443,23.237-2.148,45.027-4.869,65.018H161.114z M24.521,245.126h107.704   c0.443,21.883,2.09,43.859,4.887,65.018H38.768C30.693,289.826,25.818,267.966,24.521,245.126z M223.984,24.464   c21.982,0,45.687,40.14,58.484,104.877h-116.97C178.286,64.604,201.996,24.464,223.984,24.464z M286.463,153.245   c2.978,20.785,4.811,43.596,5.277,67.966H156.222c0.467-24.37,2.295-47.169,5.272-67.966H286.463z M132.226,221.211H24.521   c1.354-23.926,6.568-46.836,15.332-67.966h97.656C134.462,175.32,132.681,198.312,132.226,221.211z M315.749,245.126h126.065   c-1.296,22.84-6.188,44.7-14.246,65.018H310.855C313.646,288.985,315.305,267.009,315.749,245.126z M315.749,221.211   c-0.468-22.898-2.254-45.891-5.29-67.966h116.023c8.77,21.13,13.978,44.04,15.332,67.966H315.749z M414.596,129.33H306.617   c-7.894-42.067-20.727-78.844-38.195-102.222C330.952,37.799,384.06,76.205,414.596,129.33z M176.073,32.036   c-15.7,23.459-27.348,58.1-34.699,97.305H51.741C78.657,82.505,123.064,47.1,176.073,32.036z M49.96,334.058h90.895   c7.311,40.403,19.133,76.205,35.219,100.26C121.944,418.904,76.672,382.378,49.96,334.058z M268.41,439.222   c17.865-23.938,30.874-61.889,38.697-105.164h109.274C386.15,388.743,332.12,428.339,268.41,439.222z"/>
-                            </g>
-                        </svg>
-                        English
-                    </a>
-                </button>
-            </header>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="/en" class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200">
+                    <i class="fas fa-language"></i>
+                    <span>English</span>
+                </a>
+            </div>
         </div>
+    </header>
 
-        <main class="max-w-screen-lg mx-auto px-4">
-            <h2 class="text-center text-2xl font-semibold my-4">Sobre o projeto</h2>
-
-            <p class="mt-4 my-8 text-lg">
-                O InBraille &eacute; uma ferramenta inovadora, brasileira e pernambucana, que converte textos para Braille e os exporta
-                tanto em formato ASCII quanto em placas STL para impress&atilde;o 3D. Com essa solu&ccedil;&atilde;o,
-                &eacute; poss&iacute;vel ampliar a acessibilidade e a inclus&atilde;o, permitindo que qualquer pessoa possa
-                criar materiais t&aacute;teis para pessoas com defici&ecirc;ncia visual.
-            </p>
-
-            <p class="mt-4 my-8 text-lg">
-                Al&eacute;m de ser uma tecnologia acess&iacute;vel e de f&aacute;cil uso, esse projeto tem um impacto
-                social significativo, possibilitando a produ&ccedil;&atilde;o de textos, etiquetas, placas
-                informativas e materiais educacionais em Braille de forma acess&iacute;vel e personalizada.
-                Seja para fins educacionais, profissionais ou do dia a dia, essa ferramenta visa
-                tornar a informa&ccedil;&atilde;o verdadeiramente universal. O objetivo &eacute; democratizar o acesso
-                ao Braille por meio da cultura maker e da impress&atilde;o 3D, proporcionando autonomia e
-                independ&ecirc;ncia para quem precisa.
-            </p>
-
-            <p class="mt-4 my-8 text-lg">
-                Veja mais sobre essa ferramenta na p&aacute;gina dela no
-                <a
-                    class="text-blue-500 hover:underline"
-                    href="https://cienciaembarcada.com.br/inbraille/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >Ci&ecirc;ncia Embarcada</a>.
-            </p>
-
-            <h3 class="text-center text-2xl font-semibold my-4">A ferramenta</h3>
-
-            <div class="mx-auto w-10/12 my-4 text-center">
-                <label class="block">Para come&ccedil;ar, selecione o alfabeto braille:</label>
-                <select
-                    class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                    id="select_alphabet"
-                >
-                    <option value="Brazilian" selected>Brasileiro</option>
-                    <option value="North American">Norte Americano</option>
-                </select>
-
-                <p class="text-center text-md mb-4 text-red-500 font-semibold block" id="warning">
-                    Aten&ccedil;&atilde;o: No alfabeto brasileiro, a convers&atilde;o de braille para texto tem problemas com alguns caracteres.
-                    Por exemplo, a letra "&" tem o mesmo braille que a letra "&ccedil;", por esse motivo, a convers&atilde;o ser&aacute; feita para a letra "&ccedil;".
-                </p>
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <section class="bg-blue-50 rounded-xl p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-2/3 mb-6 md:mb-0">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Transforme texto em Braille facilmente</h2>
+                    <p class="text-gray-600 mb-4 text-justify">
+                        O InBraille é uma ferramenta brasileira que converte textos para Braille e os exporta em formato ASCII e STL para impressão 3D, promovendo acessibilidade e inclusão.
+                    </p>
+                    <a href="#conversor" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-block">
+                        <i class="fas fa-magic mr-2"></i>Experimente agora
+                    </a>
+                </div>
+                <div class="md:w-1/3 flex justify-center">
+                    <span style="
+                        font-weight: bold;
+                        font-size: 14rem;
+                        line-height: 0%;
+                        color: #a024b4;
+                        padding-bottom: 1rem;
+                    ">⠿</span>
+                </div>
             </div>
+        </section>
 
-            <div class="mx-auto w-10/12 my-4">
-                <label class="block">Coloque seu texto aqui:</label>
-                <textarea
-                    class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
-                    name="text"
-                    id="input_text"
-                ></textarea>
-            </div>
+        <section id="conversor" class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Conversor</h2>
 
-            <div class="mx-auto w-10/12 my-4">
-                <label class="block">Aqui est&aacute; o texto em braille:</label>
-                <textarea
-                    class="w-full h-28 border-2 rounded-lg px-2 py-1 border-gray-300"
-                    name="braille"
-                    id="input_braille"
-                ></textarea>
-            </div>
-
-            <div class="mx-auto w-10/12 my-4 flex justify-center">
-                <button
-                    class="text-lg py-2 px-4 bg-blue-500 text-white font-bold rounded hover:bg-blue-700"
-                    id="stl_button"
-                >
-                    Exportar placa em STL
+            <div class="flex border-b mb-6">
+                <button class="tab-active py-2 px-4 mr-2" id="text_to_braille_tab">
+                    <i class="fas fa-text-width mr-2"></i>Texto → Braille
+                </button>
+                <button class="py-2 px-4 text-gray-600" id="braille_to_text_tab">
+                    <span class="mr-2 font-bold">⠿</span>Braille → Texto
                 </button>
             </div>
 
-            <div class="mx-auto w-10/12 my-4">
-                <h3 class="text-center text-lg mt-8 font-semibold">Op&ccedil;&otilde;es Avan&ccedil;adas</h3>
-
-                <p class="text-center text-md mb-4 text-red-500 font-semibold">
-                    Aten&ccedil;&atilde;o: Essas op&ccedil;&otilde;es est&atilde;o em mil&iacute;metros.
-                </p>
-
-                <div class="md:grid grid-cols-2 lg:grid-cols-3 gap-4 items-center">
-
-                    <div class="md:my-auto py-2 md:py-1">
-                        <p class="text-center">Placa &Uacute;nica:</label>
+            <div class="mb-6">
+                <label class="block text-gray-700 font-medium mb-2">Alfabeto Braille</label>
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
                         <input
-                            class="block mx-auto h-5 w-5 text-blue-600"
-                            type="checkbox"
-                            id="input_unique_plate"
+                            type="radio"
+                            id="brazilian"
+                            name="alphabet"
+                            value="Brazilian"
+                            checked
+                            class="mr-2"
+                            onchange="switchConversionMode()"
                         >
+                        <label for="brazilian">Brasileiro</label>
                     </div>
-
-                    <div class="md:my-auto py-2 md:py-1">
-                        <p class="text-center">Tamanho &Uacute;nico:</label>
+                    <div class="flex items-center">
                         <input
-                            class="block mx-auto h-5 w-5 text-blue-600"
-                            type="checkbox"
-                            id="input_unique_width"
+                            type="radio"
+                            id="north-american"
+                            name="alphabet"
+                            value="North American"
+                            class="mr-2"
+                            onchange="switchConversionMode()"
                         >
+                        <label for="north-american">Norte Americano</label>
                     </div>
-
-                    <div class="md:my-auto py-2 md:py-1">
-                        <p class="text-center">Arredondado:</label>
-                        <input
-                            class="block mx-auto h-5 w-5 text-blue-600"
-                            type="checkbox"
-                            id="input_rounded"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Espessura da Placa:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_plate_thickness"
-                        >
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Alinhamento do Texto:</label>
-                        <select
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            id="select_text_alignment"
-                        >
-                            <option value="center">Centro</option>
-                            <option value="left">Esquerda</option>
-                            <option value="right">Direita</option>
-                        </select>
-                    </div>
-
-                    <div class="py-2 md:py-1">
-                        <p class="text-center">Resolu&ccedil;&atilde;o dos Pontos:</label>
-                        <input
-                            class="w-50 block mx-auto rounded-full py-1 px-4 border-2 border-gray-300"
-                            type="number"
-                            id="input_resolution"
-                        >
-                    </div>
-
                 </div>
 
-                <div class="mx-auto m-4">
-                    <h4 class="text-center text-lg mt-8 font-semibold">Legenda das Op&ccedil;&otilde;es Avan&ccedil;adas:</h4>
+                <p class="text-sm text-red-500 mt-2 hidden text-justify" id="warning">
+                    <i class="fas fa-exclamation-circle mr-1"></i> No alfabeto brasileiro, essa conversão tem problemas com alguns caracteres. Por exemplo, o caractere "&" tem o mesmo símbolo braille que o caractere "ç".
+                </p>
+            </div>
 
-                    <ul class="mt-4 mb-8 md:grid grid-cols-2 gap-4 items-center">
-                        <li>
-                            <strong>Placa &Uacute;nica:</strong>
-                            <p>
-                                Se marcado, o texto estar&aacute; em uma &uacute;nica placa.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Tamanho &Uacute;nico:</strong>
-                            <p>
-                                Se marcado, a largura de todas as placas ser&aacute; a mesma.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Arredondado:</strong>
-                            <p>
-                                Se marcado, as bordas ser&atilde;o arredondadas. Indispon&iacute; quando a op&ccedil;&atilde;o "Placa &Uacute;nica"
-                                estiver marcada e a op&ccedil;&atilde;o "Tamanho &Uacute;nico" estiver desmarcada.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Espessura da Placa:</strong>
-                            <p>
-                                A espessura da placa em mil&iacute;metros.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Alinhamento do Texto:</strong>
-                            <p>
-                                O alinhamento do texto. Indispon&iacute; quando a op&ccedil;&atilde;o "Placa &Uacute;nica" ou a
-                                op&ccedil;&atilde;o "Tamanho &Uacute;nico" estiver desmarcada.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Resolu&ccedil;&atilde;o dos Pontos:</strong>
-                            <p>
-                                A Resolu&ccedil;&atilde;o dos pontos braille. Por limita&ccedil;&otilde;es do servidor,
-                                o valor m&aacute;ximo &eacute; 150 e o m&iacute;nimo &eacute; 2.
-                            </p>
-                        </li>
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="text-area-container border-2 border-gray-200 rounded-lg p-4">
+                    <label for="input_text" id="input_label">
+                        <i class="fas fa-pen-alt mr-1"></i>
+                        Digite seu texto
+                    </label>
+
+                    <textarea 
+                        class="w-full h-40 p-2 focus:outline-none resize-none" 
+                        id="input_text" 
+                        placeholder="Digite o texto que deseja converter para Braille..."
+                    ></textarea>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <button class="text-blue-500 hover:text-blue-700 text-sm" onclick="clearInput()">
+                            <i class="fas fa-eraser mr-1"></i>Limpar
+                        </button>
+                        <span class="text-gray-500 text-sm" id="char_count">0 caracteres</span>
+                    </div>
+                </div>
+
+                <div class="text-area-container border-2 border-gray-200 rounded-lg p-4">
+                    <label for="output_text" id="output_label">
+                        <span class="mr-1 font-bold">⠿</span>
+                        Resultado em Braille
+                    </label>
+
+                    <textarea 
+                        class="w-full h-40 p-2 focus:outline-none resize-none bg-gray-50" 
+                        id="output_text" 
+                        readonly
+                        placeholder="O resultado em Braille aparecerá aqui..."
+                    ></textarea>
+
+                    <div class="flex justify-end space-x-2 mt-2">
+                        <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm" id="copy_button">
+                            <i class="fas fa-copy mr-1"></i>Copiar
+                        </button>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" id="save_button">
+                            <i class="fas fa-download mr-1"></i>Salvar
+                        </button>
+                    </div>
                 </div>
             </div>
-        </main>
 
-        <div class="bg-violet-900 text-white">
-            <footer class="max-w-screen-lg mx-auto p-4">
-                <p class="text-center text-lg font-semibold">
-                    Desenvolvido por
-                    <a
-                        class="text-green-500 hover:underline"
-                        href="https://linkedin.com/in/lucasrguerra/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+            <div class="text-center mb-8">
+                <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="convert_button">
+                    <i class="fas fa-exchange-alt mr-2"></i>Converter
+                </button>
+            </div>
+
+            <div class="border-t pt-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Exportar para Impressão 3D</h3>
+                
+                <div id="stl-alert" class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-lg fade-in">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-amber-500 text-xl"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-amber-700 text-justify">
+                                <span class="font-semibold text-justify">Atenção:</span>
+                                A exportação para STL utiliza apenas o conteúdo em Braille. O texto original, ou convertido, não é usado para gerar o modelo 3D. Certifique-se de converter seu texto para Braille antes de exportar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <button class="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="stl_button">
+                        <i class="fas fa-cube mr-2"></i>Gerar Arquivo STL
+                    </button>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex justify-between items-center cursor-pointer" id="advanced_options_toggle">
+                        <h4 class="text-lg font-medium text-gray-700">
+                            <i class="fas fa-cog mr-2"></i>Opções Avançadas
+                        </h4>
+                        <i class="fas fa-chevron-down transition-transform duration-200" id="advanced_options_arrow"></i>
+                    </div>
+                    
+                    <div class="mt-4 hidden" id="advanced_options">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="font-medium">Placa Única</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="input_unique_plate">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <p class="text-sm text-gray-500">Todo o texto em uma única placa</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="font-medium">Tamanho Único</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="input_unique_width">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <p class="text-sm text-gray-500">Todas as placas com mesma largura</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="font-medium">Bordas Arredondadas</label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="input_rounded">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <p class="text-sm text-gray-500">Cantos arredondados nas placas</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Espessura da Placa (mm)</label>
+                                <input 
+                                    type="number" 
+                                    id="input_plate_thickness" 
+                                    class="w-full p-2 border rounded"
+                                    min="1"
+                                    max="100"
+                                    value="3"
+                                >
+                                <p class="text-xs text-gray-500 mt-1">Valor entre 1 e 100</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Alinhamento do Texto</label>
+                                <select 
+                                    id="select_text_alignment" 
+                                    class="w-full p-2 border rounded"
+                                >
+                                    <option value="center">Centro</option>
+                                    <option value="left">Esquerda</option>
+                                    <option value="right">Direita</option>
+                                </select>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Resolução dos Pontos</label>
+                                <input 
+                                    type="number" 
+                                    id="input_resolution" 
+                                    class="w-full p-2 border rounded"
+                                    min="2"
+                                    max="150"
+                                    value="20"
+                                >
+                                <p class="text-xs text-gray-500 mt-1">Valor entre 2 e 150</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Sobre o InBraille</h2>
+            
+            <div class="prose max-w-none">
+                <p class="mb-4 text-justify">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    O InBraille é uma ferramenta inovadora, brasileira e pernambucana, que converte textos para Braille e os exporta tanto em formato ASCII quanto em placas STL para impressão 3D.
+                </p>
+                
+                <p class="mb-4 text-justify">
+                    <i class="fas fa-universal-access text-blue-500 mr-2"></i>
+                    Com essa solução, é possível ampliar a acessibilidade e a inclusão, permitindo que qualquer pessoa possa criar materiais táteis para pessoas com deficiência visual.
+                </p>
+                
+                <p class="mb-4 text-justify">
+                    <i class="fas fa-cubes text-purple-500 mr-2"></i>
+                    Além de ser uma tecnologia acessível e de fácil uso, esse projeto tem um impacto social significativo, possibilitando a produção de textos, etiquetas, placas informativas e materiais educacionais em Braille de forma acessível e personalizada.
+                </p>
+                
+                <p class="mb-4 text-justify">
+                    <i class="fas fa-globe-americas text-green-500 mr-2"></i>
+                    Seja para fins educacionais, profissionais ou do dia a dia, essa ferramenta visa tornar a informação verdadeiramente universal. O objetivo é democratizar o acesso ao Braille por meio da cultura maker e da impressão 3D, proporcionando autonomia e independência para quem precisa.
+                </p>
+
+                <div class="bg-indigo-50 rounded-lg p-4 mb-4 border-l-4 border-indigo-400">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="neurodiversity-badge text-white rounded-full p-2">
+                                <i class="fas fa-brain text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-semibold text-indigo-800">Neurodiversidade na Tecnologia</h3>
+
+                            <p class="text-gray-700 mt-2 text-justify">
+                                Esta ferramenta foi desenvolvida por Lucas Guerra, um estudante e desenvolvedor autista que transformou sua perspectiva única em soluções tecnológicas inclusivas. O autismo trouxe uma abordagem diferente para a criação deste projeto, com foco intenso em detalhes e padrões que resultaram em uma ferramenta mais acessível e intuitiva.
+                            </p>
+
+                            <p class="text-gray-700 mt-2 text-justify">
+                                Essa solução é fruto do Laboratório de Tecnologia 3D e Inclusiva do Departamento de Computação da Universidade Federal Rural de Pernambuco (UFRPE), que promove a inclusão e acessibilidade por meio da tecnologia. O laboratório é um espaço de pesquisa e desenvolvimento que busca criar soluções inovadoras para pessoas com deficiência, utilizando impressão 3D e outras tecnologias assistivas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg mt-6 border-l-4 border-blue-400">
+                    <h3 class="font-bold text-lg mb-2 flex items-center">
+                        <i class="fas fa-book mr-2 text-blue-600"></i> Saiba mais
+                    </h3>
+                    <p>
+                        Veja mais sobre essa ferramenta na página dela no 
+                        <a href="https://cienciaembarcada.com.br/inbraille/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
+                            Ciência Embarcada <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <h2 class="text-xl font-bold">
+                            <span class="text-blue-500 text-2xl">⠎⠞⠇</span>InBraille
+                        </h2>
+                    </div>
+                    <p class="text-gray-400 mt-2">Ferramenta de conversão para Braille</p>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <a href="https://github.com/lucasrguerra/InBraille" class="text-gray-400 hover:text-white transition duration-200">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/lucasrguerra/" class="text-gray-400 hover:text-white transition duration-200">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center md:text-left">
+                <p class="text-gray-400">
+                    Desenvolvido por 
+                    <a href="https://linkedin.com/in/lucasrguerra/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">
                         Lucas Guerra
                     </a>
                 </p>
-            </header>
+            </div>
         </div>
-    </div>
+    </footer>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/public/index.js"></script>
 </body>
 </html>
