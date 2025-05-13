@@ -72,14 +72,19 @@ def braille_decode(request: requests.Braille):
 def to_stl(request: requests.ToSTLRequest):
     try:
         unique_plate = request.unique_plate if request.unique_plate else False
-        unique_width = request.unique_width if request.unique_width else False
+        symbols_per_line = request.symbols_per_line if request.symbols_per_line else 22
+        if symbols_per_line < 8:
+            symbols_per_line = 8
+        elif symbols_per_line > 50:
+            symbols_per_line = 50
+
         text_alignment = request.text_alignment if request.text_alignment else "left"
         rounded = request.rounded if request.rounded else False
         resolution = request.resolution if request.resolution else 20
-        if resolution < 2:
-            resolution = 2
-        elif resolution > 150:
-            resolution = 150
+        if resolution < 15:
+            resolution = 15
+        elif resolution > 50:
+            resolution = 50
 
         plate_thickness = request.plate_thickness if request.plate_thickness else 2
         if plate_thickness < 2:
@@ -92,7 +97,7 @@ def to_stl(request: requests.ToSTLRequest):
             resolution,
             plate_thickness,
             unique_plate,
-            unique_width,
+            symbols_per_line,
             text_alignment,
             rounded
         )

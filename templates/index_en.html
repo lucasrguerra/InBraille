@@ -194,26 +194,15 @@
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Single Plate</label>
+                                    <label class="font-medium">Placas Separadas</label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_unique_plate">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500">All text on a single plate</p>
+                                <p class="text-sm text-gray-500">Each line on a separate plate</p>
                             </div>
-                            
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Single Size</label>
-                                    <label class="switch">
-                                        <input type="checkbox" id="input_unique_width">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                                <p class="text-sm text-gray-500">All plates with the same width</p>
-                            </div>
-                            
+
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
                                     <label class="font-medium">Rounded Edges</label>
@@ -223,6 +212,31 @@
                                     </label>
                                 </div>
                                 <p class="text-sm text-gray-500">Rounded corners on the plates</p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Text Alignment</label>
+                                <select
+                                    id="select_text_alignment"
+                                    class="w-full p-2 border rounded"
+                                >
+                                    <option value="center">Center</option>
+                                    <option value="left">Left</option>
+                                    <option value="right">Right</option>
+                                </select>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Symbols per Line</label>
+                                <input 
+                                    type="number" 
+                                    id="input_symbols_per_line" 
+                                    class="w-full p-2 border rounded"
+                                    min="8"
+                                    max="50"
+                                    value="22"
+                                >
+                                <p class="text-xs text-gray-500 mt-1">Value between 8 and 50 (Defines the size of the plate)</p>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
@@ -236,18 +250,6 @@
                                     value="3"
                                 >
                                 <p class="text-xs text-gray-500 mt-1">Value between 1 and 100</p>
-                            </div>
-                            
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Text Alignment</label>
-                                <select
-                                    id="select_text_alignment"
-                                    class="w-full p-2 border rounded"
-                                >
-                                    <option value="center">Center</option>
-                                    <option value="left">Left</option>
-                                    <option value="right">Right</option>
-                                </select>
                             </div>
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">

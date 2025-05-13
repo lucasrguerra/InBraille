@@ -57,6 +57,10 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+input:disabled + .slider {
+    background-color: #e5e7eb;
+}
+
 .tab-active {
     border-bottom: 3px solid #3b82f6;
     color: #3b82f6;

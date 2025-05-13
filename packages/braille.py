@@ -114,7 +114,7 @@ def toSTL(
         resolution=20,
         plate_thickness=2,
         unique_plate=False,
-        unique_width=False,
+        symbols_per_line=20,
         text_alignment="left",
         rounded=False
     ):
@@ -123,8 +123,7 @@ def toSTL(
 
     phrases = braille.split("\n")
     number_of_phrases = len(phrases)
-    biggest_phrase = max([len(phrase) for phrase in phrases])
-    biggest_phrase_width = ((biggest_phrase - 1) * Rules.cells_h_spacing) + Rules.cells_width
+    plate_width = ((symbols_per_line - 1) * Rules.cells_h_spacing) + Rules.cells_width
     letter_reference_z = (plate_thickness - (Rules.dots_radius - Rules.dots_apparent_thickness))
     reference_z = plate_thickness / 2
     plate_height = Rules.cells_v_spacing
@@ -139,14 +138,11 @@ def toSTL(
 
         if not unique_plate:
             this_plate_height = Rules.cells_v_spacing * 2
-            this_plate_width = this_phrase_width
-            if unique_width:
-                this_plate_width = biggest_phrase_width
             
-            plate_position_x = this_plate_width / 2
+            plate_position_x = plate_width / 2
             plate_position_y = ((plate_height - Rules.cells_height) / 2)
 
-            final_plate_width = this_plate_width + Rules.cells_v_spacing
+            final_plate_width = plate_width + Rules.cells_v_spacing
             this_plate = stl.createPlate(final_plate_width, this_plate_height, plate_thickness)
             phrase_scene.AddInputData(stl.makeTranslation(this_plate, plate_position_x, plate_position_y, reference_z))
 
@@ -192,14 +188,13 @@ def toSTL(
             letter_position_y = -(Rules.dots_radius)
             letter_position_x = (letter_index * Rules.cells_h_spacing) + Rules.dots_radius
             letter_position_z = letter_reference_z
-            if unique_plate or unique_width:
-                if unique_plate:
-                    letter_position_y -= (phrase_index * Rules.cells_v_spacing)
+            if unique_plate:
+                letter_position_y -= (phrase_index * Rules.cells_v_spacing)
 
-                if text_alignment == "center":
-                    letter_position_x += (biggest_phrase_width - this_phrase_width) / 2
-                elif text_alignment == "right":
-                    letter_position_x += (biggest_phrase_width - this_phrase_width)
+            if text_alignment == "center":
+                letter_position_x += (plate_width - this_phrase_width) / 2
+            elif text_alignment == "right":
+                letter_position_x += (plate_width - this_phrase_width)
             
             letter_in_3d = characterTo3d(letter, Rules.dots_radius, Rules.dots_spacing, resolution)
             phrase_scene.AddInputData(stl.makeTranslation(letter_in_3d, letter_position_x, letter_position_y, letter_position_z))
@@ -213,7 +208,6 @@ def toSTL(
     if unique_plate:
         border_y_reference = (Rules.cells_v_spacing + ((Rules.cells_v_spacing - Rules.cells_height) / 2))
         plate_height = (number_of_phrases * Rules.cells_v_spacing) + Rules.cells_v_spacing
-        plate_width = biggest_phrase_width
         plate_position_x = plate_width / 2
         plate_position_y = border_y_reference - (plate_height / 2)
 

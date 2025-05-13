@@ -5,7 +5,7 @@ let conversion_mode = "text-to-braille";
 let resolution = 20;
 let plate_thickness = 2;
 let unique_plate = true;
-let unique_width = true;
+let symbols_per_line = 22;
 let text_alignment = "center";
 let rounded = false;
 
@@ -27,8 +27,8 @@ let advanced_options_toggle = null;
 
 let input_resolution = null;
 let input_plate_thickness = null;
-let input_unique_plate = null;
-let input_unique_width = null;
+let input_separate_plates = null;
+let input_symbols_per_line = null;
 let select_text_alignment = null;
 let input_rounded = null;
 
@@ -150,6 +150,87 @@ function saveOutput() {
     URL.revokeObjectURL(url);
 }
 
+function adjustBrailleSize(braille) {
+    const initial_string = String(braille).replaceAll("\n", "⠀");
+    let adjusted_braille = "";
+    let actual_phrase = "";
+
+    const words = initial_string.split("⠀");
+    const number_of_words = words.length;
+    for (let index = 0; index < number_of_words; index++) {
+        const word = words[index];
+        const word_length = word.length;
+        if (word_length > symbols_per_line) { return word_length; }
+
+        if ((word_length + actual_phrase.length) > symbols_per_line) {
+            adjusted_braille += actual_phrase.slice(0, -1) + "\n";
+            actual_phrase = "";
+        }
+
+        actual_phrase += word + "⠀";
+    }
+
+    if (actual_phrase.length > 0) {
+        adjusted_braille += actual_phrase.slice(0, -1);
+    } else {
+        adjusted_braille = adjusted_braille.slice(0, -1);
+    }
+
+    return adjusted_braille;
+}
+
+async function checkBrailleSize(braille) {
+    const phrases = braille.split("\n");
+    const number_of_phrases = phrases.length;
+    for (let index = 0; index < number_of_phrases; index++) {
+        const phrase = phrases[index];
+        const phrase_length = phrase.length;
+        if (phrase_length > symbols_per_line) {
+            
+            let adjust = false;
+            if (page_language === "pt-BR") {
+                adjust = confirm(`Uma das linhas ultrapassa o limite de símbolos por linha.\nVocê quer que o programa tente ajustar automaticamente?`);
+            } else if (page_language === "en") {
+                adjust = confirm(`One of the lines exceeds the symbol limit per line.\nDo you want the program to try to adjust it automatically?`);
+            }
+
+            if (adjust) {
+                const adjusted = adjustBrailleSize(braille);
+                if (!isNaN(adjusted)) {
+                    if (page_language === "pt-BR") {
+                        alert(`Uma das palavras ultrapassa o limite de símbolos por linha.\nNas opções avançadas, ajuste a quantidade de símbolos por linha para no mínimo ${adjusted}`);
+                    } else if (page_language === "en") {
+                        alert(`One of the words exceeds the symbol limit per line.\nIn the advanced options, adjust the number of symbols per line to at least ${adjusted}`);
+                    }
+
+                    return -1;
+                }  else {
+                    if (conversion_mode === "text-to-braille") {
+                        await axios.post("/api/decode", {
+                            braille: adjusted,
+                            alphabet: getAlphabet()
+                        }).then((response) => {
+                            const decodedText = response.data.decoded;
+                            input_textbox.value = decodedText;
+                        });
+                    }
+
+                    if (page_language === "pt-BR") {
+                        alert(`O programa conseguiu ajustar automaticamente a linha.\n`);
+                    } else if (page_language === "en") {
+                        alert(`The program was able to automatically adjust the line.\n`);
+                    }
+                }
+
+                return adjusted;
+            }
+
+            return phrase_length;
+        }
+    }
+    return phrases.join("\n");
+}
+
 async function convert() {
     const text = input_textbox.value;
     if (text.length === 0) { return; }
@@ -160,17 +241,42 @@ async function convert() {
             await axios.post("/api/encode", {
                 text: text,
                 alphabet: alphabet
-            }).then((response) => {
-                const braille = response.data.encoded;
-                output_textbox.innerHTML = braille;
+            }).then(async (response) => {
+                const braille = await checkBrailleSize(response.data.encoded);
+                if (!isNaN(braille) && braille !== -1) {
+                    output_textbox.value = "";
+
+                    if (page_language === "pt-BR") {
+                        alert(`Corrija manualmente ou, ajuste a quantidade de símbolos por linha para no mínimo ${braille} nas opções avançadas`);
+                    } else if (page_language === "en") {
+                        alert(`Manually correct or adjust the number of symbols per line to at least ${braille} in the advanced options`);
+                    }
+                } else if (braille !== -1) {
+                    output_textbox.value = braille;
+                }
             });
         } else {
+            const adjusted_braille = await checkBrailleSize(text);
+            if (!isNaN(adjusted_braille)) {
+                output_textbox.value = "";
+
+                if (adjusted_braille !== -1) {
+                    if (page_language === "pt-BR") {
+                        alert(`Corrija manualmente ou, ajuste a quantidade de símbolos por linha para no mínimo ${adjusted_braille} nas opções avançadas`);
+                    } else if (page_language === "en") {
+                        alert(`Manually correct or adjust the number of symbols per line to at least ${adjusted_braille} in the advanced options`);
+                    }
+                }
+
+                return;
+            }
+
             await axios.post("/api/decode", {
                 braille: text,
                 alphabet: alphabet
             }).then((response) => {
                 const decodedText = response.data.decoded;
-                output_textbox.innerHTML = decodedText;
+                output_textbox.value = decodedText;
             });
         }
     } catch (error) {
@@ -194,7 +300,7 @@ function generateSTL() {
             resolution: resolution,
             plate_thickness: plate_thickness,
             unique_plate: unique_plate,
-            unique_width: unique_width,
+            symbols_per_line: symbols_per_line,
             text_alignment: text_alignment,
             rounded: rounded
         }, { responseType: 'blob' }).then((response) => {
@@ -223,28 +329,19 @@ function generateSTL() {
 }
 
 function updateParameters() {
-    resolution = input_resolution.value;
-    plate_thickness = input_plate_thickness.value;
-    unique_plate = input_unique_plate.checked;
-    unique_width = input_unique_width.checked;
+    resolution = parseInt(input_resolution.value);
+    plate_thickness = parseInt(input_plate_thickness.value);
+    unique_plate = !input_separate_plates.checked;
+    symbols_per_line = parseInt(input_symbols_per_line.value);
     text_alignment = select_text_alignment.value;
     rounded = input_rounded.checked;
 
-    if (unique_plate) {
-        unique_width = true;
-        input_unique_width.checked = true;
-        input_unique_width.disabled = true;
-    } else {
-        input_unique_width.disabled = false;
-    }
-
-    if (!unique_width && !unique_plate) {
-        text_alignment = "center";
-        select_text_alignment.value = "center";
-        select_text_alignment.disabled = true;
-    } else {
-        select_text_alignment.disabled = false;
-    }
+    input_resolution.value = resolution;
+    input_plate_thickness.value = plate_thickness;
+    input_separate_plates.checked = !unique_plate;
+    input_symbols_per_line.value = symbols_per_line;
+    select_text_alignment.value = text_alignment;
+    input_rounded.checked = rounded;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -268,15 +365,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     input_resolution = document.querySelector("#input_resolution");
     input_plate_thickness = document.querySelector("#input_plate_thickness");
-    input_unique_plate = document.querySelector("#input_unique_plate");
-    input_unique_width = document.querySelector("#input_unique_width");
+    input_separate_plates = document.querySelector("#input_separate_plates");
+    input_symbols_per_line = document.querySelector("#input_symbols_per_line");
     select_text_alignment = document.querySelector("#select_text_alignment");
     input_rounded = document.querySelector("#input_rounded");
 
     input_resolution.value = resolution;
     input_plate_thickness.value = plate_thickness;
-    input_unique_plate.checked = unique_plate;
-    input_unique_width.checked = unique_width;
+    input_separate_plates.checked = !unique_plate;
+    input_symbols_per_line.value = symbols_per_line;
     select_text_alignment.value = text_alignment;
     input_rounded.checked = rounded;
 
@@ -291,8 +388,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     input_resolution.addEventListener("input", updateParameters);
     input_plate_thickness.addEventListener("input",updateParameters);
-    input_unique_plate.addEventListener("input", updateParameters);
-    input_unique_width.addEventListener("input", updateParameters);
+    input_separate_plates.addEventListener("input", updateParameters);
+    input_symbols_per_line.addEventListener("input", updateParameters);
     select_text_alignment.addEventListener("input", updateParameters);
     input_rounded.addEventListener("input", updateParameters);
 });

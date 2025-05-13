@@ -194,24 +194,13 @@
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Placa Única</label>
+                                    <label class="font-medium">Placas Separadas</label>
                                     <label class="switch">
-                                        <input type="checkbox" id="input_unique_plate">
+                                        <input type="checkbox" id="input_separate_plates">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500">Todo o texto em uma única placa</p>
-                            </div>
-                            
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Tamanho Único</label>
-                                    <label class="switch">
-                                        <input type="checkbox" id="input_unique_width">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                                <p class="text-sm text-gray-500">Todas as placas com mesma largura</p>
+                                <p class="text-sm text-gray-500">Cada linha em uma placa separada</p>
                             </div>
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
@@ -224,20 +213,7 @@
                                 </div>
                                 <p class="text-sm text-gray-500">Cantos arredondados nas placas</p>
                             </div>
-                            
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Espessura da Placa (mm)</label>
-                                <input 
-                                    type="number" 
-                                    id="input_plate_thickness" 
-                                    class="w-full p-2 border rounded"
-                                    min="1"
-                                    max="100"
-                                    value="3"
-                                >
-                                <p class="text-xs text-gray-500 mt-1">Valor entre 1 e 100</p>
-                            </div>
-                            
+
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <label class="font-medium block mb-2">Alinhamento do Texto</label>
                                 <select 
@@ -249,6 +225,32 @@
                                     <option value="right">Direita</option>
                                 </select>
                             </div>
+
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Símbolos por Linha</label>
+                                <input 
+                                    type="number" 
+                                    id="input_symbols_per_line" 
+                                    class="w-full p-2 border rounded"
+                                    min="8"
+                                    max="50"
+                                    value="22"
+                                >
+                                <p class="text-xs text-gray-500 mt-1">Valor entre 8 e 50 (Define o tamanho da placa)</p>
+                            </div>
+                            
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <label class="font-medium block mb-2">Espessura da Placa (mm)</label>
+                                <input 
+                                    type="number" 
+                                    id="input_plate_thickness" 
+                                    class="w-full p-2 border rounded"
+                                    min="2"
+                                    max="100"
+                                    value="3"
+                                >
+                                <p class="text-xs text-gray-500 mt-1">Valor entre 2 e 100</p>
+                            </div>
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <label class="font-medium block mb-2">Resolução dos Pontos</label>
@@ -256,11 +258,11 @@
                                     type="number" 
                                     id="input_resolution" 
                                     class="w-full p-2 border rounded"
-                                    min="2"
-                                    max="150"
+                                    min="15"
+                                    max="50"
                                     value="20"
                                 >
-                                <p class="text-xs text-gray-500 mt-1">Valor entre 2 e 150</p>
+                                <p class="text-xs text-gray-500 mt-1">Valor entre 15 e 50</p>
                             </div>
                         </div>
                     </div>
