@@ -196,7 +196,7 @@
                                 <div class="flex justify-between items-center mb-2">
                                     <label class="font-medium">Placas Separadas</label>
                                     <label class="switch">
-                                        <input type="checkbox" id="input_unique_plate">
+                                        <input type="checkbox" id="input_separate_plates">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -236,7 +236,11 @@
                                     max="50"
                                     value="22"
                                 >
-                                <p class="text-xs text-gray-500 mt-1">Value between 8 and 50 (Defines the size of the plate)</p>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Value between 8 and 50 (plate width:
+                                    <span id="plate_width">0</span>
+                                    mm)
+                                </p>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">

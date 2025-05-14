@@ -8,6 +8,7 @@ let unique_plate = true;
 let symbols_per_line = 22;
 let text_alignment = "center";
 let rounded = false;
+let plate_width = calculatePlateWidth();
 
 let text_to_braille_tab = null;
 let braille_to_text_tab = null;
@@ -24,6 +25,7 @@ let stl_button = null;
 let advanced_options = null;
 let advanced_options_arrow = null;
 let advanced_options_toggle = null;
+let output_plate_width = null;
 
 let input_resolution = null;
 let input_plate_thickness = null;
@@ -31,6 +33,10 @@ let input_separate_plates = null;
 let input_symbols_per_line = null;
 let select_text_alignment = null;
 let input_rounded = null;
+
+function calculatePlateWidth() {
+    return ((symbols_per_line - 1) * 6.6) + 4.7;
+}
 
 function getAlphabet() {
     const alphabet = document.querySelector('input[name="alphabet"]:checked').value;
@@ -335,6 +341,18 @@ function updateParameters() {
     symbols_per_line = parseInt(input_symbols_per_line.value);
     text_alignment = select_text_alignment.value;
     rounded = input_rounded.checked;
+    plate_width = calculatePlateWidth();
+}
+
+function updateInputs() {
+    if (symbols_per_line < 8) { symbols_per_line = 8; }
+    if (symbols_per_line > 50) { symbols_per_line = 50; }
+
+    if (plate_thickness < 2) { plate_thickness = 2; }
+    if (plate_thickness > 100) { plate_thickness = 100; }
+
+    if (resolution < 15) { resolution = 15; }
+    if (resolution > 50) { resolution = 50; }
 
     input_resolution.value = resolution;
     input_plate_thickness.value = plate_thickness;
@@ -342,6 +360,7 @@ function updateParameters() {
     input_symbols_per_line.value = symbols_per_line;
     select_text_alignment.value = text_alignment;
     input_rounded.checked = rounded;
+    output_plate_width.innerHTML = plate_width.toFixed(1);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -362,6 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
     advanced_options = document.querySelector("#advanced_options");
     advanced_options_arrow = document.querySelector("#advanced_options_arrow");
     advanced_options_toggle = document.querySelector("#advanced_options_toggle");
+    output_plate_width = document.querySelector("#plate_width");
 
     input_resolution = document.querySelector("#input_resolution");
     input_plate_thickness = document.querySelector("#input_plate_thickness");
@@ -376,6 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input_symbols_per_line.value = symbols_per_line;
     select_text_alignment.value = text_alignment;
     input_rounded.checked = rounded;
+    output_plate_width.innerHTML = plate_width.toFixed(1);
 
     text_to_braille_tab.addEventListener("click", () => switchConversionMode("text-to-braille"));
     braille_to_text_tab.addEventListener("click", () => switchConversionMode("braille-to-text"));
@@ -392,4 +413,11 @@ document.addEventListener('DOMContentLoaded', function() {
     input_symbols_per_line.addEventListener("input", updateParameters);
     select_text_alignment.addEventListener("input", updateParameters);
     input_rounded.addEventListener("input", updateParameters);
+
+    input_resolution.addEventListener("blur", updateInputs);
+    input_plate_thickness.addEventListener("blur", updateInputs);
+    input_separate_plates.addEventListener("blur", updateInputs);
+    input_symbols_per_line.addEventListener("blur", updateInputs);
+    select_text_alignment.addEventListener("blur", updateInputs);
+    input_rounded.addEventListener("blur", updateInputs);
 });
