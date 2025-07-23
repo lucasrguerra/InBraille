@@ -18,8 +18,9 @@ This project supports this braile alphabets:
 To run the code, you need to have Python 3 installed. You can run the code by executing the following command:
 
 ```bash
-python3 main.py
-or
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+pip install -r requirements.txt
 python main.py
 ```
 
