@@ -106,3 +106,60 @@ input:disabled + .slider {
 .neurodiversity-badge {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
 }
+
+/* MUI-like snackbar/alert toasts */
+#toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: auto;
+    max-width: min(92vw, 480px);
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    font-size: 0.92rem;
+    line-height: 1.35;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast i {
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.toast-info { background-color: #2563eb; }
+.toast-warning { background-color: #d97706; }
+.toast-error { background-color: #dc2626; }
+.toast-success { background-color: #16a34a; }
+
+/* Attention pulse for a required input */
+.input-attention {
+    animation: inputPulse 0.9s ease-in-out 0s 2;
+}
+
+@keyframes inputPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.45); }
+}

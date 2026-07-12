@@ -5,7 +5,7 @@ import uvicorn
 
 
 
-PORT = 3000
+PORT = 3001
 app = FastAPI()
 
 
@@ -39,6 +39,9 @@ def static(file_path: str):
         elif file_path == "script.js":
             script_content = open(f"public/{file_path}", "r", encoding="utf-8").read()
             return responses.HTMLResponse(content=script_content, media_type="text/javascript; charset=utf-8")
+        elif file_path == "preview.js":
+            preview_content = open(f"public/{file_path}", "r", encoding="utf-8").read()
+            return responses.HTMLResponse(content=preview_content, media_type="text/javascript; charset=utf-8")
         else:
             return responses.FileResponse(f"public/{file_path}")
     except:
@@ -80,6 +83,7 @@ def to_stl(request: requests.ToSTLRequest):
 
         text_alignment = request.text_alignment if request.text_alignment else "left"
         rounded = request.rounded if request.rounded else False
+        points_only = request.points_only if request.points_only else False
         resolution = request.resolution if request.resolution else 20
         if resolution < 15:
             resolution = 15
@@ -99,7 +103,8 @@ def to_stl(request: requests.ToSTLRequest):
             unique_plate,
             symbols_per_line,
             text_alignment,
-            rounded
+            rounded,
+            points_only
         )
 
         return responses.StreamingResponse(

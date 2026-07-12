@@ -22,3 +22,4 @@ class ToSTLRequest(BaseModel):
     symbols_per_line: int | None = None
     text_alignment: str | None = None
     rounded: bool | None = None
+    points_only: bool | None = None

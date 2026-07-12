@@ -19,7 +19,7 @@ To run the code, you need to have Python 3 installed. You can run the code by ex
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+source venv/bin/activate  # On Windows use `./venv/Scripts/activate.bat`
 pip install -r requirements.txt
 python main.py
 ```

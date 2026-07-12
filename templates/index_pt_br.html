@@ -135,7 +135,7 @@
                     </label>
 
                     <textarea 
-                        class="w-full h-40 p-2 focus:outline-none resize-none bg-gray-50" 
+                        class="w-full h-40 p-2 focus:outline-none resize-none" 
                         id="output_text" 
                         readonly
                         placeholder="O resultado em Braille aparecerá aqui..."
@@ -174,11 +174,40 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded-r-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-compass text-blue-500 text-xl"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700 text-justify">
+                                <span class="font-semibold">Indicador de orientação:</span>
+                                para você não montar a peça de cabeça para baixo, o modelo inclui uma marca de referência. Com placa, há um <span class="font-semibold">ponto maior no canto inferior esquerdo</span>. No modo "apenas os pontos", há uma <span class="font-semibold">barrinha na parte de baixo</span>. Mantenha essa marca embaixo/à esquerda ao ler ou colar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="text-center mb-6">
                     <button class="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="stl_button">
-                        <i class="fas fa-cube mr-2"></i>Gerar Arquivo STL
+                        <i class="fas fa-cube mr-2"></i>Gerar e Visualizar STL
                     </button>
+                </div>
+
+                <div id="stl_preview" class="hidden mb-6 fade-in">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+                        <h4 class="text-lg font-medium text-gray-700">
+                            <i class="fas fa-cube mr-2 text-purple-500"></i>Pré-visualização 3D
+                        </h4>
+                        <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition duration-200" id="download_stl_button">
+                            <i class="fas fa-download mr-2"></i>Baixar STL
+                        </button>
+                    </div>
+                    <div id="stl_preview_canvas" class="w-full h-96 rounded-lg overflow-hidden border border-gray-200 bg-gray-100"></div>
+                    <p class="text-xs text-gray-500 mt-2 text-center">
+                        <i class="fas fa-mouse-pointer mr-1"></i>Arraste para girar, role para dar zoom.
+                    </p>
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-4">
@@ -191,7 +220,20 @@
                     
                     <div class="mt-4 hidden" id="advanced_options">
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            
+
+                            <div class="bg-white p-4 rounded-lg shadow-sm ring-1 ring-purple-100 md:col-span-2 lg:col-span-3">
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="font-medium">
+                                        </i>Apenas os Pontos (sem placa)
+                                    </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="input_points_only">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <p class="text-sm text-gray-500 text-justify">Gera somente as calotas dos pontos (0,65 mm), sem a placa de base, mais uma barrinha de orientação embaixo. Ideal para colar os pontos em STLs já prontos. Ao ativar, as opções de placa são desativadas.</p>
+                            </div>
+
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
                                     <label class="font-medium">Placas Separadas</label>
@@ -368,6 +410,15 @@
     </footer>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="/public/preview.js"></script>
     <script src="/public/index.js"></script>
 </body>
 </html>

@@ -8,7 +8,9 @@ let unique_plate = true;
 let symbols_per_line = 22;
 let text_alignment = "center";
 let rounded = false;
+let points_only = false;
 let plate_width = calculatePlateWidth();
+let last_stl_blob = null;
 
 let text_to_braille_tab = null;
 let braille_to_text_tab = null;
@@ -22,6 +24,8 @@ let copy_button = null;
 let save_button = null;
 let convert_button = null;
 let stl_button = null;
+let stl_preview = null;
+let download_stl_button = null;
 let advanced_options = null;
 let advanced_options_arrow = null;
 let advanced_options_toggle = null;
@@ -33,6 +37,7 @@ let input_separate_plates = null;
 let input_symbols_per_line = null;
 let select_text_alignment = null;
 let input_rounded = null;
+let input_points_only = null;
 
 function calculatePlateWidth() {
     return ((symbols_per_line - 1) * 6.6) + 4.7;
@@ -291,7 +296,75 @@ async function convert() {
     }
 }
 
-function generateSTL() {
+function t(pt, en) {
+    return page_language === "en" ? en : pt;
+}
+
+function showToast(message, severity = "info", duration = 4000) {
+    let container = document.getElementById("toast-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toast-container";
+        document.body.appendChild(container);
+    }
+
+    const icons = {
+        info: "fa-circle-info",
+        warning: "fa-triangle-exclamation",
+        error: "fa-circle-xmark",
+        success: "fa-circle-check"
+    };
+
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${severity}`;
+    toast.setAttribute("role", "alert");
+    toast.innerHTML = `<i class="fas ${icons[severity] || icons.info}"></i><span>${message}</span>`;
+    container.appendChild(toast);
+
+    // Trigger the enter transition on the next frame
+    requestAnimationFrame(() => toast.classList.add("show"));
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+function highlightInput() {
+    const container = input_textbox.closest(".text-area-container") || input_textbox;
+    input_textbox.scrollIntoView({ behavior: "smooth", block: "center" });
+    input_textbox.focus({ preventScroll: true });
+
+    container.classList.remove("input-attention");
+    // Force reflow so the animation can restart if triggered repeatedly
+    void container.offsetWidth;
+    container.classList.add("input-attention");
+    setTimeout(() => container.classList.remove("input-attention"), 1900);
+}
+
+async function generateSTL() {
+    // Resolve the Braille content, guiding the user if something is missing.
+    if (conversion_mode === "braille-to-text") {
+        if (input_textbox.value.trim().length === 0) {
+            showToast(t("Digite o Braille que deseja imprimir.", "Enter the Braille you want to print."), "warning");
+            highlightInput();
+            return;
+        }
+    } else if (output_textbox.value.trim().length === 0) {
+        if (input_textbox.value.trim().length === 0) {
+            showToast(t("Digite um texto para gerar a placa.", "Enter some text to generate the plate."), "warning");
+            highlightInput();
+            return;
+        }
+
+        // There is text but it wasn't converted yet: convert it automatically.
+        showToast(t("Convertendo automaticamente para Braille...", "Automatically converting to Braille..."), "info");
+        await convert();
+        if (output_textbox.value.trim().length === 0) {
+            return;
+        }
+    }
+
     let braille = output_textbox.value;
     if (conversion_mode === "braille-to-text") {
         braille = input_textbox.value;
@@ -299,39 +372,54 @@ function generateSTL() {
     if (braille.length === 0) { return; }
 
     stl_button.disabled = true;
-    stl_button.innerHTML = `<i class="fas fa-spinner fa-spin mr-1"></i>Gerando...`;
-    try {
-        axios.post("/api/to-stl", {
-            braille: braille,
-            resolution: resolution,
-            plate_thickness: plate_thickness,
-            unique_plate: unique_plate,
-            symbols_per_line: symbols_per_line,
-            text_alignment: text_alignment,
-            rounded: rounded
-        }, { responseType: 'blob' }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'output.stl');
-            document.body.appendChild(link);
-            link.click();
-        });
-    } catch (error) {
+    stl_button.innerHTML = `<i class="fas fa-spinner fa-spin mr-1"></i>${page_language === "en" ? "Generating..." : "Gerando..."}`;
+
+    axios.post("/api/to-stl", {
+        braille: braille,
+        resolution: resolution,
+        plate_thickness: plate_thickness,
+        unique_plate: unique_plate,
+        symbols_per_line: symbols_per_line,
+        text_alignment: text_alignment,
+        rounded: rounded,
+        points_only: points_only
+    }, { responseType: 'arraybuffer' }).then((response) => {
+        last_stl_blob = new Blob([response.data], { type: "model/stl" });
+
+        stl_preview.classList.remove("hidden");
+        if (typeof window.renderSTLPreview === "function") {
+            // Copy the buffer because the loader keeps a reference to it
+            window.renderSTLPreview(response.data.slice(0));
+        }
+        stl_preview.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }).catch((error) => {
         console.error(error);
         if (page_language === "pt-BR") {
             alert("Erro ao gerar o arquivo STL. Tente novamente.");
         } else if (page_language === "en") {
             alert("Error generating STL file. Please try again.");
         }
-    } finally {
+    }).finally(() => {
         stl_button.disabled = false;
         if (page_language === "pt-BR") {
-            stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>Gerar Arquivo STL`;
+            stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>Gerar e Visualizar STL`;
         } else if (page_language === "en") {
-            stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>Generate STL File`;
+            stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>Generate &amp; Preview STL`;
         }
-    }
+    });
+}
+
+function downloadSTL() {
+    if (!last_stl_blob) { return; }
+
+    const url = window.URL.createObjectURL(last_stl_blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'output.stl');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 }
 
 function updateParameters() {
@@ -341,7 +429,21 @@ function updateParameters() {
     symbols_per_line = parseInt(input_symbols_per_line.value);
     text_alignment = select_text_alignment.value;
     rounded = input_rounded.checked;
+    points_only = input_points_only.checked;
     plate_width = calculatePlateWidth();
+}
+
+function applyPointsOnlyState() {
+    // When "dots only" is active, plate-related options don't apply, so disable them.
+    const disabled_inputs = [input_separate_plates, input_rounded, input_plate_thickness];
+    disabled_inputs.forEach((input) => {
+        input.disabled = points_only;
+        const card = input.closest(".bg-white");
+        if (card) {
+            card.classList.toggle("opacity-50", points_only);
+            card.classList.toggle("pointer-events-none", points_only);
+        }
+    });
 }
 
 function updateInputs() {
@@ -360,6 +462,7 @@ function updateInputs() {
     input_symbols_per_line.value = symbols_per_line;
     select_text_alignment.value = text_alignment;
     input_rounded.checked = rounded;
+    input_points_only.checked = points_only;
     output_plate_width.innerHTML = plate_width.toFixed(1);
 }
 
@@ -378,6 +481,8 @@ document.addEventListener('DOMContentLoaded', function() {
     save_button = document.querySelector('#save_button');
     convert_button = document.querySelector('#convert_button');
     stl_button = document.querySelector('#stl_button');
+    stl_preview = document.querySelector('#stl_preview');
+    download_stl_button = document.querySelector('#download_stl_button');
     advanced_options = document.querySelector("#advanced_options");
     advanced_options_arrow = document.querySelector("#advanced_options_arrow");
     advanced_options_toggle = document.querySelector("#advanced_options_toggle");
@@ -389,6 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
     input_symbols_per_line = document.querySelector("#input_symbols_per_line");
     select_text_alignment = document.querySelector("#select_text_alignment");
     input_rounded = document.querySelector("#input_rounded");
+    input_points_only = document.querySelector("#input_points_only");
 
     input_resolution.value = resolution;
     input_plate_thickness.value = plate_thickness;
@@ -396,7 +502,9 @@ document.addEventListener('DOMContentLoaded', function() {
     input_symbols_per_line.value = symbols_per_line;
     select_text_alignment.value = text_alignment;
     input_rounded.checked = rounded;
+    input_points_only.checked = points_only;
     output_plate_width.innerHTML = plate_width.toFixed(1);
+    applyPointsOnlyState();
 
     text_to_braille_tab.addEventListener("click", () => switchConversionMode("text-to-braille"));
     braille_to_text_tab.addEventListener("click", () => switchConversionMode("braille-to-text"));
@@ -405,6 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
     save_button.addEventListener("click", saveOutput);
     convert_button.addEventListener("click", convert);
     stl_button.addEventListener("click", generateSTL);
+    download_stl_button.addEventListener("click", downloadSTL);
     advanced_options_toggle.addEventListener("click", toggleAdvancedOptions);
 
     input_resolution.addEventListener("input", updateParameters);
@@ -413,6 +522,10 @@ document.addEventListener('DOMContentLoaded', function() {
     input_symbols_per_line.addEventListener("input", updateParameters);
     select_text_alignment.addEventListener("input", updateParameters);
     input_rounded.addEventListener("input", updateParameters);
+    input_points_only.addEventListener("input", () => {
+        updateParameters();
+        applyPointsOnlyState();
+    });
 
     input_resolution.addEventListener("blur", updateInputs);
     input_plate_thickness.addEventListener("blur", updateInputs);
