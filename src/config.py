@@ -9,5 +9,5 @@ _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class Settings:
     PORT = int(os.getenv("PORT", "3000"))
-    TEMPLATES_DIR = os.path.join(_BASE_DIR, "templates")
+    TEMPLATE_HTML = os.path.join(_BASE_DIR, "index.html")
     STATIC_DIR = os.path.join(_BASE_DIR, "public")

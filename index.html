@@ -30,16 +30,16 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <details class="lang-menu relative">
+                <details class="lang-menu relative" id="lang_dropdown">
                     <summary class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200 cursor-pointer select-none">
                         <i class="fas fa-globe"></i>
-                        <span>🇧🇷 Português</span>
+                        <span id="current-lang-label">🇧🇷 Português</span>
                         <i class="fas fa-chevron-down text-xs lang-caret transition-transform duration-200"></i>
                     </summary>
                     <div class="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-20 overflow-hidden">
-                        <a href="/" class="flex items-center gap-3 px-4 py-2 bg-blue-50 text-blue-600 font-semibold"><span class="text-lg">🇧🇷</span> Português</a>
-                        <a href="/en" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇺🇸</span> English</a>
-                        <a href="/zh" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇨🇳</span> 中文</a>
+                        <button data-lang="pt-BR" class="w-full text-left flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇧🇷</span> Português</button>
+                        <button data-lang="en" class="w-full text-left flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇺🇸</span> English</button>
+                        <button data-lang="zh" class="w-full text-left flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇨🇳</span> 中文</button>
                     </div>
                 </details>
             </div>
@@ -50,12 +50,12 @@
         <section class="bg-blue-50 rounded-xl p-6 mb-8">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-2/3 mb-6 md:mb-0">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Transforme texto em Braille facilmente</h2>
-                    <p class="text-gray-600 mb-4 text-justify">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4" data-i18n="hero_title">Transforme texto em Braille facilmente</h2>
+                    <p class="text-gray-600 mb-4 text-justify" data-i18n="hero_description">
                         O InBraille é uma ferramenta brasileira que converte textos para Braille e os exporta em formato ASCII e STL para impressão 3D, promovendo acessibilidade e inclusão.
                     </p>
                     <a href="#conversor" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-block">
-                        <i class="fas fa-magic mr-2"></i>Experimente agora
+                        <i class="fas fa-magic mr-2"></i><span data-i18n="try_now">Experimente agora</span>
                     </a>
                 </div>
                 <div class="md:w-1/3 flex justify-center">
@@ -71,21 +71,21 @@
         </section>
 
         <section id="conversor" class="bg-white rounded-xl shadow-md p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Conversor</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center" data-i18n="converter_title">Conversor</h2>
 
             <div class="flex border-b mb-6">
                 <button class="tab-active py-2 px-4 mr-2" id="text_to_braille_tab">
-                    <i class="fas fa-text-width mr-2"></i>Texto → Braille
+                    <i class="fas fa-text-width mr-2"></i><span data-i18n="tab_text_to_braille">Texto → Braille</span>
                 </button>
                 <button class="py-2 px-4 text-gray-600" id="braille_to_text_tab">
-                    <span class="mr-2 font-bold">⠿</span>Braille → Texto
+                    <span class="mr-2 font-bold">⠿</span><span data-i18n="tab_braille_to_text">Braille → Texto</span>
                 </button>
             </div>
 
             <div class="mb-6">
-                <label class="block text-gray-700 font-medium mb-2">Alfabeto Braille</label>
+                <label class="block text-gray-700 font-medium mb-2" data-i18n="alphabet_label">Alfabeto Braille</label>
                 <div class="flex flex-wrap gap-4">
-                    <div class="flex items-center">
+                    <div class="flex items-center" id="option_brazilian_container">
                         <input
                             type="radio"
                             id="brazilian"
@@ -93,26 +93,44 @@
                             value="Brazilian"
                             checked
                             class="mr-2"
-                            onchange="switchConversionMode()"
                         >
-                        <label for="brazilian">Brasileiro</label>
+                        <label for="brazilian" data-i18n="alphabet_brazilian">Brasileiro</label>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center" id="option_north_american_container">
                         <input
                             type="radio"
                             id="north-american"
                             name="alphabet"
                             value="North American"
                             class="mr-2"
-                            onchange="switchConversionMode()"
                         >
-                        <label for="north-american">Norte Americano</label>
+                        <label for="north-american" data-i18n="alphabet_north_american">Norte Americano</label>
+                    </div>
+                    <div class="flex items-center" id="option_chinese_container">
+                        <input
+                            type="radio"
+                            id="chinese"
+                            name="alphabet"
+                            value="Chinese"
+                            class="mr-2"
+                        >
+                        <label for="chinese" data-i18n="alphabet_chinese">Chinês</label>
                     </div>
                 </div>
 
-                <p class="text-sm text-red-500 mt-2 hidden text-justify" id="warning">
-                    <i class="fas fa-exclamation-circle mr-1"></i> No alfabeto brasileiro, essa conversão tem problemas com alguns caracteres. Por exemplo, o caractere "&" tem o mesmo símbolo braille que o caractere "ç".
-                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-3 rounded-r-lg hidden" id="chinese_input_tip_container">
+                    <p class="text-sm text-blue-700 text-justify">
+                        <i class="fas fa-keyboard mr-1"></i>
+                        <span data-i18n="chinese_input_tip">您可以输入带声调数字的拼音（如 ni3 hao3）或中文汉字（如 你好）。系统会自动识别并转换。词与词之间请用空格分隔。</span>
+                    </p>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-400 p-3 mt-3 rounded-r-lg hidden" id="warning">
+                    <p class="text-sm text-amber-700 text-justify">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        <span data-i18n="warning_brazilian">No alfabeto brasileiro, essa conversão tem problemas com alguns caracteres. Por exemplo, o caractere "&" tem o mesmo símbolo braille que o caractere "ç".</span>
+                    </p>
+                </div>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6 mb-6">
@@ -129,8 +147,8 @@
                     ></textarea>
 
                     <div class="flex justify-between items-center mt-2">
-                        <button class="text-blue-500 hover:text-blue-700 text-sm" onclick="clearInput()">
-                            <i class="fas fa-eraser mr-1"></i>Limpar
+                        <button class="text-blue-500 hover:text-blue-700 text-sm" id="clear_button">
+                            <i class="fas fa-eraser mr-1"></i><span data-i18n="clear_button">Limpar</span>
                         </button>
                         <span class="text-gray-500 text-sm" id="char_count">0 caracteres</span>
                     </div>
@@ -151,10 +169,10 @@
 
                     <div class="flex justify-end space-x-2 mt-2">
                         <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm" id="copy_button">
-                            <i class="fas fa-copy mr-1"></i>Copiar
+                            <i class="fas fa-copy mr-1"></i><span id="copy_button_text" data-i18n="copy_button">Copiar</span>
                         </button>
                         <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" id="save_button">
-                            <i class="fas fa-download mr-1"></i>Salvar
+                            <i class="fas fa-download mr-1"></i><span data-i18n="save_button">Salvar</span>
                         </button>
                     </div>
                 </div>
@@ -162,12 +180,12 @@
 
             <div class="text-center mb-8">
                 <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="convert_button">
-                    <i class="fas fa-exchange-alt mr-2"></i>Converter
+                    <i class="fas fa-exchange-alt mr-2"></i><span data-i18n="convert_button">Converter</span>
                 </button>
             </div>
 
             <div class="border-t pt-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Exportar para Impressão 3D</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center" data-i18n="export_3d_title">Exportar para Impressão 3D</h3>
                 
                 <div id="stl-alert" class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-lg fade-in">
                     <div class="flex">
@@ -176,8 +194,8 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-amber-700 text-justify">
-                                <span class="font-semibold text-justify">Atenção:</span>
-                                A exportação para STL utiliza apenas o conteúdo em Braille. O texto original, ou convertido, não é usado para gerar o modelo 3D. Certifique-se de converter seu texto para Braille antes de exportar.
+                                <span class="font-semibold text-justify" data-i18n="compass_alert_title">Atenção:</span>
+                                <span data-i18n="stl_alert_text">A exportação para STL utiliza apenas o conteúdo em Braille. O texto original, ou convertido, não é usado para gerar o modelo 3D. Certifique-se de converter seu texto para Braille antes de exportar.</span>
                             </p>
                         </div>
                     </div>
@@ -190,8 +208,8 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-blue-700 text-justify">
-                                <span class="font-semibold">Indicador de orientação:</span>
-                                para você não montar a peça de cabeça para baixo, o modelo inclui uma marca de referência. Com placa, há um <span class="font-semibold">ponto maior no canto inferior esquerdo</span>. No modo "apenas os pontos", há uma <span class="font-semibold">barrinha na parte de baixo</span>. Mantenha essa marca embaixo/à esquerda ao ler ou colar.
+                                <span class="font-semibold" data-i18n="compass_alert_title">Indicador de orientação:</span>
+                                <span data-i18n="compass_alert_text">para você não montar a peça de cabeça para baixo, o modelo inclui uma marca de referência. Com placa, há um ponto maior no canto inferior esquerdo. No modo "apenas os pontos", há uma barrinha na parte de baixo. Mantenha essa marca embaixo/à esquerda ao ler ou colar.</span>
                             </p>
                         </div>
                     </div>
@@ -199,29 +217,29 @@
 
                 <div class="text-center mb-6">
                     <button class="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="stl_button">
-                        <i class="fas fa-cube mr-2"></i>Gerar e Visualizar STL
+                        <i class="fas fa-cube mr-2"></i><span id="stl_button_text" data-i18n="stl_button">Gerar e Visualizar STL</span>
                     </button>
                 </div>
 
                 <div id="stl_preview" class="hidden mb-6 fade-in">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                         <h4 class="text-lg font-medium text-gray-700">
-                            <i class="fas fa-cube mr-2 text-purple-500"></i>Pré-visualização 3D
+                            <i class="fas fa-cube mr-2 text-purple-500"></i><span data-i18n="stl_preview_title">Pré-visualização 3D</span>
                         </h4>
                         <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition duration-200" id="download_stl_button">
-                            <i class="fas fa-download mr-2"></i>Baixar STL
+                            <i class="fas fa-download mr-2"></i><span data-i18n="download_stl_button">Baixar STL</span>
                         </button>
                     </div>
                     <div id="stl_preview_canvas" class="w-full h-96 rounded-lg overflow-hidden border border-gray-200 bg-gray-100"></div>
-                    <p class="text-xs text-gray-500 mt-2 text-center">
-                        <i class="fas fa-mouse-pointer mr-1"></i>Arraste para girar, role para dar zoom.
+                    <p class="text-xs text-gray-500 mt-2 text-center" data-i18n="preview_instructions">
+                        Arraste para girar, role para dar zoom.
                     </p>
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-4">
                     <div class="flex justify-between items-center cursor-pointer" id="advanced_options_toggle">
                         <h4 class="text-lg font-medium text-gray-700">
-                            <i class="fas fa-cog mr-2"></i>Opções Avançadas
+                            <i class="fas fa-cog mr-2"></i><span data-i18n="advanced_options_title">Opções Avançadas</span>
                         </h4>
                         <i class="fas fa-chevron-down transition-transform duration-200" id="advanced_options_arrow"></i>
                     </div>
@@ -231,53 +249,53 @@
 
                             <div class="bg-white p-4 rounded-lg shadow-sm ring-1 ring-purple-100 md:col-span-2 lg:col-span-3">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">
-                                        </i>Apenas os Pontos (sem placa)
+                                    <label class="font-medium" data-i18n="points_only_title">
+                                        Apenas os Pontos (sem placa)
                                     </label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_points_only">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500 text-justify">Gera somente as calotas dos pontos (0,65 mm), sem a placa de base, mais uma barrinha de orientação embaixo. Ideal para colar os pontos em STLs já prontos. Ao ativar, as opções de placa são desativadas.</p>
+                                <p class="text-sm text-gray-500 text-justify" data-i18n="points_only_desc">Gera somente as calotas dos pontos (0,65 mm), sem a placa de base, mais uma barrinha de orientação embaixo. Ideal para colar os pontos em STLs já prontos. Ao ativar, as opções de placa são desativadas.</p>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Placas Separadas</label>
+                                    <label class="font-medium" data-i18n="separate_plates_title">Placas Separadas</label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_separate_plates">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500">Cada linha em uma placa separada</p>
+                                <p class="text-sm text-gray-500" data-i18n="separate_plates_desc">Cada linha em uma placa separada</p>
                             </div>
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Bordas Arredondadas</label>
+                                    <label class="font-medium" data-i18n="rounded_edges_title">Bordas Arredondadas</label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_rounded">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500">Cantos arredondados nas placas</p>
+                                <p class="text-sm text-gray-500" data-i18n="rounded_edges_desc">Cantos arredondados nas placas</p>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Alinhamento do Texto</label>
+                                <label class="font-medium block mb-2" data-i18n="text_alignment_title">Alinhamento do Texto</label>
                                 <select 
                                     id="select_text_alignment" 
                                     class="w-full p-2 border rounded"
                                 >
-                                    <option value="center">Centro</option>
-                                    <option value="left">Esquerda</option>
-                                    <option value="right">Direita</option>
+                                    <option value="center" data-i18n="align_center">Centro</option>
+                                    <option value="left" data-i18n="align_left">Esquerda</option>
+                                    <option value="right" data-i18n="align_right">Direita</option>
                                 </select>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Símbolos por Linha</label>
+                                <label class="font-medium block mb-2" data-i18n="symbols_per_line_title">Símbolos por Linha</label>
                                 <input 
                                     type="number" 
                                     id="input_symbols_per_line" 
@@ -287,14 +305,14 @@
                                     value="22"
                                 >
                                 <p class="text-xs text-gray-500 mt-1">
-                                    Valor entre 8 e 50 (largura da placa:
+                                    <span id="symbols_per_line_desc_prefix" data-i18n="symbols_per_line_desc_prefix">Valor entre 8 e 50 (largura da placa: </span>
                                     <span id="plate_width">0</span>
-                                    mm)
+                                    <span id="symbols_per_line_desc_suffix" data-i18n="symbols_per_line_desc_suffix"> mm)</span>
                                 </p>
                             </div>
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Espessura da Placa (mm)</label>
+                                <label class="font-medium block mb-2" data-i18n="plate_thickness_title">Espessura da Placa (mm)</label>
                                 <input 
                                     type="number" 
                                     id="input_plate_thickness" 
@@ -303,11 +321,11 @@
                                     max="100"
                                     value="3"
                                 >
-                                <p class="text-xs text-gray-500 mt-1">Valor entre 2 e 100</p>
+                                <p class="text-xs text-gray-500 mt-1" data-i18n="plate_thickness_desc">Valor entre 2 e 100</p>
                             </div>
                             
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Resolução dos Pontos</label>
+                                <label class="font-medium block mb-2" data-i18n="point_resolution_title">Resolução dos Pontos</label>
                                 <input 
                                     type="number" 
                                     id="input_resolution" 
@@ -316,7 +334,7 @@
                                     max="50"
                                     value="20"
                                 >
-                                <p class="text-xs text-gray-500 mt-1">Valor entre 15 e 50</p>
+                                <p class="text-xs text-gray-500 mt-1" data-i18n="point_resolution_desc">Valor entre 15 e 50</p>
                             </div>
                         </div>
                     </div>
@@ -325,26 +343,22 @@
         </section>
 
         <section class="bg-white rounded-xl shadow-md p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Sobre o InBraille</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-4" data-i18n="about_title">Sobre o InBraille</h2>
             
             <div class="prose max-w-none">
-                <p class="mb-4 text-justify">
-                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                <p class="mb-4 text-justify" data-i18n="about_p1">
                     O InBraille é uma ferramenta inovadora, brasileira e pernambucana, que converte textos para Braille e os exporta tanto em formato ASCII quanto em placas STL para impressão 3D.
                 </p>
                 
-                <p class="mb-4 text-justify">
-                    <i class="fas fa-universal-access text-blue-500 mr-2"></i>
+                <p class="mb-4 text-justify" data-i18n="about_p2">
                     Com essa solução, é possível ampliar a acessibilidade e a inclusão, permitindo que qualquer pessoa possa criar materiais táteis para pessoas com deficiência visual.
                 </p>
                 
-                <p class="mb-4 text-justify">
-                    <i class="fas fa-cubes text-purple-500 mr-2"></i>
+                <p class="mb-4 text-justify" data-i18n="about_p3">
                     Além de ser uma tecnologia acessível e de fácil uso, esse projeto tem um impacto social significativo, possibilitando a produção de textos, etiquetas, placas informativas e materiais educacionais em Braille de forma acessível e personalizada.
                 </p>
                 
-                <p class="mb-4 text-justify">
-                    <i class="fas fa-globe-americas text-green-500 mr-2"></i>
+                <p class="mb-4 text-justify" data-i18n="about_p4">
                     Seja para fins educacionais, profissionais ou do dia a dia, essa ferramenta visa tornar a informação verdadeiramente universal. O objetivo é democratizar o acesso ao Braille por meio da cultura maker e da impressão 3D, proporcionando autonomia e independência para quem precisa.
                 </p>
 
@@ -356,13 +370,13 @@
                             </div>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-lg font-semibold text-indigo-800">Neurodiversidade na Tecnologia</h3>
+                            <h3 class="text-lg font-semibold text-indigo-800" data-i18n="neurodiversity_title">Neurodiversidade na Tecnologia</h3>
 
-                            <p class="text-gray-700 mt-2 text-justify">
+                            <p class="text-gray-700 mt-2 text-justify" data-i18n="neurodiversity_p1">
                                 Esta ferramenta foi desenvolvida por Lucas Guerra, um estudante e desenvolvedor autista que transformou sua perspectiva única em soluções tecnológicas inclusivas. O autismo trouxe uma abordagem diferente para a criação deste projeto, com foco intenso em detalhes e padrões que resultaram em uma ferramenta mais acessível e intuitiva.
                             </p>
 
-                            <p class="text-gray-700 mt-2 text-justify">
+                            <p class="text-gray-700 mt-2 text-justify" data-i18n="neurodiversity_p2">
                                 Essa solução é fruto do Laboratório de Tecnologia 3D e Inclusiva do Departamento de Computação da Universidade Federal Rural de Pernambuco (UFRPE), que promove a inclusão e acessibilidade por meio da tecnologia. O laboratório é um espaço de pesquisa e desenvolvimento que busca criar soluções inovadoras para pessoas com deficiência, utilizando impressão 3D e outras tecnologias assistivas.
                             </p>
                         </div>
@@ -371,10 +385,10 @@
                 
                 <div class="bg-blue-50 p-4 rounded-lg mt-6 border-l-4 border-blue-400">
                     <h3 class="font-bold text-lg mb-2 flex items-center">
-                        <i class="fas fa-book mr-2 text-blue-600"></i> Saiba mais
+                        <i class="fas fa-book mr-2 text-blue-600"></i> <span data-i18n="learn_more_title">Saiba mais</span>
                     </h3>
                     <p class="text-justify">
-                        Veja mais sobre essa ferramenta na página dela no 
+                        <span data-i18n="learn_more_p1">Veja mais sobre essa ferramenta na página dela no</span>
                         <a href="https://cienciaembarcada.com.br/inbraille/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
                             Ciência Embarcada <i class="fas fa-external-link-alt ml-1 text-sm"></i>
                         </a>
@@ -393,7 +407,7 @@
                             <span class="text-blue-500 text-2xl">⠎⠞⠇</span>InBraille
                         </h2>
                     </div>
-                    <p class="text-gray-400 mt-2">Ferramenta de conversão para Braille</p>
+                    <p class="text-gray-400 mt-2" data-i18n="footer_text">Ferramenta de conversão para Braille</p>
                 </div>
                 
                 <div class="flex space-x-4">
@@ -408,7 +422,7 @@
             
             <div class="border-t border-gray-700 mt-6 pt-6 text-center md:text-left">
                 <p class="text-gray-400">
-                    Desenvolvido por 
+                    <span data-i18n="developed_by">Desenvolvido por</span>
                     <a href="https://linkedin.com/in/lucasrguerra/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">
                         Lucas Guerra
                     </a>
@@ -427,6 +441,6 @@
     }
     </script>
     <script type="module" src="/public/preview.js"></script>
-    <script src="/public/index.js"></script>
+    <script type="module" src="/public/index.js"></script>
 </body>
 </html>

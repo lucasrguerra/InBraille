@@ -2,9 +2,8 @@
 
 Adding a new alphabet is a matter of registering its functions here (open/closed).
 """
-from src.translation.encoder import encode_brazilian, encode_north_american
-from src.translation.decoder import decode_brazilian, decode_north_american
-from src.translation.chinese import encode_chinese, decode_chinese
+from src.translation.encoder import encode_brazilian, encode_north_american, encode_chinese
+from src.translation.decoder import decode_brazilian, decode_north_american, decode_chinese
 
 
 _ENCODERS = {

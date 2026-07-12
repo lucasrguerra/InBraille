@@ -2,7 +2,7 @@
 
 Source: Australian Braille Authority, "Chinese (Mandarin) and UEB" (May 2024),
 based on the official Chinese braille transcription system. Data only — the
-encoding/decoding logic lives in src/translation/chinese.py.
+encoding/decoding logic lives in src/translation/encoder.py and src/translation/decoder.py.
 
 A Mandarin syllable is written with up to three cells: initial + final + tone.
 Dot patterns below use dot numbers 1-6; _cell() turns them into Unicode braille.

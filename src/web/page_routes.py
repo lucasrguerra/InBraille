@@ -9,36 +9,21 @@ def build_page_router() -> APIRouter:
     router = APIRouter()
 
     @router.get("/")
-    def home_pt_br():
-        try:
-            html_content = open(f"{Settings.TEMPLATES_DIR}/index_pt_br.html", "r", encoding="utf-8").read()
-            return responses.HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
-        except Exception:
-            return responses.Response(content="Internal Server Error", status_code=404)
-
     @router.get("/en")
-    def home_en():
-        try:
-            html_content = open(f"{Settings.TEMPLATES_DIR}/index_en.html", "r", encoding="utf-8").read()
-            return responses.HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
-        except Exception:
-            return responses.Response(content="Internal Server Error", status_code=404)
-
     @router.get("/zh")
-    def home_zh():
+    def home():
         try:
-            html_content = open(f"{Settings.TEMPLATES_DIR}/index_zh.html", "r", encoding="utf-8").read()
-            return responses.HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
+            return responses.FileResponse(Settings.TEMPLATE_HTML, media_type="text/html; charset=utf-8")
         except Exception:
             return responses.Response(content="Internal Server Error", status_code=404)
 
-    @router.get("/public/{file_path}")
+    @router.get("/public/{file_path:path}")
     def static(file_path: str):
         try:
             path = f"{Settings.STATIC_DIR}/{file_path}"
-            if file_path == "style.css":
+            if file_path.endswith(".css"):
                 return responses.FileResponse(path, media_type="text/css")
-            elif file_path in ("index.js", "script.js", "preview.js"):
+            elif file_path.endswith(".js"):
                 return responses.FileResponse(path, media_type="text/javascript")
             else:
                 return responses.FileResponse(path)
