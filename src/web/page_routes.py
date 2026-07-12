@@ -39,7 +39,7 @@ def build_page_router() -> APIRouter:
             if file_path == "style.css":
                 content = open(path, "r", encoding="utf-8").read()
                 return responses.HTMLResponse(content=content, media_type="text/css; charset=utf-8")
-            elif file_path in ("script.js", "preview.js"):
+            elif file_path in ("index.js", "script.js", "preview.js"):
                 content = open(path, "r", encoding="utf-8").read()
                 return responses.HTMLResponse(content=content, media_type="text/javascript; charset=utf-8")
             else:
