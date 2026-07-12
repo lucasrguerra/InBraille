@@ -88,7 +88,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (elements.input_symbols_per_line) {
         elements.input_symbols_per_line.addEventListener("input", updateParameters);
-        elements.input_symbols_per_line.addEventListener("change", convert);
+        elements.input_symbols_per_line.addEventListener("change", () => {
+            if (elements.output_textbox) elements.output_textbox.value = "";
+        });
     }
     if (elements.select_text_alignment) {
         elements.select_text_alignment.addEventListener("input", updateParameters);
@@ -109,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (elements.input_symbols_per_line) {
         elements.input_symbols_per_line.addEventListener("blur", () => {
             updateInputs();
-            convert();
+            if (elements.output_textbox) elements.output_textbox.value = "";
         });
     }
     if (elements.select_text_alignment) elements.select_text_alignment.addEventListener("blur", updateInputs);
