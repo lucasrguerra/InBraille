@@ -4,10 +4,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: inbraille
+    ports:
+      - "3000"
     environment:
       PORT: "3000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/" ]
       interval: 30s
       timeout: 10s
       retries: 3

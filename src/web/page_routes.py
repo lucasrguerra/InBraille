@@ -37,11 +37,9 @@ def build_page_router() -> APIRouter:
         try:
             path = f"{Settings.STATIC_DIR}/{file_path}"
             if file_path == "style.css":
-                content = open(path, "r", encoding="utf-8").read()
-                return responses.HTMLResponse(content=content, media_type="text/css; charset=utf-8")
+                return responses.FileResponse(path, media_type="text/css")
             elif file_path in ("index.js", "script.js", "preview.js"):
-                content = open(path, "r", encoding="utf-8").read()
-                return responses.HTMLResponse(content=content, media_type="text/javascript; charset=utf-8")
+                return responses.FileResponse(path, media_type="text/javascript")
             else:
                 return responses.FileResponse(path)
         except Exception:
