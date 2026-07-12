@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/public/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>InBraille - Conversor de Texto para Braille</title>
-    <meta name="description" content="Ferramenta brasileira que converte textos para Braille e exporta em formato ASCII e STL para impressão 3D">
-    <meta name="keywords" content="braille, stl, impressão 3d, inclusão, acessibilidade">
+    <title>InBraille - 中文盲文转换器</title>
+    <meta name="description" content="将中文（拼音或汉字）转换为盲文，并导出为 ASCII 和 STL 格式用于 3D 打印">
+    <meta name="keywords" content="盲文, braille, stl, 3d打印, 无障碍, 中文盲文">
     <meta name="author" content="Lucas Rayan Guerra">
     <meta property="og:title" content="InBraille" />
     <meta property="og:type" content="website" />
@@ -33,13 +33,13 @@
                 <details class="lang-menu relative">
                     <summary class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200 cursor-pointer select-none">
                         <i class="fas fa-globe"></i>
-                        <span>🇧🇷 Português</span>
+                        <span>🇨🇳 中文</span>
                         <i class="fas fa-chevron-down text-xs lang-caret transition-transform duration-200"></i>
                     </summary>
                     <div class="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-20 overflow-hidden">
-                        <a href="/" class="flex items-center gap-3 px-4 py-2 bg-blue-50 text-blue-600 font-semibold"><span class="text-lg">🇧🇷</span> Português</a>
+                        <a href="/" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇧🇷</span> Português</a>
                         <a href="/en" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇺🇸</span> English</a>
-                        <a href="/zh" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50"><span class="text-lg">🇨🇳</span> 中文</a>
+                        <a href="/zh" class="flex items-center gap-3 px-4 py-2 bg-blue-50 text-blue-600 font-semibold"><span class="text-lg">🇨🇳</span> 中文</a>
                     </div>
                 </details>
             </div>
@@ -50,12 +50,12 @@
         <section class="bg-blue-50 rounded-xl p-6 mb-8">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-2/3 mb-6 md:mb-0">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Transforme texto em Braille facilmente</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">轻松将中文转换为盲文</h2>
                     <p class="text-gray-600 mb-4 text-justify">
-                        O InBraille é uma ferramenta brasileira que converte textos para Braille e os exporta em formato ASCII e STL para impressão 3D, promovendo acessibilidade e inclusão.
+                        InBraille 可将中文（拼音或汉字）转换为盲文，并导出为 ASCII 和 STL 格式用于 3D 打印，促进无障碍与包容。中文盲文基于普通话拼音（声母 + 韵母 + 声调）。
                     </p>
                     <a href="#conversor" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-block">
-                        <i class="fas fa-magic mr-2"></i>Experimente agora
+                        <i class="fas fa-magic mr-2"></i>立即体验
                     </a>
                 </div>
                 <div class="md:w-1/3 flex justify-center">
@@ -71,90 +71,84 @@
         </section>
 
         <section id="conversor" class="bg-white rounded-xl shadow-md p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Conversor</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">转换器</h2>
 
             <div class="flex border-b mb-6">
                 <button class="tab-active py-2 px-4 mr-2" id="text_to_braille_tab">
-                    <i class="fas fa-text-width mr-2"></i>Texto → Braille
+                    <i class="fas fa-text-width mr-2"></i>中文 → 盲文
                 </button>
                 <button class="py-2 px-4 text-gray-600" id="braille_to_text_tab">
-                    <span class="mr-2 font-bold">⠿</span>Braille → Texto
+                    <span class="mr-2 font-bold">⠿</span>盲文 → 拼音
                 </button>
             </div>
 
             <div class="mb-6">
-                <label class="block text-gray-700 font-medium mb-2">Alfabeto Braille</label>
+                <label class="block text-gray-700 font-medium mb-2">盲文标准</label>
                 <div class="flex flex-wrap gap-4">
                     <div class="flex items-center">
                         <input
                             type="radio"
-                            id="brazilian"
+                            id="chinese"
                             name="alphabet"
-                            value="Brazilian"
+                            value="Chinese"
                             checked
                             class="mr-2"
                             onchange="switchConversionMode()"
                         >
-                        <label for="brazilian">Brasileiro</label>
-                    </div>
-                    <div class="flex items-center">
-                        <input
-                            type="radio"
-                            id="north-american"
-                            name="alphabet"
-                            value="North American"
-                            class="mr-2"
-                            onchange="switchConversionMode()"
-                        >
-                        <label for="north-american">Norte Americano</label>
+                        <label for="chinese">中文（普通话）</label>
                     </div>
                 </div>
 
-                <p class="text-sm text-red-500 mt-2 hidden text-justify" id="warning">
-                    <i class="fas fa-exclamation-circle mr-1"></i> No alfabeto brasileiro, essa conversão tem problemas com alguns caracteres. Por exemplo, o caractere "&" tem o mesmo símbolo braille que o caractere "ç".
-                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-3 rounded-r-lg">
+                    <p class="text-sm text-blue-700 text-justify">
+                        <i class="fas fa-keyboard mr-1"></i>
+                        您可以输入<span class="font-semibold">带声调数字的拼音</span>（如 <span class="font-mono">ni3 hao3</span>）或<span class="font-semibold">中文汉字</span>（如 <span class="font-semibold">你好</span>）。系统会自动识别并转换。词与词之间请用空格分隔。
+                    </p>
+                </div>
+
+                <p class="text-sm text-red-500 mt-2 hidden text-justify" id="warning"></p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6 mb-6">
                 <div class="text-area-container border-2 border-gray-200 rounded-lg p-4">
                     <label for="input_text" id="input_label">
                         <i class="fas fa-pen-alt mr-1"></i>
-                        Digite seu texto
+                        输入文字
                     </label>
 
-                    <textarea 
-                        class="w-full h-40 p-2 focus:outline-none resize-none" 
-                        id="input_text" 
-                        placeholder="Digite o texto que deseja converter para Braille..."
+                    <textarea
+                        class="w-full h-40 p-2 focus:outline-none resize-none"
+                        id="input_text"
+                        placeholder="输入拼音（如 ni3 hao3）或汉字（如 你好）..."
                     ></textarea>
 
                     <div class="flex justify-between items-center mt-2">
                         <button class="text-blue-500 hover:text-blue-700 text-sm" onclick="clearInput()">
-                            <i class="fas fa-eraser mr-1"></i>Limpar
+                            <i class="fas fa-eraser mr-1"></i>清除
                         </button>
-                        <span class="text-gray-500 text-sm" id="char_count">0 caracteres</span>
+                        <span class="text-gray-500 text-sm" id="char_count">0 个字符</span>
                     </div>
                 </div>
 
                 <div class="text-area-container border-2 border-gray-200 rounded-lg p-4">
                     <label for="output_text" id="output_label">
                         <span class="mr-1 font-bold">⠿</span>
-                        Resultado em Braille
+                        盲文结果
                     </label>
 
-                    <textarea 
-                        class="w-full h-40 p-2 focus:outline-none resize-none" 
-                        id="output_text" 
+                    <textarea
+                        class="w-full h-40 p-2 focus:outline-none resize-none"
+                        id="output_text"
                         readonly
-                        placeholder="O resultado em Braille aparecerá aqui..."
+                        placeholder="盲文结果将显示在此处..."
                     ></textarea>
 
                     <div class="flex justify-end space-x-2 mt-2">
                         <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm" id="copy_button">
-                            <i class="fas fa-copy mr-1"></i>Copiar
+                            <i class="fas fa-copy mr-1"></i>复制
                         </button>
                         <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" id="save_button">
-                            <i class="fas fa-download mr-1"></i>Salvar
+                            <i class="fas fa-download mr-1"></i>保存
                         </button>
                     </div>
                 </div>
@@ -162,13 +156,13 @@
 
             <div class="text-center mb-8">
                 <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="convert_button">
-                    <i class="fas fa-exchange-alt mr-2"></i>Converter
+                    <i class="fas fa-exchange-alt mr-2"></i>转换
                 </button>
             </div>
 
             <div class="border-t pt-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Exportar para Impressão 3D</h3>
-                
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">导出为 3D 打印</h3>
+
                 <div id="stl-alert" class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded-r-lg fade-in">
                     <div class="flex">
                         <div class="flex-shrink-0">
@@ -176,8 +170,8 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-amber-700 text-justify">
-                                <span class="font-semibold text-justify">Atenção:</span>
-                                A exportação para STL utiliza apenas o conteúdo em Braille. O texto original, ou convertido, não é usado para gerar o modelo 3D. Certifique-se de converter seu texto para Braille antes de exportar.
+                                <span class="font-semibold text-justify">注意：</span>
+                                导出 STL 仅使用盲文内容。原始文字或转换后的文字不用于生成 3D 模型。导出前请先将文字转换为盲文。
                             </p>
                         </div>
                     </div>
@@ -190,8 +184,8 @@
                         </div>
                         <div class="ml-3">
                             <p class="text-sm text-blue-700 text-justify">
-                                <span class="font-semibold">Indicador de orientação:</span>
-                                para você não montar a peça de cabeça para baixo, o modelo inclui uma marca de referência. Com placa, há um <span class="font-semibold">ponto maior no canto inferior esquerdo</span>. No modo "apenas os pontos", há uma <span class="font-semibold">barrinha na parte de baixo</span>. Mantenha essa marca embaixo/à esquerda ao ler ou colar.
+                                <span class="font-semibold">方向标记：</span>
+                                为避免上下颠倒，模型包含参考标记。带底板时，<span class="font-semibold">左下角有一个较大的点</span>；在"仅点"模式下，<span class="font-semibold">底部有一条小横杠</span>。阅读或粘贴时请让该标记保持在下方/左侧。
                             </p>
                         </div>
                     </div>
@@ -199,124 +193,124 @@
 
                 <div class="text-center mb-6">
                     <button class="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-medium text-lg transition duration-200" id="stl_button">
-                        <i class="fas fa-cube mr-2"></i>Gerar e Visualizar STL
+                        <i class="fas fa-cube mr-2"></i>生成并预览 STL
                     </button>
                 </div>
 
                 <div id="stl_preview" class="hidden mb-6 fade-in">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                         <h4 class="text-lg font-medium text-gray-700">
-                            <i class="fas fa-cube mr-2 text-purple-500"></i>Pré-visualização 3D
+                            <i class="fas fa-cube mr-2 text-purple-500"></i>3D 预览
                         </h4>
                         <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition duration-200" id="download_stl_button">
-                            <i class="fas fa-download mr-2"></i>Baixar STL
+                            <i class="fas fa-download mr-2"></i>下载 STL
                         </button>
                     </div>
                     <div id="stl_preview_canvas" class="w-full h-96 rounded-lg overflow-hidden border border-gray-200 bg-gray-100"></div>
                     <p class="text-xs text-gray-500 mt-2 text-center">
-                        <i class="fas fa-mouse-pointer mr-1"></i>Arraste para girar, role para dar zoom.
+                        <i class="fas fa-mouse-pointer mr-1"></i>拖动旋转，滚动缩放。
                     </p>
                 </div>
 
                 <div class="bg-gray-50 rounded-lg p-4">
                     <div class="flex justify-between items-center cursor-pointer" id="advanced_options_toggle">
                         <h4 class="text-lg font-medium text-gray-700">
-                            <i class="fas fa-cog mr-2"></i>Opções Avançadas
+                            <i class="fas fa-cog mr-2"></i>高级选项
                         </h4>
                         <i class="fas fa-chevron-down transition-transform duration-200" id="advanced_options_arrow"></i>
                     </div>
-                    
+
                     <div class="mt-4 hidden" id="advanced_options">
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                             <div class="bg-white p-4 rounded-lg shadow-sm ring-1 ring-purple-100 md:col-span-2 lg:col-span-3">
                                 <div class="flex justify-between items-center mb-2">
                                     <label class="font-medium">
-                                        </i>Apenas os Pontos (sem placa)
+                                        <i class="fas fa-braille mr-1 text-purple-500"></i>仅点（无底板）
                                     </label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_points_only">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500 text-justify">Gera somente as calotas dos pontos (0,65 mm), sem a placa de base, mais uma barrinha de orientação embaixo. Ideal para colar os pontos em STLs já prontos. Ao ativar, as opções de placa são desativadas.</p>
+                                <p class="text-sm text-gray-500 text-justify">仅生成点的凸帽（0.65 毫米），不含底板，并在底部附加一条方向横杠。适合将点粘贴到已有的 STL 上。启用后，底板相关选项将被禁用。</p>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Placas Separadas</label>
+                                    <label class="font-medium">分离底板</label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_separate_plates">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500">Cada linha em uma placa separada</p>
+                                <p class="text-sm text-gray-500">每行一个独立底板</p>
                             </div>
-                            
+
                             <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <div class="flex justify-between items-center mb-2">
-                                    <label class="font-medium">Bordas Arredondadas</label>
+                                    <label class="font-medium">圆角</label>
                                     <label class="switch">
                                         <input type="checkbox" id="input_rounded">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <p class="text-sm text-gray-500">Cantos arredondados nas placas</p>
+                                <p class="text-sm text-gray-500">底板圆角</p>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Alinhamento do Texto</label>
-                                <select 
-                                    id="select_text_alignment" 
+                                <label class="font-medium block mb-2">文字对齐</label>
+                                <select
+                                    id="select_text_alignment"
                                     class="w-full p-2 border rounded"
                                 >
-                                    <option value="center">Centro</option>
-                                    <option value="left">Esquerda</option>
-                                    <option value="right">Direita</option>
+                                    <option value="center">居中</option>
+                                    <option value="left">左对齐</option>
+                                    <option value="right">右对齐</option>
                                 </select>
                             </div>
 
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Símbolos por Linha</label>
-                                <input 
-                                    type="number" 
-                                    id="input_symbols_per_line" 
+                                <label class="font-medium block mb-2">每行符号数</label>
+                                <input
+                                    type="number"
+                                    id="input_symbols_per_line"
                                     class="w-full p-2 border rounded"
                                     min="8"
                                     max="50"
                                     value="22"
                                 >
                                 <p class="text-xs text-gray-500 mt-1">
-                                    Valor entre 8 e 50 (largura da placa:
+                                    8 到 50 之间（底板宽度：
                                     <span id="plate_width">0</span>
-                                    mm)
+                                    毫米）
                                 </p>
                             </div>
-                            
+
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Espessura da Placa (mm)</label>
-                                <input 
-                                    type="number" 
-                                    id="input_plate_thickness" 
+                                <label class="font-medium block mb-2">底板厚度（毫米）</label>
+                                <input
+                                    type="number"
+                                    id="input_plate_thickness"
                                     class="w-full p-2 border rounded"
-                                    min="2"
+                                    min="1"
                                     max="100"
                                     value="3"
                                 >
-                                <p class="text-xs text-gray-500 mt-1">Valor entre 2 e 100</p>
+                                <p class="text-xs text-gray-500 mt-1">1 到 100 之间</p>
                             </div>
-                            
+
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <label class="font-medium block mb-2">Resolução dos Pontos</label>
-                                <input 
-                                    type="number" 
-                                    id="input_resolution" 
+                                <label class="font-medium block mb-2">点分辨率</label>
+                                <input
+                                    type="number"
+                                    id="input_resolution"
                                     class="w-full p-2 border rounded"
-                                    min="15"
-                                    max="50"
+                                    min="2"
+                                    max="150"
                                     value="20"
                                 >
-                                <p class="text-xs text-gray-500 mt-1">Valor entre 15 e 50</p>
+                                <p class="text-xs text-gray-500 mt-1">2 到 150 之间</p>
                             </div>
                         </div>
                     </div>
@@ -325,27 +319,27 @@
         </section>
 
         <section class="bg-white rounded-xl shadow-md p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Sobre o InBraille</h2>
-            
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">关于 InBraille</h2>
+
             <div class="prose max-w-none">
                 <p class="mb-4 text-justify">
                     <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
-                    O InBraille é uma ferramenta inovadora, brasileira e pernambucana, que converte textos para Braille e os exporta tanto em formato ASCII quanto em placas STL para impressão 3D.
+                    InBraille 是一个来自巴西的创新工具，可将文字转换为盲文，并导出为 ASCII 格式和用于 3D 打印的 STL 底板。
                 </p>
-                
+
                 <p class="mb-4 text-justify">
                     <i class="fas fa-universal-access text-blue-500 mr-2"></i>
-                    Com essa solução, é possível ampliar a acessibilidade e a inclusão, permitindo que qualquer pessoa possa criar materiais táteis para pessoas com deficiência visual.
+                    借助该方案，可以扩展无障碍与包容，让任何人都能为视障人士制作触觉材料。
                 </p>
-                
+
                 <p class="mb-4 text-justify">
                     <i class="fas fa-cubes text-purple-500 mr-2"></i>
-                    Além de ser uma tecnologia acessível e de fácil uso, esse projeto tem um impacto social significativo, possibilitando a produção de textos, etiquetas, placas informativas e materiais educacionais em Braille de forma acessível e personalizada.
+                    中文盲文基于普通话拼音的语音表示：每个音节由声母、韵母和声调组成。本工具依照官方中文盲文规则进行转写。
                 </p>
-                
+
                 <p class="mb-4 text-justify">
                     <i class="fas fa-globe-americas text-green-500 mr-2"></i>
-                    Seja para fins educacionais, profissionais ou do dia a dia, essa ferramenta visa tornar a informação verdadeiramente universal. O objetivo é democratizar o acesso ao Braille por meio da cultura maker e da impressão 3D, proporcionando autonomia e independência para quem precisa.
+                    无论用于教育、专业还是日常场景，本工具都致力于让信息真正普及。目标是通过创客文化和 3D 打印普及盲文，为有需要的人提供自主与独立。
                 </p>
 
                 <div class="bg-indigo-50 rounded-lg p-4 mb-4 border-l-4 border-indigo-400">
@@ -356,28 +350,29 @@
                             </div>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-lg font-semibold text-indigo-800">Neurodiversidade na Tecnologia</h3>
+                            <h3 class="text-lg font-semibold text-indigo-800">技术中的神经多样性</h3>
 
                             <p class="text-gray-700 mt-2 text-justify">
-                                Esta ferramenta foi desenvolvida por Lucas Guerra, um estudante e desenvolvedor autista que transformou sua perspectiva única em soluções tecnológicas inclusivas. O autismo trouxe uma abordagem diferente para a criação deste projeto, com foco intenso em detalhes e padrões que resultaram em uma ferramenta mais acessível e intuitiva.
+                                本工具由 Lucas Guerra 开发。他是一名自闭症学生和开发者，将自己独特的视角转化为包容性的技术方案。自闭症为该项目带来了不同的思路，对细节和模式的高度专注造就了更易用、更直观的工具。
                             </p>
 
                             <p class="text-gray-700 mt-2 text-justify">
-                                Essa solução é fruto do Laboratório de Tecnologia 3D e Inclusiva do Departamento de Computação da Universidade Federal Rural de Pernambuco (UFRPE), que promove a inclusão e acessibilidade por meio da tecnologia. O laboratório é um espaço de pesquisa e desenvolvimento que busca criar soluções inovadoras para pessoas com deficiência, utilizando impressão 3D e outras tecnologias assistivas.
+                                该方案源自伯南布哥联邦农村大学（UFRPE）计算机系的 3D 与包容技术实验室，致力于通过技术促进包容与无障碍，利用 3D 打印及其他辅助技术为残障人士创造创新方案。
                             </p>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-blue-50 p-4 rounded-lg mt-6 border-l-4 border-blue-400">
                     <h3 class="font-bold text-lg mb-2 flex items-center">
-                        <i class="fas fa-book mr-2 text-blue-600"></i> Saiba mais
+                        <i class="fas fa-book mr-2 text-blue-600"></i> 了解更多
                     </h3>
                     <p class="text-justify">
-                        Veja mais sobre essa ferramenta na página dela no 
+                        在
                         <a href="https://cienciaembarcada.com.br/inbraille/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
                             Ciência Embarcada <i class="fas fa-external-link-alt ml-1 text-sm"></i>
                         </a>
+                        页面了解更多关于本工具的信息。
                     </p>
                 </div>
             </div>
@@ -393,9 +388,9 @@
                             <span class="text-blue-500 text-2xl">⠎⠞⠇</span>InBraille
                         </h2>
                     </div>
-                    <p class="text-gray-400 mt-2">Ferramenta de conversão para Braille</p>
+                    <p class="text-gray-400 mt-2">文字转盲文工具</p>
                 </div>
-                
+
                 <div class="flex space-x-4">
                     <a href="https://github.com/lucasrguerra/InBraille" class="text-gray-400 hover:text-white transition duration-200">
                         <i class="fab fa-github text-xl"></i>
@@ -405,13 +400,14 @@
                     </a>
                 </div>
             </div>
-            
+
             <div class="border-t border-gray-700 mt-6 pt-6 text-center md:text-left">
                 <p class="text-gray-400">
-                    Desenvolvido por 
+                    由
                     <a href="https://linkedin.com/in/lucasrguerra/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">
                         Lucas Guerra
                     </a>
+                    开发
                 </p>
             </div>
         </div>

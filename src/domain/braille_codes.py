@@ -64,3 +64,17 @@ BRAILLE_CODES = {
     '⠐': '000010',
     '⣄': '011001',
 }
+
+
+def code_for(character: str) -> str:
+    """Return the 6-dot code (dot1..dot6) for a Braille character.
+
+    Uses the explicit map above (which keeps the historical ``⣄`` override) and falls
+    back to deriving the code straight from the Unicode code point, so any Braille cell
+    — including those produced by the Chinese code — can be turned into a 3D model.
+    """
+    mapped = BRAILLE_CODES.get(character)
+    if mapped is not None:
+        return mapped
+    value = ord(character) - 0x2800
+    return "".join("1" if (value >> bit) & 1 else "0" for bit in range(6))

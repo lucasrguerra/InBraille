@@ -2,7 +2,7 @@
 points-only orientation bar. Pure geometry composition — it talks only to a MeshEngine,
 so it has no knowledge of the underlying 3D library.
 """
-from src.domain.braille_codes import BRAILLE_CODES
+from src.domain.braille_codes import code_for
 from src.domain.dimensions import Dimensions
 from src.modeling.mesh_engine import MeshEngine
 from src.modeling.options import ModelOptions
@@ -207,7 +207,7 @@ class BrailleModelBuilder:
         return engine.translate(final_mesh, 0, 0, 0, 90)
 
     def _character_to_cell(self, character, resolution, points_only):
-        code = BRAILLE_CODES[character]
+        code = code_for(character)
         return self._build_cell(code, self._dimensions.dots_radius, self._dimensions.dots_spacing, resolution, points_only)
 
     def _build_cell(self, code, radius, spacing, resolution, points_only):

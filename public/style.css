@@ -107,6 +107,19 @@ input:disabled + .slider {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
 }
 
+/* Language dropdown menu */
+.lang-menu > summary {
+    list-style: none;
+}
+
+.lang-menu > summary::-webkit-details-marker {
+    display: none;
+}
+
+.lang-menu[open] > summary .lang-caret {
+    transform: rotate(180deg);
+}
+
 /* MUI-like snackbar/alert toasts */
 #toast-container {
     position: fixed;

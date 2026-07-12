@@ -24,6 +24,14 @@ def build_page_router() -> APIRouter:
         except Exception:
             return responses.Response(content="Internal Server Error", status_code=404)
 
+    @router.get("/zh")
+    def home_zh():
+        try:
+            html_content = open(f"{Settings.TEMPLATES_DIR}/index_zh.html", "r", encoding="utf-8").read()
+            return responses.HTMLResponse(content=html_content, media_type="text/html; charset=utf-8")
+        except Exception:
+            return responses.Response(content="Internal Server Error", status_code=404)
+
     @router.get("/public/{file_path}")
     def static(file_path: str):
         try:

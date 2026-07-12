@@ -65,6 +65,11 @@ function switchConversionMode(mode) {
             input_textbox.placeholder = "Type the text you want to convert to Braille...";
             output_label.innerHTML = `<span class="mr-1 font-bold">⠿</span> Result in Braille`;
             output_textbox.innerHTML = "The result in Braille will appear here...";
+        } else if (page_language === "zh") {
+            input_label.innerHTML = `<i class="fas fa-pen-alt mr-1"></i> 输入文字`;
+            input_textbox.placeholder = "输入拼音（如 ni3 hao3）或汉字（如 你好）...";
+            output_label.innerHTML = `<span class="mr-1 font-bold">⠿</span> 盲文结果`;
+            output_textbox.innerHTML = "盲文结果将显示在此处...";
         }
 
         warning.classList.add("hidden");
@@ -82,6 +87,11 @@ function switchConversionMode(mode) {
             input_textbox.placeholder = "Type the text in Braille you want to convert...";
             output_label.innerHTML = `<i class="fas fa-text-width mr-1"></i> Result in Text`;
             output_textbox.innerHTML = "The result in text will appear here...";
+        } else if (page_language === "zh") {
+            input_label.innerHTML = `<span class="mr-1 font-bold">⠿</span> 输入盲文`;
+            input_textbox.placeholder = "输入要转换的盲文...";
+            output_label.innerHTML = `<i class="fas fa-text-width mr-1"></i> 拼音结果`;
+            output_textbox.innerHTML = "拼音结果将显示在此处...";
         }
 
         if (getAlphabet() === "Brazilian") {
@@ -112,6 +122,8 @@ function updateCharCount() {
         if (count !== 1) {
             char_count.innerText += "s";
         }
+    } else if (page_language === "zh") {
+        char_count.innerText = count + " 个字符";
     }
 }
 
@@ -139,6 +151,8 @@ function copyOutput() {
         copy_button.innerHTML = `<i class="fas fa-check mr-1"></i> Copiado!`;
     } else if (page_language === "en") {
         copy_button.innerHTML = `<i class="fas fa-check mr-1"></i> Copied!`;
+    } else if (page_language === "zh") {
+        copy_button.innerHTML = `<i class="fas fa-check mr-1"></i> 已复制！`;
     }
 
     setTimeout(() => {
@@ -296,8 +310,10 @@ async function convert() {
     }
 }
 
-function t(pt, en) {
-    return page_language === "en" ? en : pt;
+function t(pt, en, zh) {
+    if (page_language === "zh") { return zh !== undefined ? zh : en; }
+    if (page_language === "en") { return en; }
+    return pt;
 }
 
 function showToast(message, severity = "info", duration = 4000) {
@@ -346,19 +362,19 @@ async function generateSTL() {
     // Resolve the Braille content, guiding the user if something is missing.
     if (conversion_mode === "braille-to-text") {
         if (input_textbox.value.trim().length === 0) {
-            showToast(t("Digite o Braille que deseja imprimir.", "Enter the Braille you want to print."), "warning");
+            showToast(t("Digite o Braille que deseja imprimir.", "Enter the Braille you want to print.", "请输入要打印的盲文。"), "warning");
             highlightInput();
             return;
         }
     } else if (output_textbox.value.trim().length === 0) {
         if (input_textbox.value.trim().length === 0) {
-            showToast(t("Digite um texto para gerar a placa.", "Enter some text to generate the plate."), "warning");
+            showToast(t("Digite um texto para gerar a placa.", "Enter some text to generate the plate.", "请输入文字以生成底板。"), "warning");
             highlightInput();
             return;
         }
 
         // There is text but it wasn't converted yet: convert it automatically.
-        showToast(t("Convertendo automaticamente para Braille...", "Automatically converting to Braille..."), "info");
+        showToast(t("Convertendo automaticamente para Braille...", "Automatically converting to Braille...", "正在自动转换为盲文..."), "info");
         await convert();
         if (output_textbox.value.trim().length === 0) {
             return;
@@ -372,7 +388,7 @@ async function generateSTL() {
     if (braille.length === 0) { return; }
 
     stl_button.disabled = true;
-    stl_button.innerHTML = `<i class="fas fa-spinner fa-spin mr-1"></i>${page_language === "en" ? "Generating..." : "Gerando..."}`;
+    stl_button.innerHTML = `<i class="fas fa-spinner fa-spin mr-1"></i>${t("Gerando...", "Generating...", "生成中...")}`;
 
     axios.post("/api/to-stl", {
         braille: braille,
@@ -394,18 +410,10 @@ async function generateSTL() {
         stl_preview.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }).catch((error) => {
         console.error(error);
-        if (page_language === "pt-BR") {
-            alert("Erro ao gerar o arquivo STL. Tente novamente.");
-        } else if (page_language === "en") {
-            alert("Error generating STL file. Please try again.");
-        }
+        alert(t("Erro ao gerar o arquivo STL. Tente novamente.", "Error generating STL file. Please try again.", "生成 STL 文件出错，请重试。"));
     }).finally(() => {
         stl_button.disabled = false;
-        if (page_language === "pt-BR") {
-            stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>Gerar e Visualizar STL`;
-        } else if (page_language === "en") {
-            stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>Generate &amp; Preview STL`;
-        }
+        stl_button.innerHTML = `<i class="fas fa-cube mr-2"></i>${t("Gerar e Visualizar STL", "Generate &amp; Preview STL", "生成并预览 STL")}`;
     });
 }
 
