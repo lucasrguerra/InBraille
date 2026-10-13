@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.0
 
 - STL generation now goes through a bounded FIFO queue instead of rejecting requests when busy.
 
