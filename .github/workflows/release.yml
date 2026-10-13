@@ -99,4 +99,4 @@ jobs:
           body="{\"key\":\"INBRAILLE_VERSION\",\"value\":\"$VERSION\",\"is_preview\":false}"
           curl -fsS -X PATCH "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body" \
             || curl -fsS -X POST "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body"
-          curl -fsS "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID&force=false" -H "$auth"
+          curl -fsS -X POST "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID&force=false" -H "$auth"
