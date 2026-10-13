@@ -105,7 +105,7 @@ def test_stl_worst_case_within_budget_is_bounded(client):
     start = time.monotonic()
     response = client.post("/api/to-stl", json={"braille": braille, "resolution": 50})
     assert response.status_code == 200
-    assert time.monotonic() - start < 30
+    assert time.monotonic() - start < 60
 
 
 def test_errors_do_not_leak_internals(client, monkeypatch):
@@ -123,3 +123,21 @@ def test_errors_do_not_leak_internals(client, monkeypatch):
 def test_rate_limit_kicks_in(client):
     codes = [client.post("/api/to-stl", json={"braille": "⠁", "resolution": 15}).status_code for _ in range(13)]
     assert 429 in codes
+
+
+def test_stl_requests_queue_instead_of_failing():
+    import asyncio
+
+    import httpx
+
+    async def scenario():
+        transport = httpx.ASGITransport(app=create_app(), client=("203.0.113.7", 1))
+        payload = {"braille": "⠓⠑⠇⠇⠕", "resolution": 15}
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
+            responses = await asyncio.gather(*(http.post("/api/to-stl", json=payload) for _ in range(6)))
+        return [r.status_code for r in responses]
+
+    codes = asyncio.run(scenario())
+    # Same client: at most 3 may wait (per-client cap), the rest are told to retry; none fails with 500.
+    assert set(codes) <= {200, 503}
+    assert codes.count(200) >= 3

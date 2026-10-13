@@ -1,22 +1,19 @@
 """HTTP API routes: text/braille translation and STL generation."""
 import logging
-import threading
 from io import BytesIO
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 import fastapi.responses as responses
 
 from src.translation import translator
 from src.modeling.options import ModelOptions
 from src.modeling.stl_service import StlService
+from src.web.job_queue import JobQueue, QueueFull, QueueTimeout
 from src.web.schemas import Text, Braille, ToSTLRequest
 
 
 logger = logging.getLogger(__name__)
-
-# STL generation is CPU bound: allow a few at once and tell everyone else to retry.
-_STL_SLOTS = threading.BoundedSemaphore(2)
-
 
 def _clamp(value, low, high):
     if value < low:
@@ -46,7 +43,9 @@ def _build_options(request: ToSTLRequest) -> ModelOptions:
     )
 
 
-def build_api_router(stl_service: StlService) -> APIRouter:
+def build_api_router(stl_service: StlService, stl_queue: JobQueue | None = None) -> APIRouter:
+    # STL generation is CPU bound: a few run at once, the rest wait in a bounded FIFO queue.
+    stl_queue = stl_queue or JobQueue()
     router = APIRouter(prefix="/api")
 
     @router.post("/encode")
@@ -68,25 +67,26 @@ def build_api_router(stl_service: StlService) -> APIRouter:
             raise HTTPException(status_code=500, detail="Internal server error")
 
     @router.post("/to-stl")
-    def to_stl(request: ToSTLRequest):
+    async def to_stl(request: ToSTLRequest, http_request: Request):
+        options = _build_options(request)
+        client = http_request.client.host if http_request.client else "unknown"
         try:
-            options = _build_options(request)
-            if not _STL_SLOTS.acquire(blocking=False):
-                raise HTTPException(status_code=503, detail="Server busy, please try again shortly.", headers={"Retry-After": "5"})
-            try:
-                stl_bytes = stl_service.generate(request.braille, options)
-            finally:
-                _STL_SLOTS.release()
-
-            return responses.StreamingResponse(
-                BytesIO(stl_bytes),
-                media_type="application/vnd.ms-pkistl",
-                headers={"Content-Disposition": "attachment; filename=output.stl"},
+            async with stl_queue.slot(client):
+                stl_bytes = await run_in_threadpool(stl_service.generate, request.braille, options)
+        except (QueueFull, QueueTimeout):
+            raise HTTPException(
+                status_code=503,
+                detail="Server busy, please try again shortly.",
+                headers={"Retry-After": "10"},
             )
-        except HTTPException:
-            raise
         except Exception:
             logger.exception("Request failed")
             raise HTTPException(status_code=500, detail="Internal server error")
+
+        return responses.StreamingResponse(
+            BytesIO(stl_bytes),
+            media_type="application/vnd.ms-pkistl",
+            headers={"Content-Disposition": "attachment; filename=output.stl"},
+        )
 
     return router
