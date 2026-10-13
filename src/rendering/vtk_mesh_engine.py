@@ -14,6 +14,8 @@ class VtkMeshEngine(MeshEngine):
         scene.AddInputData(mesh)
 
     def finalize(self, scene):
+        if scene.GetNumberOfInputConnections(0) == 0:
+            return vtk.vtkPolyData()
         scene.Update()
         return scene.GetOutput()
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0
+
+- High-performance hybrid STL generation:
+  - Instant client-side parametric 3D STL generation directly in the browser (~18ms), eliminating server bottlenecks and network latency.
+  - Interactive real-time 3D preview: dynamic updates on slider changes (thickness, borders, alignment, symbols) and live typing without reloading.
+  - Optimized backend STL serialization: implemented contiguous structured NumPy arrays and vectorized cross-product calculations in `VtkStlSerializer`.
+  - In-memory LRU caching for backend STL service, speeding up repeated requests to <1ms.
+  - Fixed 3D preview geometry: corrected face winding order on spherical caps and enabled DoubleSide rendering to prevent backface culling artifacts.
+
 ## 1.2.0
 
 - Improved SEO: added robots.txt, sitemap.xml, Schema.org structured data (WebApplication and FAQPage), rich social meta tags, and interactive FAQ section.

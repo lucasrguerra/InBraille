@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { getTranslation } from './i18n.js';
+import { triggerRealtimePreview } from './stl.js';
 
 let dom = {};
 
@@ -210,6 +211,7 @@ export async function convert() {
                 alert(`${getTranslation("alert_manual_correct_prefix")} ${braille}`);
             } else {
                 dom.output_textbox.value = braille;
+                triggerRealtimePreview(60);
             }
         } else {
             const adjusted_braille = await checkBrailleSize(text);
@@ -224,6 +226,7 @@ export async function convert() {
                     alphabet: alphabet
                 });
                 dom.output_textbox.value = response.data.decoded;
+                triggerRealtimePreview(60);
             }
         }
     } catch (error) {

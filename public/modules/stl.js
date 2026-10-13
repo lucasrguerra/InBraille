@@ -2,11 +2,55 @@ import { state, updatePlateWidth } from './state.js';
 import { getTranslation } from './i18n.js';
 import { showToast, highlightInput } from './ui.js';
 import { convert } from './converter.js';
+import { buildClientSTL } from './client_stl_generator.js';
 
 let dom = {};
 
 export function initStlDOM(elements) {
     dom = elements;
+}
+
+let realtimeDebounceTimer = null;
+
+export function triggerRealtimePreview(delay = 80) {
+    if (!dom.stl_preview || dom.stl_preview.classList.contains("hidden")) {
+        return;
+    }
+    clearTimeout(realtimeDebounceTimer);
+    realtimeDebounceTimer = setTimeout(() => {
+        updateRealtimeModel();
+    }, delay);
+}
+
+export function updateRealtimeModel() {
+    if (!dom.stl_preview || dom.stl_preview.classList.contains("hidden")) {
+        return;
+    }
+    let braille = dom.output_textbox ? dom.output_textbox.value : "";
+    if (state.conversion_mode === "braille-to-text" && dom.input_textbox) {
+        braille = dom.input_textbox.value;
+    }
+    if (!braille || braille.trim().length === 0) {
+        return;
+    }
+
+    try {
+        const arrayBuffer = buildClientSTL(braille, {
+            resolution: state.resolution,
+            plate_thickness: state.plate_thickness,
+            unique_plate: state.unique_plate,
+            symbols_per_line: state.symbols_per_line,
+            text_alignment: state.text_alignment,
+            rounded: state.rounded,
+            points_only: state.points_only
+        });
+        state.last_stl_blob = new Blob([arrayBuffer], { type: "model/stl" });
+        if (typeof window.renderSTLPreview === "function") {
+            window.renderSTLPreview(arrayBuffer.slice(0), false);
+        }
+    } catch (err) {
+        console.warn("[InBraille] Real-time preview update skipped:", err);
+    }
 }
 
 export function updateParameters() {
@@ -21,6 +65,7 @@ export function updateParameters() {
     state.rounded = dom.input_rounded.checked;
     state.points_only = dom.input_points_only.checked;
     updatePlateWidth();
+    triggerRealtimePreview(60);
 }
 
 export function applyPointsOnlyState() {
@@ -97,7 +142,8 @@ export async function generateSTL() {
     stl_button.innerHTML = `<i class="fas fa-spinner fa-spin mr-1"></i>${genText}`;
 
     try {
-        const response = await axios.post("/api/to-stl", {
+        let arrayBuffer = null;
+        const optionsPayload = {
             braille: braille,
             resolution: state.resolution,
             plate_thickness: state.plate_thickness,
@@ -106,15 +152,31 @@ export async function generateSTL() {
             text_alignment: state.text_alignment,
             rounded: state.rounded,
             points_only: state.points_only
-        }, { responseType: 'arraybuffer' });
+        };
 
-        state.last_stl_blob = new Blob([response.data], { type: "model/stl" });
+        // 1. Ultra-fast Client-Side Generation (Instant, 0 latency, 0 server load)
+        try {
+            const t0 = performance.now();
+            arrayBuffer = buildClientSTL(braille, optionsPayload);
+            const elapsed = performance.now() - t0;
+            console.log(`[InBraille] Client STL generated in ${elapsed.toFixed(1)}ms`);
+        } catch (clientErr) {
+            console.warn('[InBraille] Client-side STL generator encountered error, falling back to server API:', clientErr);
+        }
+
+        // 2. Server API fallback if client generation is unavailable or fails
+        if (!arrayBuffer) {
+            const response = await axios.post("/api/to-stl", optionsPayload, { responseType: 'arraybuffer' });
+            arrayBuffer = response.data;
+        }
+
+        state.last_stl_blob = new Blob([arrayBuffer], { type: "model/stl" });
 
         if (dom.stl_preview) {
             dom.stl_preview.classList.remove("hidden");
         }
         if (typeof window.renderSTLPreview === "function") {
-            window.renderSTLPreview(response.data.slice(0));
+            window.renderSTLPreview(arrayBuffer.slice(0), true);
         }
         if (dom.stl_preview) {
             dom.stl_preview.scrollIntoView({ behavior: "smooth", block: "nearest" });

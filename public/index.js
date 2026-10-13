@@ -1,7 +1,7 @@
 import { state } from './modules/state.js';
 import { setLanguage } from './modules/i18n.js';
 import { initConverterDOM, switchConversionMode, updateCharCount, copyOutput, saveOutput, convert, clearInput } from './modules/converter.js';
-import { initStlDOM, updateParameters, applyPointsOnlyState, updateInputs, generateSTL, downloadSTL, toggleAdvancedOptions } from './modules/stl.js';
+import { initStlDOM, updateParameters, applyPointsOnlyState, updateInputs, generateSTL, downloadSTL, toggleAdvancedOptions, triggerRealtimePreview } from './modules/stl.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Gather all DOM elements
@@ -55,9 +55,35 @@ document.addEventListener('DOMContentLoaded', function() {
     if (elements.braille_to_text_tab) {
         elements.braille_to_text_tab.addEventListener("click", () => switchConversionMode("braille-to-text"));
     }
+    let liveTypeDebounce = null;
     if (elements.input_textbox) {
-        elements.input_textbox.addEventListener("input", updateCharCount);
+        elements.input_textbox.addEventListener("input", () => {
+            updateCharCount();
+            if (elements.stl_preview && !elements.stl_preview.classList.contains("hidden")) {
+                clearTimeout(liveTypeDebounce);
+                liveTypeDebounce = setTimeout(async () => {
+                    if (state.conversion_mode === "text-to-braille") {
+                        await convert();
+                    } else {
+                        triggerRealtimePreview(60);
+                    }
+                }, 250);
+            }
+        });
     }
+    if (elements.output_textbox) {
+        elements.output_textbox.addEventListener("input", () => {
+            triggerRealtimePreview(60);
+        });
+    }
+    const alphabetRadios = document.querySelectorAll('input[name="alphabet"]');
+    alphabetRadios.forEach(radio => {
+        radio.addEventListener("change", () => {
+            if (elements.stl_preview && !elements.stl_preview.classList.contains("hidden")) {
+                convert();
+            }
+        });
+    });
     if (elements.copy_button) {
         elements.copy_button.addEventListener("click", copyOutput);
     }

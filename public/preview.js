@@ -63,10 +63,9 @@ function init(container) {
 function paintByHeight(geometry) {
     geometry.computeBoundingBox();
     const box = geometry.boundingBox;
-    // The plate's front face sits exactly at (min.y + APPARENT_THICKNESS); pull the
-    // threshold slightly below it so that flat face stays "plate" and only the dots
-    // that protrude past it are colored as dots.
-    const threshold = box.min.y + APPARENT_THICKNESS - 0.05;
+    // The plate's front face sits exactly at (min.y + APPARENT_THICKNESS);
+    // Threshold ensures the full dome of every dot is colored with DOT_COLOR.
+    const threshold = box.min.y + APPARENT_THICKNESS - 0.01;
 
     const position = geometry.attributes.position;
     const colors = new Float32Array(position.count * 3);
@@ -101,10 +100,12 @@ function frameModel() {
     controls.update();
 }
 
-window.renderSTLPreview = function (arrayBuffer) {
+window.renderSTLPreview = function (arrayBuffer, resetCamera = false) {
     const container = document.getElementById("stl_preview_canvas");
     if (!container) { return; }
     if (!state) { init(container); }
+
+    const isFirstLoad = !state.mesh;
 
     if (state.mesh) {
         state.scene.remove(state.mesh);
@@ -121,12 +122,15 @@ window.renderSTLPreview = function (arrayBuffer) {
     const material = new THREE.MeshStandardMaterial({
         vertexColors: true,
         metalness: 0.1,
-        roughness: 0.55
+        roughness: 0.55,
+        side: THREE.DoubleSide
     });
     const mesh = new THREE.Mesh(geometry, material);
     state.scene.add(mesh);
     state.mesh = mesh;
 
-    frameModel();
+    if (isFirstLoad || resetCamera) {
+        frameModel();
+    }
     state.resize();
 };
