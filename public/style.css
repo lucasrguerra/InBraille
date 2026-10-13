@@ -176,3 +176,53 @@ input:disabled + .slider {
     0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.45); }
 }
+
+/* Braille font definition with circular dots */
+@font-face {
+    font-family: 'Noto Sans Symbols 2';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('/public/fonts/NotoSansSymbols2-Braille.woff2') format('woff2'),
+         url('https://fonts.gstatic.com/s/notosanssymbols2/v25/I_uyMoGduATTei9eI8daxVHDyfisHr71-jrBWXPM4Q.woff2') format('woff2');
+    unicode-range: U+2800-28FF;
+}
+
+.braille-font,
+.braille-symbol,
+.braille-text,
+#input_text,
+#output_text {
+    font-family: 'Noto Sans Symbols 2', 'Apple Braille', 'Segoe UI Symbol', sans-serif;
+}
+
+.braille-symbol {
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    display: inline-block;
+}
+
+.braille-hero {
+    font-family: 'Noto Sans Symbols 2', 'Apple Braille', 'Segoe UI Symbol', sans-serif;
+    font-weight: 400;
+    line-height: 80%;
+    color: #a024b4;
+    user-select: none;
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.braille-hero:hover {
+    transform: scale(1.06);
+}
+
+/* FAQ Accordion Styling */
+details.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+details.faq-item summary {
+    list-style: none;
+}
+details.faq-item[open] summary .faq-chevron {
+    transform: rotate(180deg);
+}

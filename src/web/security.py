@@ -11,8 +11,8 @@ MAX_BODY_BYTES = 64 * 1024
 CONTENT_SECURITY_POLICY = "; ".join([
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com",
-    "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com",
-    "font-src 'self' https://cdnjs.cloudflare.com",
+    "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com",
+    "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com",
     "img-src 'self' data: https://skipthecad.com",
     "connect-src 'self'",
     "object-src 'none'",

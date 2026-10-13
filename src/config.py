@@ -13,3 +13,5 @@ class Settings:
     STATIC_DIR = os.path.join(_BASE_DIR, "public")
     GOOGLE_VERIFICATION_FILE = "google21a790a2c23c0ec5.html"
     GOOGLE_VERIFICATION_HTML = os.path.join(_BASE_DIR, GOOGLE_VERIFICATION_FILE)
+    ROBOTS_TXT = os.path.join(_BASE_DIR, "robots.txt")
+    SITEMAP_XML = os.path.join(_BASE_DIR, "sitemap.xml")

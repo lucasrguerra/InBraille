@@ -47,6 +47,22 @@ def test_static_path_traversal_is_blocked(client, path):
 def test_static_serves_assets(client):
     assert client.get("/public/style.css").headers["content-type"].startswith("text/css")
     assert client.get("/public/index.js").headers["content-type"].startswith("text/javascript")
+    font_resp = client.get("/public/fonts/NotoSansSymbols2-Braille.woff2")
+    assert font_resp.status_code == 200
+    assert font_resp.headers["content-type"].startswith("font/woff2")
+
+
+def test_seo_robots_and_sitemap(client):
+    robots = client.get("/robots.txt")
+    assert robots.status_code == 200
+    assert "Sitemap: https://inbraille.cienciaembarcada.com.br/sitemap.xml" in robots.text
+    assert "Disallow: /api/" in robots.text
+
+    sitemap = client.get("/sitemap.xml")
+    assert sitemap.status_code == 200
+    assert sitemap.headers["content-type"].startswith("application/xml")
+    assert "<loc>https://inbraille.cienciaembarcada.com.br/</loc>" in sitemap.text
+    assert 'hreflang="pt-BR"' in sitemap.text
 
 
 @pytest.mark.parametrize("alphabet", ["Brazilian", "North American", "Chinese"])

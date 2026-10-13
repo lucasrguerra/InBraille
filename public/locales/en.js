@@ -1,6 +1,6 @@
 export default {
-    page_title: "InBraille - Text to Braille Converter",
-    meta_description: "Brazilian tool that converts text to Braille and exports in ASCII and STL format for 3D printing",
+    page_title: "InBraille - Text to Braille Converter & 3D STL Generator",
+    meta_description: "Free Brazilian assistive technology tool to convert text to Braille and export 3D STL models for tactile 3D printing and accessibility.",
     hero_title: "Transform text into Braille easily",
     hero_description: "InBraille is a Brazilian tool that converts text to Braille and exports in ASCII and STL format for 3D printing, promoting accessibility and inclusion.",
     try_now: "Try it now",

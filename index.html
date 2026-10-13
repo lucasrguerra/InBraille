@@ -3,30 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/public/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>InBraille - Conversor de Texto para Braille</title>
-    <meta name="description" content="Ferramenta brasileira que converte textos para Braille e exporta em formato ASCII e STL para impressão 3D">
-    <meta name="keywords" content="braille, stl, impressão 3d, inclusão, acessibilidade">
+    <title>InBraille - Conversor de Texto para Braille e Impressão 3D STL | Acessibilidade Tátil</title>
+    <meta name="description" content="Ferramenta brasileira pública e gratuita de tecnologia assistiva que converte texto em Braille e gera arquivos STL para impressão 3D de placas táteis inclusivas.">
+    <meta name="keywords" content="braille, conversor de braille, braille para texto, texto para braille, impressão 3d braille, stl braille, tecnologia assistiva, inclusão visual, acessibilidade, ufrpe, etiquetas em braille, gerador de braille 3d, braille translator, 3d print braille, assistive technology">
     <meta name="author" content="Lucas Rayan Guerra">
-    <meta property="og:title" content="InBraille" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://inbraille.cienciaembarcada.com.br/" />
-    <meta property="og:image" content="https://inbraille.cienciaembarcada.com.br/public/android-chrome-192x192.png" />
+    <meta name="creator" content="Lucas Rayan Guerra, Laboratório de Tecnologia 3D e Inclusiva - UFRPE">
+    <meta name="publisher" content="Ciência Embarcada / InBraille">
+    <meta name="application-name" content="InBraille">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="color-scheme" content="light">
+
+    <!-- Canonical and Internationalization (hreflang) -->
+    <link rel="canonical" href="https://inbraille.cienciaembarcada.com.br/">
+    <link rel="alternate" hreflang="pt-BR" href="https://inbraille.cienciaembarcada.com.br/">
+    <link rel="alternate" hreflang="en" href="https://inbraille.cienciaembarcada.com.br/en">
+    <link rel="alternate" hreflang="zh" href="https://inbraille.cienciaembarcada.com.br/zh">
+    <link rel="alternate" hreflang="x-default" href="https://inbraille.cienciaembarcada.com.br/">
+
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="InBraille">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="zh_CN">
+    <meta property="og:url" content="https://inbraille.cienciaembarcada.com.br/">
+    <meta property="og:title" content="InBraille - Conversor de Texto para Braille e Modelagem 3D STL">
+    <meta property="og:description" content="Ferramenta gratuita de utilidade pública para converter textos em Braille e gerar placas 3D em STL para impressão e inclusão de pessoas com deficiência visual.">
+    <meta property="og:image" content="https://inbraille.cienciaembarcada.com.br/public/android-chrome-512x512.png">
+    <meta property="og:image:secure_url" content="https://inbraille.cienciaembarcada.com.br/public/android-chrome-512x512.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Logotipo do InBraille - Conversor para Braille e STL">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="InBraille - Conversor de Texto para Braille e Impressão 3D STL">
+    <meta name="twitter:description" content="Converta texto para Braille e exporte modelos 3D STL prontos para impressão. Ferramenta pública e gratuita de acessibilidade tátil.">
+    <meta name="twitter:image" content="https://inbraille.cienciaembarcada.com.br/public/android-chrome-512x512.png">
+
+    <!-- Favicons and PWA Manifest -->
     <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
     <link rel="manifest" href="/public/site.webmanifest">
+
+    <!-- Fonts & Stylesheet Preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="/public/fonts/NotoSansSymbols2-Braille.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/public/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://inbraille.cienciaembarcada.com.br/#webapp",
+          "name": "InBraille",
+          "alternateName": "InBraille Conversor e Modelador 3D",
+          "url": "https://inbraille.cienciaembarcada.com.br/",
+          "description": "Ferramenta pública e gratuita de tecnologia assistiva desenvolvida para converter texto em Braille e gerar arquivos STL para impressão 3D de placas e etiquetas táteis acessíveis.",
+          "applicationCategory": "AccessibilityApplication, UtilitiesApplication, EducationalApplication",
+          "operatingSystem": "All",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "BRL"
+          },
+          "inLanguage": ["pt-BR", "en", "zh"],
+          "author": {
+            "@type": "Person",
+            "name": "Lucas Rayan Guerra",
+            "url": "https://linkedin.com/in/lucasrguerra/"
+          },
+          "sourceOrganization": {
+            "@type": "EducationalOrganization",
+            "name": "Universidade Federal Rural de Pernambuco (UFRPE)",
+            "department": "Departamento de Computação - Laboratório de Tecnologia 3D e Inclusiva"
+          },
+          "featureList": [
+            "Conversão bidirecional: Texto para Braille e Braille para Texto",
+            "Suporte aos alfabetos Braille Brasileiro, Norte-Americano e Chinês (com Pinyin e Hanzi)",
+            "Geração paramétrica de arquivos 3D no formato STL prontos para fatiadores e impressão 3D",
+            "Visualização 3D interativa no navegador via WebGL / Three.js",
+            "Modo Apenas os Pontos (sem placa) para sobreposição em peças pré-existentes",
+            "Customização de alinhamento, espessura, resolução e símbolos por linha",
+            "Marcador de orientação espacial para leitura tátil correta"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://inbraille.cienciaembarcada.com.br/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O que é o InBraille?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O InBraille é uma ferramenta brasileira, aberta e gratuita de utilidade pública desenvolvida para promover a acessibilidade e a inclusão social de pessoas com deficiência visual. Ele converte textos comuns para o sistema Braille e gera automaticamente modelos 3D no formato STL prontos para impressão 3D."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como converter texto para Braille e gerar um modelo 3D STL?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Basta digitar ou colar seu texto na área de entrada, escolher o padrão de alfabeto desejado (Brasileiro, Norte-Americano ou Chinês) e clicar em 'Converter'. Em seguida, clique em 'Gerar e Visualizar STL' para pré-visualizar a placa em 3D e fazer o download do arquivo STL para sua impressora 3D."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "O InBraille é gratuito para uso educacional e profissional?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim, o InBraille é uma ferramenta de código aberto e 100% gratuita, ideal para escolas, universidades, famílias, makers e instituições que necessitam criar materiais didáticos e sinalização tátil em Braille."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quais alfabetos Braille são suportados?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O InBraille suporta o Braille Brasileiro (Português), o Braille Norte-Americano (Inglês) e o Braille Chinês (com conversão inteligente de Pinyin tonificado ou caracteres Hanzi)."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-gray-50 font-sans">
     <header class="bg-white shadow-md sticky top-0 z-10">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <h1 class="text-2xl font-bold text-gray-800">
-                    <span class="text-blue-500 text-2xl">⠎⠞⠇</span>InBraille
-                </h1>
+                <a href="/" class="flex items-center space-x-2 text-2xl font-bold text-gray-800" aria-label="InBraille Início">
+                    <span class="text-blue-500 text-2xl braille-symbol" aria-hidden="true">⠎⠞⠇</span>
+                    <span>InBraille</span>
+                </a>
             </div>
 
             <div class="flex items-center space-x-4">
@@ -50,25 +173,23 @@
         <section class="bg-blue-50 rounded-xl p-6 mb-8">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-2/3 mb-6 md:mb-0">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4" data-i18n="hero_title">Transforme texto em Braille facilmente</h2>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4" data-i18n="hero_title">Transforme texto em Braille facilmente</h1>
                     <p class="text-gray-600 mb-4 text-justify" data-i18n="hero_description">
                         O InBraille é uma ferramenta brasileira que converte textos para Braille e os exporta em formato ASCII e STL para impressão 3D, promovendo acessibilidade e inclusão.
                     </p>
-                    <a href="#conversor" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-block">
+                    <a href="#conversor" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200 inline-block shadow-sm hover:shadow">
                         <i class="fas fa-magic mr-2"></i><span data-i18n="try_now">Experimente agora</span>
                     </a>
                 </div>
                 <div class="md:w-1/3 flex justify-center">
-                    <span style="
-                        font-weight: bold;
+                    <span class="braille-hero text-purple-600" style="
                         font-size: 14rem;
-                        line-height: 80%;
-                        color: #a024b4;
                         padding-bottom: 1rem;
-                    ">⠿</span>
+                    " aria-label="Símbolo Braille com 6 pontos táteis em formato circular">⠿</span>
                 </div>
             </div>
         </section>
+
 
         <section id="conversor" class="bg-white rounded-xl shadow-md p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center" data-i18n="converter_title">Conversor</h2>
@@ -78,7 +199,7 @@
                     <i class="fas fa-text-width mr-2"></i><span data-i18n="tab_text_to_braille">Texto → Braille</span>
                 </button>
                 <button class="py-2 px-4 text-gray-600" id="braille_to_text_tab">
-                    <span class="mr-2 font-bold">⠿</span><span data-i18n="tab_braille_to_text">Braille → Texto</span>
+                    <span class="mr-2 braille-symbol" aria-hidden="true">⠿</span><span data-i18n="tab_braille_to_text">Braille → Texto</span>
                 </button>
             </div>
 
@@ -141,7 +262,7 @@
                     </label>
 
                     <textarea 
-                        class="w-full h-40 p-2 focus:outline-none resize-none" 
+                        class="w-full h-40 p-2 focus:outline-none resize-none braille-text" 
                         id="input_text" 
                         placeholder="Digite o texto que deseja converter para Braille..."
                     ></textarea>
@@ -156,12 +277,12 @@
 
                 <div class="text-area-container border-2 border-gray-200 rounded-lg p-4">
                     <label for="output_text" id="output_label">
-                        <span class="mr-1 font-bold">⠿</span>
+                        <span class="mr-1 braille-symbol" aria-hidden="true">⠿</span>
                         Resultado em Braille
                     </label>
 
                     <textarea 
-                        class="w-full h-40 p-2 focus:outline-none resize-none" 
+                        class="w-full h-40 p-2 focus:outline-none resize-none braille-text" 
                         id="output_text" 
                         readonly
                         placeholder="O resultado em Braille aparecerá aqui..."
@@ -396,6 +517,65 @@
                 </div>
             </div>
         </section>
+
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8" id="faq">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-question-circle text-blue-500 mr-2"></i>
+                <span>Perguntas Frequentes (FAQ)</span>
+            </h2>
+
+            <div class="space-y-4">
+                <details class="faq-item border border-gray-200 rounded-lg p-4 group" open>
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-800 select-none">
+                        <span>O que é o InBraille e para que serve?</span>
+                        <i class="fas fa-chevron-down text-blue-500 text-sm faq-chevron transition-transform duration-200"></i>
+                    </summary>
+                    <p class="mt-3 text-gray-600 text-justify">
+                        O InBraille é uma ferramenta brasileira, gratuita e de código aberto voltada para a acessibilidade. Ele converte textos comuns para o sistema Braille e gera automaticamente modelos 3D no formato STL prontos para fatiadores e impressão 3D de placas, sinalizações e etiquetas táteis.
+                    </p>
+                </details>
+
+                <details class="faq-item border border-gray-200 rounded-lg p-4 group">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-800 select-none">
+                        <span>Como exportar e imprimir Braille em uma impressora 3D?</span>
+                        <i class="fas fa-chevron-down text-blue-500 text-sm faq-chevron transition-transform duration-200"></i>
+                    </summary>
+                    <p class="mt-3 text-gray-600 text-justify">
+                        Digite seu texto no conversor, clique em <strong>Converter</strong> e em seguida em <strong>Gerar e Visualizar STL</strong>. Você pode inspecionar o modelo interativamente em 3D, ajustar parâmetros como espessura da placa e modo "Apenas os Pontos", e clicar em <strong>Baixar STL</strong> para salvar o arquivo pronto para seu fatiador 3D (como Cura ou PrusaSlicer).
+                    </p>
+                </details>
+
+                <details class="faq-item border border-gray-200 rounded-lg p-4 group">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-800 select-none">
+                        <span>O InBraille é gratuito para escolas, universidades e projetos sociais?</span>
+                        <i class="fas fa-chevron-down text-blue-500 text-sm faq-chevron transition-transform duration-200"></i>
+                    </summary>
+                    <p class="mt-3 text-gray-600 text-justify">
+                        Sim, 100% gratuito e livre! O projeto foi criado com foco em utilidade pública e impacto social para democratizar a criação de recursos didáticos e sinalização inclusiva por educadores, profissionais e entusiastas da cultura maker.
+                    </p>
+                </details>
+
+                <details class="faq-item border border-gray-200 rounded-lg p-4 group">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-800 select-none">
+                        <span>Quais alfabetos Braille são suportados?</span>
+                        <i class="fas fa-chevron-down text-blue-500 text-sm faq-chevron transition-transform duration-200"></i>
+                    </summary>
+                    <p class="mt-3 text-gray-600 text-justify">
+                        O sistema conta com suporte a três convenções: o <strong>Alfabeto Brasileiro</strong> (com normas do Ministério da Educação), o <strong>Norte-Americano</strong> (English Braille) e o <strong>Chinês</strong> (com suporte a conversão automática de Pinyin numerado e caracteres Hanzi).
+                    </p>
+                </details>
+
+                <details class="faq-item border border-gray-200 rounded-lg p-4 group">
+                    <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-800 select-none">
+                        <span>Por que existe um indicador de orientação na peça 3D?</span>
+                        <i class="fas fa-chevron-down text-blue-500 text-sm faq-chevron transition-transform duration-200"></i>
+                    </summary>
+                    <p class="mt-3 text-gray-600 text-justify">
+                        Para evitar que a peça tátil seja colada ou lida de cabeça para baixo, cada placa gerada inclui uma marca de referência geométrica no canto inferior esquerdo (ou uma barra inferior no modo apenas pontos). Mantendo essa marca para baixo e à esquerda, garante-se que a leitura do Braille seja perfeitamente fiel.
+                    </p>
+                </details>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-gray-800 text-white py-8">
@@ -403,9 +583,9 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
                     <div class="flex items-center space-x-2">
-                        <h2 class="text-xl font-bold">
-                            <span class="text-blue-500 text-2xl">⠎⠞⠇</span>InBraille
-                        </h2>
+                        <span class="text-xl font-bold">
+                            <span class="text-blue-500 text-2xl braille-symbol" aria-hidden="true">⠎⠞⠇</span>InBraille
+                        </span>
                     </div>
                     <p class="text-gray-400 mt-2" data-i18n="footer_text">Ferramenta de conversão para Braille</p>
                 </div>

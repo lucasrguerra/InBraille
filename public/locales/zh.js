@@ -1,6 +1,6 @@
 export default {
-    page_title: "InBraille - 中文盲文转换器",
-    meta_description: "将中文（拼音或汉字）转换为盲文，并导出为 ASCII 和 STL 格式用于 3D 打印",
+    page_title: "InBraille - 文本盲文转换器与3D STL模型生成器",
+    meta_description: "免费公开的无障碍辅助技术工具：将文本（支持中文拼音、汉字等）转换为盲文，并导出用于3D打印的STL触觉模型文件。",
     hero_title: "轻松将中文转换为盲文",
     hero_description: "InBraille 可将中文（拼音或汉字）转换为盲文，并导出为 ASCII 和 STL 格式用于 3D 打印，促进无障碍与包容。中文盲文基于普通话拼音（声母 + 韵母 + 声调）。",
     try_now: "立即体验",
