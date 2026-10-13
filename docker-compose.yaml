@@ -1,10 +1,8 @@
+# Production: runs a published release image (used by Coolify). Pin the version with INBRAILLE_VERSION.
+# For local development use: docker compose -f docker-compose.dev.yaml up --build
 services:
   app:
-    # Pull a published release by default; use `docker compose up --build` to build locally.
     image: ghcr.io/lucasrguerra/inbraille:${INBRAILLE_VERSION:-latest}
-    build:
-      context: .
-      dockerfile: Dockerfile
     container_name: inbraille
     ports:
       - "3000"

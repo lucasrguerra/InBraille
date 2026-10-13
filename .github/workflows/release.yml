@@ -28,6 +28,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: test
+    env:
+      COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
@@ -88,13 +90,13 @@ jobs:
       - name: Deploy to Coolify
         if: ${{ env.COOLIFY_TOKEN != '' }}
         env:
-          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           VERSION: ${{ steps.meta.outputs.version }}
         run: |
-          curl -fsS -X PATCH "$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID" \
-            -H "Authorization: Bearer $COOLIFY_TOKEN" -H "Content-Type: application/json" \
-            -d "{\"docker_registry_image_tag\":\"$VERSION\"}"
-          curl -fsS "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID&force=false" \
-            -H "Authorization: Bearer $COOLIFY_TOKEN"
+          api="$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID"
+          auth="Authorization: Bearer $COOLIFY_TOKEN"
+          body="{\"key\":\"INBRAILLE_VERSION\",\"value\":\"$VERSION\",\"is_preview\":false}"
+          curl -fsS -X PATCH "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body" \
+            || curl -fsS -X POST "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body"
+          curl -fsS "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID&force=false" -H "$auth"
