@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1
+
+- Fixed returning visitors running stale frontend code after a deploy: HTML and `/public` assets are now served with `Cache-Control: no-cache` so browsers revalidate them.
+- Release workflow now also pins `INBRAILLE_VERSION` for the Coolify preview environment, which was stuck on 1.1.0.
+
 ## 1.3.0
 
 - High-performance hybrid STL generation:

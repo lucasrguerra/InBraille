@@ -7,6 +7,11 @@ import fastapi.responses as responses
 from src.config import Settings
 
 
+# The frontend files are not fingerprinted, so browsers must revalidate them (cheap 304 via ETag)
+# instead of heuristically caching a previous release after a deploy.
+REVALIDATE = {"Cache-Control": "no-cache"}
+
+
 def build_page_router() -> APIRouter:
     router = APIRouter()
 
@@ -15,7 +20,7 @@ def build_page_router() -> APIRouter:
     @router.api_route("/zh", methods=["GET", "HEAD"])
     def home():
         try:
-            return responses.FileResponse(Settings.TEMPLATE_HTML, media_type="text/html; charset=utf-8")
+            return responses.FileResponse(Settings.TEMPLATE_HTML, media_type="text/html; charset=utf-8", headers=REVALIDATE)
         except Exception:
             return responses.Response(content="Internal Server Error", status_code=404)
 
@@ -51,6 +56,6 @@ def build_page_router() -> APIRouter:
             ".json": "application/json",
             ".webmanifest": "application/manifest+json",
         }
-        return responses.FileResponse(target, media_type=media_types.get(target.suffix))
+        return responses.FileResponse(target, media_type=media_types.get(target.suffix), headers=REVALIDATE)
 
     return router

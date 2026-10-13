@@ -157,3 +157,12 @@ def test_stl_requests_queue_instead_of_failing():
     # Same client: at most 3 may wait (per-client cap), the rest are told to retry; none fails with 500.
     assert set(codes) <= {200, 503}
     assert codes.count(200) >= 3
+
+
+@pytest.mark.parametrize("path", ["/", "/public/index.js", "/public/modules/stl.js"])
+def test_frontend_assets_are_revalidated(client, path):
+    # Without Cache-Control browsers heuristically cache the un-versioned JS modules,
+    # so returning visitors keep running the previous release after a deploy.
+    response = client.get(path)
+    assert response.status_code == 200
+    assert response.headers["cache-control"] == "no-cache"

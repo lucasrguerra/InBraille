@@ -96,7 +96,10 @@ jobs:
         run: |
           api="$COOLIFY_URL/api/v1/applications/$COOLIFY_APP_UUID"
           auth="Authorization: Bearer $COOLIFY_TOKEN"
-          body="{\"key\":\"INBRAILLE_VERSION\",\"value\":\"$VERSION\",\"is_preview\":false}"
-          curl -fsS -X PATCH "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body" \
-            || curl -fsS -X POST "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body"
+          # Pin both the production and the preview environments, otherwise preview deployments stay on an old image.
+          for preview in false true; do
+            body="{\"key\":\"INBRAILLE_VERSION\",\"value\":\"$VERSION\",\"is_preview\":$preview}"
+            curl -fsS -X PATCH "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body" \
+              || curl -fsS -X POST "$api/envs" -H "$auth" -H "Content-Type: application/json" -d "$body"
+          done
           curl -fsS -X POST "$COOLIFY_URL/api/v1/deploy?uuid=$COOLIFY_APP_UUID&force=false" -H "$auth"
