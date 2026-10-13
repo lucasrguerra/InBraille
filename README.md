@@ -70,26 +70,39 @@ Web service routing and schemas:
 
 ## Running the code
 
-To run the code, you need to have Python 3 installed. You can run the code by executing the following command:
+### Docker (recommended)
+
+Tagged releases are published to the GitHub Container Registry (`linux/amd64` and `linux/arm64`):
 
 ```bash
-python -m venv venv
-# On Windows (PowerShell):
-.\venv\Scripts\Activate.ps1
-# On Linux/macOS:
-source venv/bin/activate
-
-pip install -r requirements.txt
-python main.py
+docker run -d -p 3000:3000 --read-only --tmpfs /tmp --cap-drop ALL ghcr.io/lucasrguerra/inbraille:latest
 ```
 
-The service will start running on `http://localhost:3000`.
+Pin a version (for example `:1.0.0`) in production. The service will be available at `http://localhost:3000`.
+
+### From source
+
+Requires Python 3.12.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows (PowerShell): .\.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+python main.py
+pytest                           # run the test suite
+```
 
 The API has the following endpoints:
 
 - `/api/encode`: Translates a text to braille.
 - `/api/decode`: Translates a braille to text.
 - `/api/to-stl`: Exports the braille text to plate in STL format.
+
+Requests are validated and rate limited; see [SECURITY.md](SECURITY.md) for the limits and for how to report a vulnerability.
+
+## Releases
+
+Pushing a tag such as `v1.0.1` runs the tests, scans the image with Trivy (the release is blocked on critical, high or medium findings), publishes the image to `ghcr.io/lucasrguerra/inbraille` and creates the GitHub release. See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

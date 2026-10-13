@@ -1,4 +1,6 @@
 """HTTP API routes: text/braille translation and STL generation."""
+import logging
+import threading
 from io import BytesIO
 
 from fastapi import APIRouter, HTTPException
@@ -8,6 +10,12 @@ from src.translation import translator
 from src.modeling.options import ModelOptions
 from src.modeling.stl_service import StlService
 from src.web.schemas import Text, Braille, ToSTLRequest
+
+
+logger = logging.getLogger(__name__)
+
+# STL generation is CPU bound: allow a few at once and tell everyone else to retry.
+_STL_SLOTS = threading.BoundedSemaphore(2)
 
 
 def _clamp(value, low, high):
@@ -46,29 +54,39 @@ def build_api_router(stl_service: StlService) -> APIRouter:
         try:
             alphabet = request.alphabet if request.alphabet else "North American"
             return {"encoded": translator.encode(request.text, alphabet)}
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+        except Exception:
+            logger.exception("Request failed")
+            raise HTTPException(status_code=500, detail="Internal server error")
 
     @router.post("/decode")
     def braille_decode(request: Braille):
         try:
             alphabet = request.alphabet if request.alphabet else "North American"
             return {"decoded": translator.decode(request.braille, alphabet)}
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+        except Exception:
+            logger.exception("Request failed")
+            raise HTTPException(status_code=500, detail="Internal server error")
 
     @router.post("/to-stl")
     def to_stl(request: ToSTLRequest):
         try:
             options = _build_options(request)
-            stl_bytes = stl_service.generate(request.braille, options)
+            if not _STL_SLOTS.acquire(blocking=False):
+                raise HTTPException(status_code=503, detail="Server busy, please try again shortly.", headers={"Retry-After": "5"})
+            try:
+                stl_bytes = stl_service.generate(request.braille, options)
+            finally:
+                _STL_SLOTS.release()
 
             return responses.StreamingResponse(
                 BytesIO(stl_bytes),
                 media_type="application/vnd.ms-pkistl",
                 headers={"Content-Disposition": "attachment; filename=output.stl"},
             )
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+        except HTTPException:
+            raise
+        except Exception:
+            logger.exception("Request failed")
+            raise HTTPException(status_code=500, detail="Internal server error")
 
     return router

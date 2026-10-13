@@ -8,4 +8,4 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=Settings.PORT, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=Settings.PORT, log_level="info", proxy_headers=True)
