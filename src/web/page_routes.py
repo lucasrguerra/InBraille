@@ -17,6 +17,10 @@ def build_page_router() -> APIRouter:
         except Exception:
             return responses.Response(content="Internal Server Error", status_code=404)
 
+    @router.get(f"/{Settings.GOOGLE_VERIFICATION_FILE}")
+    def google_site_verification():
+        return responses.FileResponse(Settings.GOOGLE_VERIFICATION_HTML, media_type="text/html; charset=utf-8")
+
     @router.get("/public/{file_path:path}")
     def static(file_path: str):
         try:

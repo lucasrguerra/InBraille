@@ -11,3 +11,5 @@ class Settings:
     PORT = int(os.getenv("PORT", "3000"))
     TEMPLATE_HTML = os.path.join(_BASE_DIR, "index.html")
     STATIC_DIR = os.path.join(_BASE_DIR, "public")
+    GOOGLE_VERIFICATION_FILE = "google21a790a2c23c0ec5.html"
+    GOOGLE_VERIFICATION_HTML = os.path.join(_BASE_DIR, GOOGLE_VERIFICATION_FILE)
