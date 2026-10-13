@@ -93,6 +93,8 @@ The API has the following endpoints:
 
 ---
 
+[![Listed on SkipTheCAD](https://skipthecad.com/badge/listed-dark.svg)](https://skipthecad.com/generators/inbraille/)
+
 ## License and Credits
 
 This project is licensed under the MIT License. It was developed by [Lucas Rayan Guerra](https://github.com/lucasrguerra).
